@@ -4,71 +4,266 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Emmaus</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
 
-    <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/css/site.css" />
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-    </environment>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Emmaus</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                </ul>
-            </div>
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: gainsboro;
+            margin: 0 auto;
+        }
+
+        .wrapper {
+            height: 100vh;
+            /*min-height: 100%;*/
+            display: grid;
+            grid-template-rows: 80px 1fr auto;
+            grid-template-columns: 1fr 10fr 1fr;
+        }
+
+            .wrapper .headerBar {
+                position: -webkit-sticky;
+                position: sticky;
+                top: 0;
+                background-color: gray;
+                /*border-bottom: dashed 1px white;*/
+                grid-area: 1 / 1 / span 1 / span 3;
+            }
+
+                .wrapper .headerBar h1 {
+                    color: white;
+                    line-height: 40%;
+                    padding-top: 10px;
+                    padding-left: 10px;
+                    text-align: left;
+                }
+
+            .wrapper .linksBar {
+                position: -webkit-sticky;
+                position: sticky;
+                top: 80px;
+                background-color: slategray;
+                grid-row: 2;
+                grid-column: 1 / span 3;
+            }
+
+                .wrapper .linksBar ul {
+                    margin: 10px auto;
+                    padding: 0 20px;
+                    text-align: center;
+                }
+
+                    .wrapper .linksBar ul li:hover {
+                        background-color: blue;
+                    }
+
+                    .wrapper .linksBar ul li ul li:hover {
+                        background-color: lawngreen;
+                        height: 100px;
+                    }
+
+        /*.wrapper .linksBar ul li ul li{
+            height: 0px;
+        }*/
+
+        .inner ul {
+            height: 0px;
+            background-color: hotpink;
+        }
+
+        .wrapper .linksBar li {
+            background-color: red;
+            display: inline-block;
+            width: 110px;
+            color: white;
+            font-family: 'Oswald', sans-serif;
+            font-size: 16px;
+            font-weight: 300;
+            text-transform: uppercase;
+        }
+
+            .wrapper .linksBar li a {
+                display: inline-block;
+                color: inherit;
+                font-family: inherit;
+                font-size: inherit;
+                font-weight: inherit;
+                border: none;
+                text-decoration: none;
+            }
+
+                .wrapper .linksBar li a p {
+                    display: inline-block;
+                    font-size: 14px;
+                }
+
+        .wrapper .mainWrapper {
+            grid-row: 3;
+            grid-column: 2 / 3;
+            background-color: white;
+            display: grid;
+            grid-template-rows: auto;
+            grid-template-columns: 1fr 5fr 1fr;
+        }
+
+            .wrapper .mainWrapper .title {
+                grid-row: 1;
+                grid-column: 2;
+                text-align: center;
+            }
+
+            .wrapper .mainWrapper .about {
+                grid-row: 2;
+                grid-column: 2;
+                display: grid;
+                grid-template-rows: auto;
+                grid-template-columns: 1fr;
+                padding-bottom: 20px;
+            }
+
+                .wrapper .mainWrapper .about .image {
+                    grid-row: 2;
+                    grid-column: 2;
+                    text-align: left;
+                }
+
+                .wrapper .mainWrapper .about .content {
+                    grid-row: 3;
+                    grid-column: 2;
+                    text-align: left;
+                }
+
+            .wrapper .mainWrapper .links {
+                grid-row: 2;
+                grid-column: 2;
+                display: grid;
+                grid-template-rows: auto;
+                grid-template-columns: 1fr;
+                padding-bottom: 20px;
+            }
+
+                .wrapper .mainWrapper .links .content {
+                    grid-row: 2;
+                    grid-column: 1 2;
+                    text-align: left;
+                }
+
+            .wrapper .mainWrapper .welcome {
+                grid-row: 2;
+                grid-column: 2;
+                display: grid;
+                grid-template-rows: auto;
+                grid-template-columns: 1fr;
+                padding-bottom: 20px;
+            }
+
+                .wrapper .mainWrapper .welcome .image {
+                    grid-row: 2;
+                    grid-column: 2;
+                    text-align: left;
+                }
+
+                .wrapper .mainWrapper .welcome .content {
+                    grid-row: 3;
+                    grid-column: 2;
+                    text-align: left;
+                }
+
+            .wrapper .mainWrapper .table {
+                grid-row: 2;
+                grid-column: 2;
+                display: grid;
+                grid-template-columns: repeat(3, 150px);
+                grid-auto-rows: 50px;
+                grid-auto-flow: row;
+                align-items: stretch;
+                align-content: space-around;
+                justify-items: stretch;
+                justify-content: center;
+                padding-bottom: 20px;
+            }
+
+                .wrapper .mainWrapper .table .fieldOne {
+                    display: grid;
+                    justify-content: center;
+                    align-items: center;
+                    border: solid 1px lightgray;
+                }
+
+                .wrapper .mainWrapper .table .fieldTwo {
+                    display: grid;
+                    justify-content: center;
+                    align-items: center;
+                    border: solid 1px lightgray;
+                }
+
+                .wrapper .mainWrapper .table .fieldThree {
+                    display: grid;
+                    justify-content: center;
+                    align-items: center;
+                    border: solid 1px lightgray;
+                }
+
+                .wrapper .mainWrapper .table .table-header {
+                    justify-content: center;
+                    align-items: center;
+                    font-weight: 900;
+                    text-transform: uppercase;
+                    border: solid 1px lightgray;
+                    /*background: rgba(128, 128, 128, 0.1);*/
+                }
+
+        .wrapper .bottomBar {
+            position: sticky;
+            bottom: 0px;
+            background-color: lightgray;
+            grid-column: 1 / span 3;
+            text-align: center;
+        }
+
+    </style>
+
+    <div class="wrapper">
+
+        <div class="headerBar">
+            <h1>Emmaus Church Centre</h1>
         </div>
-    </nav>
 
-    <partial name="_CookieConsentPartial" />
+        <div class="linksBar">
+            <ul>
+                <li><a asp-controller="Ui" asp-action="LoadWelcomeView"><p>Welcome</p></a></li>
 
-    <div class="container body-content">
+                <li>
+                <a asp-controller="Ui" asp-action="LoadWelcomeView"><p>Welcome</p></a>
+                <ul class="inner">
+                    <li>Black tea</li>
+                    <li>Green tea</li>
+                </ul>
+                </li>
+
+                <li><a asp-controller="Ui" asp-action="LoadAboutView"><p>About</p></a></li>
+                <li><a asp-controller="Ui" asp-action="LoadServicesView"><p>Services</p></a></li>
+                <li><a asp-controller="Ui" asp-action="LoadLocalCommunityView"><p>Community</p></a></li>
+                <li><a asp-controller="Ui" asp-action="LoadWiderCommunityView"><p>Community</p></a></li>
+                <li><a asp-controller="Ui" asp-action="LoadLinksView"><p>Links</p></a></li>
+                <li><a asp-controller="Ui" asp-action="LoadContactUsView"><p>Contact</p></a></li>
+            </ul>
+        </div>
+
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2018 - Emmaus</p>
-        </footer>
+
+        <div class="bottomBar">
+            <p>Copyright Emmaus Church</p>
+        </div>
+
     </div>
 
-    <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
-
-    @RenderSection("Scripts", required: false)
 </body>
 </html>

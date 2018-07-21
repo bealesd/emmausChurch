@@ -8,31 +8,37 @@ using Emmaus.Models;
 
 namespace Emmaus.Controllers
 {
-    public class HomeController : Controller
+    public class UiController : Controller
     {
-        public IActionResult Index()
+
+        public IActionResult LoadAboutView()
         {
-            return View();
+            ViewData["Message"] = "About page.";
+
+            return View("About");
         }
 
-        public IActionResult About()
+        public IActionResult LoadServicesView()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Message"] = "About page.";
 
-            return View();
+            return View("Services");
         }
 
-        public IActionResult Contact()
+        public IActionResult LoadWelcomeView()
         {
-            ViewData["Message"] = "Your contact page.";
+            ViewData["Message"] = "About page.";
 
-            return View();
+            return View("Welcome");
         }
 
-        public IActionResult Privacy()
+        public IActionResult LoadLinksView()
         {
-            return View();
+            return View("Links");
         }
+
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
