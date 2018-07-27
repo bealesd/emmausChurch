@@ -16,254 +16,275 @@
         body {
             width: 100%;
             height: 100%;
-            background-color: gainsboro;
+            background-image: url('@Url.Content("~/images/blueSky.jpg")');
+            background-size: cover;
             margin: 0 auto;
         }
 
         .wrapper {
             height: 100vh;
-            /*min-height: 100%;*/
             display: grid;
             grid-template-rows: 80px 1fr auto;
             grid-template-columns: 1fr 10fr 1fr;
         }
 
-            .wrapper .headerBar {
-                position: -webkit-sticky;
+            .wrapper .navBarContainer {
                 position: sticky;
-                top: 0;
-                background-color: gray;
-                /*border-bottom: dashed 1px white;*/
-                grid-area: 1 / 1 / span 1 / span 3;
+                top: 0px;
+                height: 80px;
+                background-color: whitesmoke;
+                grid-row: 1;
+                grid-column: 1 / 4;
+                display: grid;
+                grid-template-rows: 1fr;
+                grid-template-columns: 300px 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
             }
 
-                .wrapper .headerBar h1 {
-                    color: white;
-                    line-height: 40%;
-                    padding-top: 10px;
-                    padding-left: 10px;
-                    text-align: left;
+                .wrapper .navBarContainer .mainTitle {
+                    grid-row: 1;
+                    grid-column: 1;
+                    margin-top: 30px;
+                    text-decoration: none;
+                    text-align: center;
+                    font-size: 20px;
+                    font-weight: 800;
+                    text-transform: uppercase;
                 }
 
-            .wrapper .linksBar {
-                position: -webkit-sticky;
-                position: sticky;
-                top: 80px;
-                background-color: slategray;
-                grid-row: 2;
-                grid-column: 1 / span 3;
+                .wrapper .navBarContainer .navLink {
+                    grid-row: 1;
+                    text-decoration: none;
+                    text-align: center;
+                    margin-top: 20px;
+                    font-family: 'Oswald', sans-serif;
+                    font-size: 14px;
+                    font-weight: 200;
+                    text-transform: uppercase;
+                }
+
+            .wrapper > .navBarContainer .navLink:hover {
+                background-color: lightgrey;
+                height: 40px;
             }
 
-                .wrapper .linksBar ul {
-                    margin: 10px auto;
-                    padding: 0 20px;
+            .wrapper .mainWrapper {
+                grid-row: 2;
+                grid-column: 2 / 3;
+                display: grid;
+                grid-template-rows: 80px auto;
+                grid-template-columns: 1fr 5fr 1fr;
+            }
+
+                .wrapper .mainWrapper .title {
+                    grid-row: 1;
+                    grid-column: 2;
                     text-align: center;
                 }
 
-                    .wrapper .linksBar ul li:hover {
-                        background-color: blue;
-                    }
-
-                    .wrapper .linksBar ul li ul li:hover {
-                        background-color: lawngreen;
-                        height: 100px;
-                    }
-
-        /*.wrapper .linksBar ul li ul li{
-            height: 0px;
-        }*/
-
-        .inner ul {
-            height: 0px;
-            background-color: hotpink;
-        }
-
-        .wrapper .linksBar li {
-            background-color: red;
-            display: inline-block;
-            width: 110px;
-            color: white;
-            font-family: 'Oswald', sans-serif;
-            font-size: 16px;
-            font-weight: 300;
-            text-transform: uppercase;
-        }
-
-            .wrapper .linksBar li a {
-                display: inline-block;
-                color: inherit;
-                font-family: inherit;
-                font-size: inherit;
-                font-weight: inherit;
-                border: none;
-                text-decoration: none;
-            }
-
-                .wrapper .linksBar li a p {
-                    display: inline-block;
-                    font-size: 14px;
+                .wrapper .mainWrapper .links {
+                    grid-row: 2;
+                    grid-column: 2;
+                    display: grid;
+                    grid-template-rows: auto;
+                    grid-template-columns: 1fr;
+                    padding-bottom: 20px;
                 }
 
-        .wrapper .mainWrapper {
-            grid-row: 3;
-            grid-column: 2 / 3;
-            background-color: white;
-            display: grid;
-            grid-template-rows: auto;
-            grid-template-columns: 1fr 5fr 1fr;
-        }
 
-            .wrapper .mainWrapper .title {
-                grid-row: 1;
-                grid-column: 2;
+                    .wrapper .mainWrapper .links .content {
+                        grid-row: 1;
+                        grid-column: 1;
+                        text-align: left;
+                    }
+
+                .wrapper .mainWrapper .about {
+                    grid-row: 2;
+                    grid-column: 2;
+                    display: grid;
+                    grid-template-rows: 180px auto;
+                    grid-template-columns: 1fr 3fr;
+                    padding-bottom: 20px;
+                }
+
+                    .wrapper .mainWrapper .about .image {
+                        grid-row: 1;
+                        grid-column: 1;
+                        text-align: left;
+                    }
+
+                    .wrapper .mainWrapper .about .content {
+                        grid-row: 1;
+                        grid-column: 2;
+                        text-align: left;
+                    }
+
+                .wrapper .mainWrapper .contactUs {
+                    grid-row: 2;
+                    grid-column: 2;
+                    display: grid;
+                    grid-template-rows: auto;
+                    grid-template-columns: 1fr;
+                    padding-bottom: 20px;
+                }
+
+                    .wrapper .mainWrapper .contactUs .content {
+                        grid-row: 1;
+                        grid-column: 1;
+                        text-align: left;
+                    }
+
+                .wrapper .mainWrapper .LocalCommunity {
+                    grid-row: 2;
+                    grid-column: 2;
+                    display: grid;
+                    grid-template-rows: auto;
+                    grid-template-columns: 1fr;
+                    padding-bottom: 20px;
+                }
+
+                    .wrapper .mainWrapper .LocalCommunity .content {
+                        grid-row: 1;
+                        grid-column: 1;
+                        text-align: left;
+                    }
+
+                .wrapper .mainWrapper .WiderCommunity {
+                    grid-row: 2;
+                    grid-column: 2;
+                    display: grid;
+                    grid-template-rows: auto;
+                    grid-template-columns: 1fr;
+                    padding-bottom: 20px;
+                }
+
+                    .wrapper .mainWrapper .WiderCommunity .content {
+                        grid-row: 1;
+                        grid-column: 1;
+                        text-align: left;
+                    }
+
+                .wrapper .mainWrapper .welcome {
+                    grid-row: 2;
+                    grid-column: 2;
+                    display: grid;
+                    grid-template-rows: auto;
+                    grid-template-columns: 1fr;
+                    padding-bottom: 20px;
+                }
+
+                    .wrapper .mainWrapper .welcome .image {
+                        grid-row: 1;
+                        grid-column: 2;
+                        text-align: left;
+                    }
+
+                    .wrapper .mainWrapper .welcome .content {
+                        grid-row: 2;
+                        grid-column: 2;
+                        text-align: left;
+                    }
+
+                .wrapper .mainWrapper .table {
+                    grid-row: 2;
+                    grid-column: 2;
+                    display: grid;
+                    grid-template-columns: repeat(3, 150px);
+                    grid-auto-rows: 50px;
+                    grid-auto-flow: row;
+                    align-items: stretch;
+                    align-content: space-around;
+                    justify-items: stretch;
+                    justify-content: center;
+                    padding-bottom: 20px;
+                }
+
+                    .wrapper .mainWrapper .table .fieldOne {
+                        display: grid;
+                        justify-content: center;
+                        align-items: center;
+                        border: solid 1px lightgray;
+                    }
+
+                    .wrapper .mainWrapper .table .fieldTwo {
+                        display: grid;
+                        justify-content: center;
+                        align-items: center;
+                        border: solid 1px lightgray;
+                    }
+
+                    .wrapper .mainWrapper .table .fieldThree {
+                        display: grid;
+                        justify-content: center;
+                        align-items: center;
+                        border: solid 1px lightgray;
+                    }
+
+                    .wrapper .mainWrapper .table .table-header {
+                        justify-content: center;
+                        align-items: center;
+                        font-weight: 900;
+                        text-transform: uppercase;
+                        border: solid 1px lightgray;
+                    }
+
+            .wrapper .footer {
+                position: sticky;
+                bottom: 0px;
+                background-color: whitesmoke;
+                grid-row: 3;
+                grid-column: 1 / span 3;
                 text-align: center;
             }
-
-            .wrapper .mainWrapper .about {
-                grid-row: 2;
-                grid-column: 2;
-                display: grid;
-                grid-template-rows: auto;
-                grid-template-columns: 1fr;
-                padding-bottom: 20px;
-            }
-
-                .wrapper .mainWrapper .about .image {
-                    grid-row: 2;
-                    grid-column: 2;
-                    text-align: left;
-                }
-
-                .wrapper .mainWrapper .about .content {
-                    grid-row: 3;
-                    grid-column: 2;
-                    text-align: left;
-                }
-
-            .wrapper .mainWrapper .links {
-                grid-row: 2;
-                grid-column: 2;
-                display: grid;
-                grid-template-rows: auto;
-                grid-template-columns: 1fr;
-                padding-bottom: 20px;
-            }
-
-                .wrapper .mainWrapper .links .content {
-                    grid-row: 2;
-                    grid-column: 1 2;
-                    text-align: left;
-                }
-
-            .wrapper .mainWrapper .welcome {
-                grid-row: 2;
-                grid-column: 2;
-                display: grid;
-                grid-template-rows: auto;
-                grid-template-columns: 1fr;
-                padding-bottom: 20px;
-            }
-
-                .wrapper .mainWrapper .welcome .image {
-                    grid-row: 2;
-                    grid-column: 2;
-                    text-align: left;
-                }
-
-                .wrapper .mainWrapper .welcome .content {
-                    grid-row: 3;
-                    grid-column: 2;
-                    text-align: left;
-                }
-
-            .wrapper .mainWrapper .table {
-                grid-row: 2;
-                grid-column: 2;
-                display: grid;
-                grid-template-columns: repeat(3, 150px);
-                grid-auto-rows: 50px;
-                grid-auto-flow: row;
-                align-items: stretch;
-                align-content: space-around;
-                justify-items: stretch;
-                justify-content: center;
-                padding-bottom: 20px;
-            }
-
-                .wrapper .mainWrapper .table .fieldOne {
-                    display: grid;
-                    justify-content: center;
-                    align-items: center;
-                    border: solid 1px lightgray;
-                }
-
-                .wrapper .mainWrapper .table .fieldTwo {
-                    display: grid;
-                    justify-content: center;
-                    align-items: center;
-                    border: solid 1px lightgray;
-                }
-
-                .wrapper .mainWrapper .table .fieldThree {
-                    display: grid;
-                    justify-content: center;
-                    align-items: center;
-                    border: solid 1px lightgray;
-                }
-
-                .wrapper .mainWrapper .table .table-header {
-                    justify-content: center;
-                    align-items: center;
-                    font-weight: 900;
-                    text-transform: uppercase;
-                    border: solid 1px lightgray;
-                    /*background: rgba(128, 128, 128, 0.1);*/
-                }
-
-        .wrapper .bottomBar {
-            position: sticky;
-            bottom: 0px;
-            background-color: lightgray;
-            grid-column: 1 / span 3;
-            text-align: center;
-        }
-
     </style>
 
     <div class="wrapper">
 
-        <div class="headerBar">
-            <h1>Emmaus Church Centre</h1>
+        <div class="navBarContainer">
+            <p class="mainTitle">Emmaus Church Centre</p>
+            @*<a class="navLink" ><p>Emmaus Church Centre</p></a>*@
+            <a class="navLink" asp-controller="Ui" asp-action="LoadWelcomeView"><p>Welcome</p></a>
+            @*<a class="navLink" asp-controller="Ui" asp-action="LoadAboutView" onclick="openLinks()"><p>Community</p></a>*@
+            <a class="navLink" asp-controller="Ui" asp-action="LoadLocalCommunityView"><p>Local Community</p></a>
+            <a class="navLink" asp-controller="Ui" asp-action="LoadWiderCommunityView"><p>Wider Community</p></a>
+            <a class="navLink" asp-controller="Ui" asp-action="LoadAboutView"><p>About</p></a>
+            <a class="navLink" asp-controller="Ui" asp-action="LoadServicesView"><p>Services</p></a>
+            <a class="navLink" asp-controller="Ui" asp-action="LoadLinksView"><p>Links</p></a>
+            <a class="navLink" asp-controller="Ui" asp-action="LoadContactUsView"><p>Contact</p></a>
         </div>
 
-        <div class="linksBar">
-            <ul>
-                <li><a asp-controller="Ui" asp-action="LoadWelcomeView"><p>Welcome</p></a></li>
-
-                <li>
-                <a asp-controller="Ui" asp-action="LoadWelcomeView"><p>Welcome</p></a>
-                <ul class="inner">
-                    <li>Black tea</li>
-                    <li>Green tea</li>
-                </ul>
-                </li>
-
-                <li><a asp-controller="Ui" asp-action="LoadAboutView"><p>About</p></a></li>
-                <li><a asp-controller="Ui" asp-action="LoadServicesView"><p>Services</p></a></li>
-                <li><a asp-controller="Ui" asp-action="LoadLocalCommunityView"><p>Community</p></a></li>
-                <li><a asp-controller="Ui" asp-action="LoadWiderCommunityView"><p>Community</p></a></li>
-                <li><a asp-controller="Ui" asp-action="LoadLinksView"><p>Links</p></a></li>
-                <li><a asp-controller="Ui" asp-action="LoadContactUsView"><p>Contact</p></a></li>
-            </ul>
-        </div>
+        @*<div class="subMenu">
+                <a id="localCommunityLink" class="subMenuLink" asp-controller="Ui" asp-action="LoadLocalCommunityView"><p>Local Community</p></a>
+                <a id="widerCommunityLink" class="subMenuLink" asp-controller="Ui" asp-action="LoadWiderCommunityView"><p>Wider Community</p></a>
+            </div>*@
 
         @RenderBody()
 
-        <div class="bottomBar">
-            <p>Copyright Emmaus Church</p>
+        <div class="footer">
+            <p>Copyright &copy Emmaus Church</p>
         </div>
 
     </div>
 
+    <script>
+                                //window.addEventListener('scroll', function () {
+                                //    document.getElementById('localCommunityLink').style.visibility = 'hidden';
+                                //    document.getElementById('widerCommunityLink').style.visibility = 'hidden';
+                                //});
+
+                                //function openLinks() {
+                                //    document.getElementById('localCommunityLink').style.visibility = 'visible';
+                                //    document.getElementById('widerCommunityLink').style.visibility = 'visible';
+                                //    event.preventDefault()
+                                //}
+
+                                //function closeLinks() {
+                                //    document.getElementById('localCommunityLink').style.visibility = 'hidden';
+                                //    document.getElementById('widerCommunityLink').style.visibility = 'hidden';
+                                //    event.preventDefault()
+                                //}
+
+    </script>
+
 </body>
+
 </html>

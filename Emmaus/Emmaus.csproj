@@ -9,6 +9,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Ui\WiderCommunity.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Ui\LocalCommunity.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Ui\ContactUs.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Ui\Links.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

@@ -37,7 +37,20 @@ namespace Emmaus.Controllers
             return View("Links");
         }
 
+        public IActionResult LoadContactUsView()
+        {
+            return View("ContactUs");
+        }
 
+        public IActionResult LoadLocalCommunityView()
+        {
+            return View("LocalCommunity");
+        }
+
+        public IActionResult LoadWiderCommunityView()
+        {
+            return View("WiderCommunity");
+        }
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
