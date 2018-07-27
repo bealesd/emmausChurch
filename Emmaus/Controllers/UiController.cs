@@ -17,11 +17,37 @@ namespace Emmaus.Controllers
             return View("About");
         }
 
+
+        public IActionResult LoadHistoryView()
+        {
+            ViewData["Title"] = "Church History";
+            return View("History");
+        }
+
+        public IActionResult LoadMeetTheTeamView()
+        {
+            ViewData["Title"] = "Meet The Team";
+            return View("MeetTheTeam");
+        }
+
         public IActionResult LoadServicesView()
         {
             ViewData["Title"] = "Services";
 
             return View("Services");
+        }
+        public IActionResult LoadChildServicesView()
+        {
+            ViewData["Title"] = "ChildServices";
+
+            return View("ChildServices");
+        }
+
+        public IActionResult LoadAdultServicesView()
+        {
+            ViewData["Title"] = "AdultServices";
+
+            return View("AdultServices");
         }
 
         public IActionResult LoadWelcomeView()
@@ -54,6 +80,19 @@ namespace Emmaus.Controllers
             ViewData["Title"] = "WiderCommunity";
             return View("WiderCommunity");
         }
+
+        public IActionResult LoadAtHomeView()
+        {
+            ViewData["Title"] = "AtHomeWiderCommunity";
+            return View("WiderCommunity");
+        }
+
+        public IActionResult LoadOverseasView()
+        {
+            ViewData["Title"] = "OverseasWiderCommunity";
+            return View("WiderCommunity");
+        }
+
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
