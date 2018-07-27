@@ -13,42 +13,45 @@ namespace Emmaus.Controllers
 
         public IActionResult LoadAboutView()
         {
-            ViewData["Message"] = "About page.";
-
+            ViewData["Title"] = "About";
             return View("About");
         }
 
         public IActionResult LoadServicesView()
         {
-            ViewData["Message"] = "About page.";
+            ViewData["Title"] = "Services";
 
             return View("Services");
         }
 
         public IActionResult LoadWelcomeView()
         {
-            ViewData["Message"] = "About page.";
+            ViewData["Title"] = "Welcome";
 
             return View("Welcome");
         }
 
         public IActionResult LoadLinksView()
         {
+            ViewData["Title"] = "Links";
             return View("Links");
         }
 
         public IActionResult LoadContactUsView()
         {
+            ViewData["Title"] = "ContactsUS";
             return View("ContactUs");
         }
 
         public IActionResult LoadLocalCommunityView()
         {
+            ViewData["Title"] = "LocalCommunity";
             return View("LocalCommunity");
         }
 
         public IActionResult LoadWiderCommunityView()
         {
+            ViewData["Title"] = "WiderCommunity";
             return View("WiderCommunity");
         }
 

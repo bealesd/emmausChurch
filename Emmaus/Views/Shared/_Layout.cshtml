@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Emmaus</title>
     <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <!-- Google -->
+    <meta itemprop="name" content="Emmaus Church Center" />
+    <meta itemprop="description" content="Emmaus Church of Severn Beach welcomes everyone from the community to join us." />
+    <meta itemprop="image" content="" />
 
 </head>
 <body>
@@ -65,6 +69,16 @@
             .wrapper > .navBarContainer .navLink:hover {
                 background-color: lightgrey;
                 height: 40px;
+            }
+
+            .wrapper .subMenu {
+                    grid-row: 2;
+                    grid-column: 1;
+                    text-transform: uppercase;
+                    position: sticky;
+                    padding-top:10px;
+                    top: 80px;
+                    height: 80px;
             }
 
             .wrapper .mainWrapper {
@@ -174,14 +188,14 @@
 
                     .wrapper .mainWrapper .welcome .image {
                         grid-row: 1;
-                        grid-column: 2;
-                        text-align: left;
+                        grid-column: 1;
+                        text-align: center;
                     }
 
                     .wrapper .mainWrapper .welcome .content {
                         grid-row: 2;
-                        grid-column: 2;
-                        text-align: left;
+                        grid-column: 1;
+                        text-align: center;
                     }
 
                 .wrapper .mainWrapper .table {
@@ -237,25 +251,42 @@
             }
     </style>
 
+    @functions {
+        public string DisplayWiderCommunitySubMenu()
+        {
+            string pageName = ViewBag.Title;
+
+            if (pageName == "WiderCommunity")
+            {
+                var homeLink = "<a id='atHomeLink' href='#atHome'<p>At Home</p></a>";
+                var overseasLink = "<a id='overseasLink'href='#overseas'><p>Overseas</p></a>";
+                return String.Concat(homeLink, overseasLink);
+            }
+            return "";
+        }
+    }
+
     <div class="wrapper">
 
         <div class="navBarContainer">
             <p class="mainTitle">Emmaus Church Centre</p>
-            @*<a class="navLink" ><p>Emmaus Church Centre</p></a>*@
             <a class="navLink" asp-controller="Ui" asp-action="LoadWelcomeView"><p>Welcome</p></a>
-            @*<a class="navLink" asp-controller="Ui" asp-action="LoadAboutView" onclick="openLinks()"><p>Community</p></a>*@
             <a class="navLink" asp-controller="Ui" asp-action="LoadLocalCommunityView"><p>Local Community</p></a>
-            <a class="navLink" asp-controller="Ui" asp-action="LoadWiderCommunityView"><p>Wider Community</p></a>
+            <a class="navLink" asp-controller="Ui" asp-action="LoadWiderCommunityView" onclick="openLinks()"><p>Wider Community</p></a>
             <a class="navLink" asp-controller="Ui" asp-action="LoadAboutView"><p>About</p></a>
             <a class="navLink" asp-controller="Ui" asp-action="LoadServicesView"><p>Services</p></a>
             <a class="navLink" asp-controller="Ui" asp-action="LoadLinksView"><p>Links</p></a>
             <a class="navLink" asp-controller="Ui" asp-action="LoadContactUsView"><p>Contact</p></a>
         </div>
 
-        @*<div class="subMenu">
-                <a id="localCommunityLink" class="subMenuLink" asp-controller="Ui" asp-action="LoadLocalCommunityView"><p>Local Community</p></a>
-                <a id="widerCommunityLink" class="subMenuLink" asp-controller="Ui" asp-action="LoadWiderCommunityView"><p>Wider Community</p></a>
-            </div>*@
+
+        <div class="subMenu">
+            @Html.Raw(DisplayWiderCommunitySubMenu())
+
+            @*<a id="atHomeLink" class="subMenuLink" style="display: none" href="#atHome"><p>At Home</p></a>
+                <a id="overseasLink" class="subMenuLink" style="display: none" href="#overseas"><p>Overseas</p></a>*@
+        </div>
+
 
         @RenderBody()
 
@@ -266,22 +297,13 @@
     </div>
 
     <script>
-                                //window.addEventListener('scroll', function () {
-                                //    document.getElementById('localCommunityLink').style.visibility = 'hidden';
-                                //    document.getElementById('widerCommunityLink').style.visibility = 'hidden';
-                                //});
+        //window.onload = openLinks();
 
-                                //function openLinks() {
-                                //    document.getElementById('localCommunityLink').style.visibility = 'visible';
-                                //    document.getElementById('widerCommunityLink').style.visibility = 'visible';
-                                //    event.preventDefault()
-                                //}
-
-                                //function closeLinks() {
-                                //    document.getElementById('localCommunityLink').style.visibility = 'hidden';
-                                //    document.getElementById('widerCommunityLink').style.visibility = 'hidden';
-                                //    event.preventDefault()
-                                //}
+        @*function openLinks() {
+            alert(@pageName);
+            document.getElementById('atHomeLink').style.display = 'unset';
+            document.getElementById('overseasLink').style.display = 'unset';
+        }*@
 
     </script>
 
