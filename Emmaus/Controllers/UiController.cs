@@ -38,14 +38,14 @@ namespace Emmaus.Controllers
         }
         public IActionResult LoadChildServicesView()
         {
-            ViewData["Title"] = "ChildServices";
+            ViewData["Title"] = "Child Services";
 
             return View("ChildServices");
         }
 
         public IActionResult LoadAdultServicesView()
         {
-            ViewData["Title"] = "AdultServices";
+            ViewData["Title"] = "Adult Services";
 
             return View("AdultServices");
         }
@@ -65,31 +65,31 @@ namespace Emmaus.Controllers
 
         public IActionResult LoadContactUsView()
         {
-            ViewData["Title"] = "ContactsUS";
+            ViewData["Title"] = "Contacts US";
             return View("ContactUs");
         }
 
         public IActionResult LoadLocalCommunityView()
         {
-            ViewData["Title"] = "LocalCommunity";
+            ViewData["Title"] = "Local Community";
             return View("LocalCommunity");
         }
 
         public IActionResult LoadWiderCommunityView()
         {
-            ViewData["Title"] = "WiderCommunity";
+            ViewData["Title"] = "Wider Community";
             return View("WiderCommunity");
         }
 
         public IActionResult LoadAtHomeView()
         {
-            ViewData["Title"] = "AtHomeWiderCommunity";
+            ViewData["Title"] = "At Home Wider Community";
             return View("WiderCommunity");
         }
 
         public IActionResult LoadOverseasView()
         {
-            ViewData["Title"] = "OverseasWiderCommunity";
+            ViewData["Title"] = "Overseas Wider Community";
             return View("WiderCommunity");
         }
 
