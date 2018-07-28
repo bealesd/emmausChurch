@@ -13,7 +13,8 @@
 </head>
             
 
-<body>
+<body background="/images/blueSky50%.jpg">
+
     @functions {
     public string DisplaySubMenu()
     {
@@ -34,8 +35,8 @@
 
         else if (pageName.Contains("about") || pageName.Contains("history") || pageName.Contains("meet the team"))
         {
-            var historyLink = "<a class='subLink' href='/Ui/LoadHistoryView'><p>Our History</p></a>";
-            var teamLink = "<a class='subLink' href='/Ui/LoadMeetTheTeamView'><p>Our Team</p></a>";
+            var historyLink = "<a class='subLink' href='/Ui/LoadHistoryView'><p>Our&nbsp;History</p></a>";
+            var teamLink = "<a class='subLink' href='/Ui/LoadMeetTheTeamView'><p>Our&nbsp;Team</p></a>";
             return String.Concat(teamLink, historyLink);
         }
         return "";

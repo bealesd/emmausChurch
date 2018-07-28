@@ -1,8 +1,12 @@
+@{
+    List<Service> serviceList = ViewData["services"] as List<Service>;
+
+}
 
 <div class="mainWrapper">
 
     <div class="title">
-        <h1>Speaker Programme January - April 2017</h1>
+        <h1>@ViewData["Title"]&nbsp;Programme&nbsp;@serviceList[0].Date&nbsp;-&nbsp;@serviceList[serviceList.Count - 1].Date&nbsp;@DateTime.Now.Year</h1>
     </div>
 
     <!--#region table  -->
@@ -20,137 +24,21 @@
             <p>Speaker</p>
         </div>
 
-        <!--#row 1-->
-        <div class="fieldOne">
-            <p>Jan 1st</p>
-        </div>
-        <div class="fieldTwo">
-            <p>
-                Luke 5 v 1-11
-            </p>
-        </div>
-        <div class="fieldThree">
-            <p>John Miller</p>
-        </div>
+        @foreach (var service in serviceList)
+        {
+            <div class="fieldOne">
+                <p>@service.Date</p>
+            </div>
+            <div class="fieldTwo">
+                <p>
+                    @service.Summary
+                </p>
+            </div>
+            <div class="fieldThree">
+                <p>@service.Speaker</p>
+            </div>
+        }
+        <!--#endregion -->
 
-        <!--row 2-->
-        <div class="fieldOne">
-            <p>Jan 1st</p>
-        </div>
-        <div class="fieldTwo">
-            <p>
-                Luke 5 v 1-11
-            </p>
-        </div>
-        <div class="fieldThree">
-            <p>John Miller</p>
-        </div>
-
-        <!--row 3-->
-        <div class="fieldOne">
-            <p>Jan 1st</p>
-        </div>
-        <div class="fieldTwo">
-            <p>
-                Luke 5 v 1-11
-            </p>
-        </div>
-        <div class="fieldThree">
-            <p>John Miller</p>
-        </div>
-
-        <!--row 4-->
-        <div class="fieldOne">
-            <p>Jan 1st</p>
-        </div>
-        <div class="fieldTwo">
-            <p>
-                Luke 5 v 1-11
-            </p>
-        </div>
-        <div class="fieldThree">
-            <p>John Miller</p>
-        </div>
-
-        <!--row 5-->
-        <div class="fieldOne">
-            <p>Jan 1st</p>
-        </div>
-        <div class="fieldTwo">
-            <p>
-                Luke 5 v 1-11
-            </p>
-        </div>
-        <div class="fieldThree">
-            <p>John Miller</p>
-        </div>
-
-        <!--row 6-->
-        <div class="fieldOne">
-            <p>Jan 1st</p>
-        </div>
-        <div class="fieldTwo">
-            <p>
-                Luke 5 v 1-11
-            </p>
-        </div>
-        <div class="fieldThree">
-            <p>John Miller</p>
-        </div>
-
-        <!--row 7-->
-        <div class="fieldOne">
-            <p>Jan 1st</p>
-        </div>
-        <div class="fieldTwo">
-            <p>
-                Luke 5 v 1-11
-            </p>
-        </div>
-        <div class="fieldThree">
-            <p>John Miller</p>
-        </div>
-
-        <!--row 8-->
-        <div class="fieldOne">
-            <p>Jan 1st</p>
-        </div>
-        <div class="fieldTwo">
-            <p>
-                Luke 5 v 1-11
-            </p>
-        </div>
-        <div class="fieldThree">
-            <p>John Miller</p>
-        </div>
-
-        <!--row 9-->
-        <div class="fieldOne">
-            <p>Jan 1st</p>
-        </div>
-        <div class="fieldTwo">
-            <p>
-                Luke 5 v 1-11
-            </p>
-        </div>
-        <div class="fieldThree">
-            <p>John Miller</p>
-        </div>
-
-        <!--row 10-->
-        <div class="fieldOne">
-            <p>Jan 1st</p>
-        </div>
-        <div class="fieldTwo">
-            <p>
-                Luke 5 v 1-11
-            </p>
-        </div>
-        <div class="fieldThree">
-            <p>John Miller</p>
-        </div>
     </div>
-
-    <!--#endregion -->
-
 </div>

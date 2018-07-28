@@ -5,11 +5,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Emmaus.Models;
+using Emmaus.Repos;
 
 namespace Emmaus.Controllers
 {
     public class UiController : Controller
     {
+
 
         public IActionResult LoadAboutView()
         {
@@ -38,14 +40,23 @@ namespace Emmaus.Controllers
         }
         public IActionResult LoadChildServicesView()
         {
+            var serviceFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}data/childrenService.csv";
+            var childService = ServiceProvider.ReadServices(serviceFilePath);
+
             ViewData["Title"] = "Child Services";
+            ViewData["services"] = childService;
+
 
             return View("ChildServices");
         }
 
         public IActionResult LoadAdultServicesView()
         {
+            var serviceFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}data/adultService.csv";
+            var adultService = ServiceProvider.ReadServices(serviceFilePath);
+
             ViewData["Title"] = "Adult Services";
+            ViewData["services"] = adultService;
 
             return View("AdultServices");
         }
