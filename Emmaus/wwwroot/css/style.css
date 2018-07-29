@@ -30,11 +30,8 @@ body {
     grid-template-columns: 1fr 10fr 1fr;
 }
 
+
     .wrapper .navBarContainer {
-        position: sticky;
-        top: 0px;
-        width: 100%;
-        height: 80px;
         background-color: whitesmoke;
         grid-row: 1;
         grid-column: 1 / span 3;
