@@ -1,12 +1,14 @@
-@{
-    List<Service> serviceList = ViewData["services"] as List<Service>;
+@using Emmaus.Helper;
 
+@{
+    var services = (List<Service>)ViewData["services"];
+    string newTitle = ServiceListHelper.Title(services, (string)ViewData["Title"]);
 }
 
 <div class="mainWrapper">
 
     <div class="title">
-        <h1>@ViewData["Title"]&nbsp;Programme&nbsp;@serviceList[0].Date&nbsp;-&nbsp;@serviceList[serviceList.Count - 1].Date&nbsp;@DateTime.Now.Year</h1>
+        <h1>@Html.Raw(@newTitle)</h1>
     </div>
 
     <!--#region table  -->
@@ -24,7 +26,7 @@
             <p>Speaker</p>
         </div>
 
-        @foreach (var service in serviceList)
+        @foreach (var service in services)
         {
             <div class="fieldOne">
                 <p>@service.Date</p>
