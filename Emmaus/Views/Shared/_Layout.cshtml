@@ -11,7 +11,7 @@
     <meta itemprop="image" content="/images/emmausbuilding.jpg" />
 
 </head>
-            
+
 
 <body background="/images/bluesky50.jpg">
 
@@ -70,8 +70,8 @@
     </div>
 
     <script>
-        var model = @Html.Raw(Json.Serialize(ViewBag.Title));
-        
+        let model = @Html.Raw(Json.Serialize(ViewBag.Title));
+
         window.onload = scrollIfRequired();
 
         function scrollIfRequired() {
@@ -84,9 +84,106 @@
         }
 
         function scrollToDiv(divName) {
-            var elmnt = document.getElementById(divName);
+            let elmnt = document.getElementById(divName);
             elmnt.scrollIntoView();
         }
+
+        class MainTitle {
+            constructor() {
+                this.titleText = document.getElementsByClassName('mainTitle')[0].innerHTML;
+                this.blinkerState = 0;
+                this.index = 1;
+                this.id;
+            }
+
+            UpdateTitle(text) {
+                let title = document.getElementsByClassName('mainTitle')[0];
+                title.innerHTML = text;
+            }
+
+            SetTitle(word) {
+                word = word.substring(0, this.index);
+                switch (this.blinkerState) {
+                    case 0: this.blinkerState = 1; break
+                    case 1: word += "|"; this.blinkerState = 0; break
+                    default: break
+                }
+                this.UpdateTitle(word);
+                this.Continue();
+            }
+
+            Continue() {
+                if (this.blinkerState === 1) {
+                    this.index++;
+                }
+                if (this.index <= this.titleText.length) {
+                    this.StartBlinker(this.titleText);
+                }
+            }
+            
+            StartBlinker(word) {
+                var self = this;
+                setTimeout(function () {
+                    self.SetTitle(word);
+                }, 100)
+            }
+        }
+
+        var mainTitle = new MainTitle();
+        mainTitle.StartBlinker(mainTitle.titleText);
+
+        //let titleText;
+        //let currentTitleText = '';
+        //let titleObj; ;
+        //let currentPosition;
+        //let endPosition;
+        //let dashOn;
+        //let titleIntervalId;
+
+        //function init() {
+        //    titleObj = document.getElementsByClassName('mainTitle')[0];
+        //    titleText = titleObj.innerHTML;
+        //    currentPosition = 0;
+        //    endPosition = titleText.length;
+        //    titleObj.innerHTML = '';
+        //    dashOn = 'false';
+        //}
+
+        //function flickerDash() {
+        //    if (dashOn === 'false') {
+        //        dashOn = 'true';
+        //        titleObj.innerHTML += '|';
+        //        currentPosition++;
+        //    }
+        //    else if (currentPosition > 0) {
+        //        let titleHtml = titleObj.innerHTML;
+        //        let newTitleHtml = titleHtml.substring(0, titleHtml.length - 2);
+        //        if (newTitleHtml !== undefined) {
+        //            titleObj.innerHTML = newTitleHtml;
+        //        }
+        //        dashOn = 'false'
+        //    }
+        //}
+
+        //function update() {
+        //    if (currentPosition === endPosition) {
+        //        let titleHtml = titleObj.innerHTML;
+        //        titleObj.innerHTML = titleHtml.substring(0, titleHtml.length - 1);
+        //        stop();
+        //        return;
+        //    }
+        //    titleObj.innerHTML += titleText[currentPosition];
+        //    flickerDash();
+        //}
+
+        //function start() {
+        //    init();
+        //    titleIntervalId = setInterval(function () { update(); }, 100);
+        //}
+
+        //function stop() {
+        //    clearInterval(titleIntervalId);
+        //}
     </script>
 
 </body>
