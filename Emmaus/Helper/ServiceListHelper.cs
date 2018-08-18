@@ -12,7 +12,7 @@ namespace Emmaus.Helper
             string dateEnd = services[services.Count - 1].Date.ReplaceWhitespaceWithNbsp();
             pageTitle = pageTitle.ReplaceWhitespaceWithNbsp();
 
-            return String.Concat(pageTitle, Helper.Nbsp, "Programme", Helper.Nbsp, date, Helper.Nbsp, "-", Helper.Nbsp, dateEnd, Helper.Nbsp, DateTime.Now.Year);
+            return String.Concat(pageTitle, Helper.Nbsp, Helper.Nbsp, date, Helper.Nbsp, "-", Helper.Nbsp, dateEnd, Helper.Nbsp, DateTime.Now.Year);
         }
     }
 }

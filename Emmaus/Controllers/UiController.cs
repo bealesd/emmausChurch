@@ -1,24 +1,93 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Emmaus.Models;
 using Emmaus.Repos;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Emmaus.Controllers
 {
     public class UiController : Controller
     {
+        private SignInManager<ApplicationUser> _signInManager;
+        private UserManager<ApplicationUser> _userManager;
 
+        public UiController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        {
+            _signInManager = signInManager;
+            _userManager = userManager;
+        }
+        public IActionResult LoadLoginView()
+        {
+            ViewData["Title"] = "Login";
+            return View("Login");
+        }
+
+        public async Task<IActionResult> CreateUser()
+        {
+            ViewData["Title"] = "Creating User";
+
+            var user = new ApplicationUser { UserName = "adavid", Email="david_beales@ymail.com" };
+            var result = await _userManager.CreateAsync(user, "Password1234!");
+            if (result.Succeeded)
+            {
+                //_logger.LogInformation("User created a new account with password.");
+
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                //_logger.LogInformation("User created a new account with password.");
+                return RedirectToAction(nameof(LoadLoginView));
+            }
+            return View("Error");
+        }
+
+
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginModel login)
+        {
+            ViewData["Title"] = "Logged In";
+            ViewBag.Login = login;
+
+            var user = new IdentityUser { UserName = login.Username, Email = login.Password };
+
+            // This doesn't count login failures towards account lockout
+            // To enable password failures to trigger account lockout, 
+            // set lockoutOnFailure: true
+            var result = await _signInManager.PasswordSignInAsync(login.Username,
+                login.Password, false, lockoutOnFailure: true);
+
+            if (result.Succeeded)
+            {
+                //_logger.LogInformation("User logged in.");
+                return RedirectToPage("LoggedIn");
+            }
+            if (result.IsLockedOut)
+            {
+                //_logger.LogWarning("User account locked out.");
+                return RedirectToPage("Error");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return LoadLoginView();
+            }
+        }
+
+        public async Task<IActionResult> Logout(LoginModel login)
+        {
+            ViewData["Title"] = "Logged Out";
+
+            await _signInManager.SignOutAsync();
+            //_logger.LogInformation("User logged out.");
+            return LoadLoginView();
+        }
 
         public IActionResult LoadAboutView()
         {
             ViewData["Title"] = "About";
             return View("About");
         }
-
 
         public IActionResult LoadHistoryView()
         {
@@ -43,7 +112,7 @@ namespace Emmaus.Controllers
             var serviceFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}data/childrenService.csv";
             var childService = ServiceProvider.ReadServices(serviceFilePath);
 
-            ViewData["Title"] = "Child Services";
+            ViewData["Title"] = "Child Programme";
             ViewData["services"] = childService;
 
 
@@ -55,7 +124,7 @@ namespace Emmaus.Controllers
             var serviceFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}data/adultService.csv";
             var adultService = ServiceProvider.ReadServices(serviceFilePath);
 
-            ViewData["Title"] = "Adult Services";
+            ViewData["Title"] = "Adult Programme";
             ViewData["services"] = adultService;
 
             return View("AdultServices");
@@ -68,6 +137,7 @@ namespace Emmaus.Controllers
             return View("Welcome");
         }
 
+        [Authorize]
         public IActionResult LoadLinksView()
         {
             ViewData["Title"] = "Links";

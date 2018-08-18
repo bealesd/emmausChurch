@@ -8,11 +8,11 @@
 <div class="mainWrapper">
     
     <div class="title">
-        <h1>@Html.Raw(@newTitle)</h1>
+        @Html.Raw(@newTitle)
     </div>
 
     <!--#region table  -->
-    <div class="table">
+    <div class="table" style="grid-template-rows: repeat(4, 40px);">
 
         <div class="fieldOne table-header">
             <p>Date</p>

@@ -1,11 +1,11 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Emmaus</title>
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" type="text/css" href="~/css/style.css" />
-    <!-- Google -->
+
     <meta itemprop="name" content="Emmaus Church Center" />
     <meta itemprop="description" content="Emmaus Church of Severn Beach welcomes everyone from the community to join us." />
     <meta itemprop="image" content="/images/emmausbuilding.jpg" />
@@ -46,14 +46,16 @@
     <div class="wrapper">
 
         <div class="navBarContainer">
-            <p class="mainTitle">Emmaus Church Centre</p>
+            <p class="mainTitle">&nbsp;Emmaus Church Centre</p>
             <a class="navLink" asp-controller="Ui" asp-action="LoadWelcomeView"><p>Welcome</p></a>
             <a class="navLink" asp-controller="Ui" asp-action="LoadAboutView"><p>About</p></a>
             <a class="navLink" asp-controller="Ui" asp-action="LoadServicesView"><p>Services</p></a>
             <a class="navLink" asp-controller="Ui" asp-action="LoadLocalCommunityView"><p>Local&nbsp;Community</p></a>
-            <a class="navLink" asp-controller="Ui" asp-action="LoadWiderCommunityView"><p>Wider&nbsp;Community</p></a>
+          @*  <a class="navLink" asp-controller="Ui" asp-action="LoadWiderCommunityView"><p>Wider&nbsp;Community</p></a>*@
             <a class="navLink" asp-controller="Ui" asp-action="LoadLinksView"><p>Links</p></a>
-            <a class="navLink" asp-controller="Ui" asp-action="LoadContactUsView"><p>Contacts</p></a>
+            @*<a class="navLink" asp-controller="Ui" asp-action="LoadContactUsView"><p>Contacts</p></a>*@
+            <a class="navLink" asp-controller="Ui" asp-action="LoadLoginView"><p>Login</p></a>
+            <a class="navLink" asp-controller="Ui" asp-action="CreateUser"><p>CreateUser</p></a>
         </div>
 
 
@@ -90,22 +92,21 @@
 
         class MainTitle {
             constructor() {
-                this.titleText = document.getElementsByClassName('mainTitle')[0].innerHTML;
+                this.titleText = blinkObject.innerHTML;
                 this.blinkerState = 0;
-                this.index = 1;
+                this.index = 5;
                 this.id;
             }
 
             UpdateTitle(text) {
-                let title = document.getElementsByClassName('mainTitle')[0];
-                title.innerHTML = text;
+                blinkObject.innerHTML = text;
             }
 
             SetTitle(word) {
                 word = word.substring(0, this.index);
                 switch (this.blinkerState) {
                     case 0: this.blinkerState = 1; break
-                    case 1: word += "|"; this.blinkerState = 0; break
+                    case 1: word += ""; this.blinkerState = 0; break
                     default: break
                 }
                 this.UpdateTitle(word);
@@ -125,65 +126,14 @@
                 var self = this;
                 setTimeout(function () {
                     self.SetTitle(word);
-                }, 100)
+                }, 50)
             }
         }
 
+        var blinkObject = document.getElementsByClassName('mainTitle')[0]
         var mainTitle = new MainTitle();
         mainTitle.StartBlinker(mainTitle.titleText);
 
-        //let titleText;
-        //let currentTitleText = '';
-        //let titleObj; ;
-        //let currentPosition;
-        //let endPosition;
-        //let dashOn;
-        //let titleIntervalId;
-
-        //function init() {
-        //    titleObj = document.getElementsByClassName('mainTitle')[0];
-        //    titleText = titleObj.innerHTML;
-        //    currentPosition = 0;
-        //    endPosition = titleText.length;
-        //    titleObj.innerHTML = '';
-        //    dashOn = 'false';
-        //}
-
-        //function flickerDash() {
-        //    if (dashOn === 'false') {
-        //        dashOn = 'true';
-        //        titleObj.innerHTML += '|';
-        //        currentPosition++;
-        //    }
-        //    else if (currentPosition > 0) {
-        //        let titleHtml = titleObj.innerHTML;
-        //        let newTitleHtml = titleHtml.substring(0, titleHtml.length - 2);
-        //        if (newTitleHtml !== undefined) {
-        //            titleObj.innerHTML = newTitleHtml;
-        //        }
-        //        dashOn = 'false'
-        //    }
-        //}
-
-        //function update() {
-        //    if (currentPosition === endPosition) {
-        //        let titleHtml = titleObj.innerHTML;
-        //        titleObj.innerHTML = titleHtml.substring(0, titleHtml.length - 1);
-        //        stop();
-        //        return;
-        //    }
-        //    titleObj.innerHTML += titleText[currentPosition];
-        //    flickerDash();
-        //}
-
-        //function start() {
-        //    init();
-        //    titleIntervalId = setInterval(function () { update(); }, 100);
-        //}
-
-        //function stop() {
-        //    clearInterval(titleIntervalId);
-        //}
     </script>
 
 </body>
