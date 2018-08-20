@@ -3,12 +3,12 @@ using Emmaus.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 
 namespace Emmaus
 {
@@ -64,7 +64,7 @@ namespace Emmaus
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -87,6 +87,30 @@ namespace Emmaus
                     name: "default",
                     template: "{controller=Ui}/{action=LoadWelcomeView}/{id?}");
             });
+
+            CreateSuperUser(serviceProvider);
+        }
+
+        public void CreateSuperUser(IServiceProvider serviceProvider)
+        {
+            var _userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var _roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            Task<bool> roleExists = _roleManager.RoleExistsAsync("admin");
+            roleExists.Wait();
+            if (!roleExists.Result)
+            {
+                var role = new IdentityRole();
+                role.Name = "admin";
+                Task<IdentityResult> roleCreated = _roleManager.CreateAsync(role);
+                roleCreated.Wait();
+            }
+
+            var user = new ApplicationUser { UserName = "david_beales@ymail.com", Email = "david_beales@ymail.com"};
+            Task<IdentityResult> createUserResult = _userManager.CreateAsync(user, "Password1234!");
+            createUserResult.Wait();
+            Task<IdentityResult> addToRoleResult = _userManager.AddToRoleAsync(user, "admin");
+            addToRoleResult.Wait();
         }
     }
 }

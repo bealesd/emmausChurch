@@ -12,10 +12,10 @@
 
 </head>
 
-
 <body background="/images/bluesky50.jpg">
 
-    @functions {
+    @functions
+    {
     public string DisplaySubMenu()
     {
         string pageName = ViewBag.Title.ToLower();
@@ -39,7 +39,40 @@
             var teamLink = "<a class='subLink' href='/Ui/LoadMeetTheTeamView'><p>Our&nbsp;Team</p></a>";
             return String.Concat(teamLink, historyLink);
         }
+
+        else if (pageName.Contains("usermanagement") && User.IsInRole("admin"))
+        {
+            var createUserLink = "<a class='subLink' href='/Ui/LoadCreateUserView'><p>Create&nbsp;User</p></a>";
+
+            return String.Concat(createUserLink, "");
+        }
+
         return "";
+    }
+
+    public string DisplaySubMenuRight()
+    {
+        var logoutLink = "";
+        if (User.Identity.IsAuthenticated)
+        {
+            logoutLink = "<a class='subLinkRight'  href='/Ui/Logout'><p>Logout&nbsp;</p></a>";
+        }
+        if (!User.Identity.IsAuthenticated)
+        {
+            return "<a class='subLinkRight'  href='/Ui/LoadLoginView'><p>Login&nbsp;</p></a>";
+        }
+
+        var editKidsSerivceLink = "<a class='subLinkRight' href='/Ui/LoadEditKidSericeView'><p>Kids&nbsp;Serivce</p></a>";
+        var editAdultServiceLink = "<a class='subLinkRight' href='/Ui/LoadEditAdultSericeView'><p>Adult&nbsp;Service</p></a>";
+
+        if (User.IsInRole("admin"))
+        {
+            var userManagementLink = "<a class='subLinkRight' href='/Ui/LoadUserManagementView'><p>User&nbsp;Management</p></a>";
+            var roleManagementLink = "<a class='subLinkRight' href='/Ui/LoadRoleManagementView'><p>Role&nbsp;Management</p></a>";
+            return String.Concat(logoutLink, editKidsSerivceLink, editAdultServiceLink, userManagementLink, roleManagementLink);
+        }
+
+        return String.Concat(logoutLink, editKidsSerivceLink, editAdultServiceLink);
     }
     }
 
@@ -51,16 +84,18 @@
             <a class="navLink" asp-controller="Ui" asp-action="LoadAboutView"><p>About</p></a>
             <a class="navLink" asp-controller="Ui" asp-action="LoadServicesView"><p>Services</p></a>
             <a class="navLink" asp-controller="Ui" asp-action="LoadLocalCommunityView"><p>Local&nbsp;Community</p></a>
-          @*  <a class="navLink" asp-controller="Ui" asp-action="LoadWiderCommunityView"><p>Wider&nbsp;Community</p></a>*@
+            <a class="navLink" asp-controller="Ui" asp-action="LoadWiderCommunityView"><p>Wider&nbsp;Community</p></a>
             <a class="navLink" asp-controller="Ui" asp-action="LoadLinksView"><p>Links</p></a>
-            @*<a class="navLink" asp-controller="Ui" asp-action="LoadContactUsView"><p>Contacts</p></a>*@
-            <a class="navLink" asp-controller="Ui" asp-action="LoadLoginView"><p>Login</p></a>
-            <a class="navLink" asp-controller="Ui" asp-action="CreateUser"><p>CreateUser</p></a>
+            <a class="navLink" asp-controller="Ui" asp-action="LoadContactUsView"><p>Contacts</p></a>
         </div>
 
 
         <div class="subMenu">
             @Html.Raw(DisplaySubMenu())
+        </div>
+
+        <div class="subMenuRight">
+            @Html.Raw(DisplaySubMenuRight())
         </div>
 
         @RenderBody()
@@ -121,7 +156,7 @@
                     this.StartBlinker(this.titleText);
                 }
             }
-            
+
             StartBlinker(word) {
                 var self = this;
                 setTimeout(function () {

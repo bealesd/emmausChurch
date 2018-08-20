@@ -102,25 +102,49 @@ body {
         position: static;
         top: 80px;
         display: grid;
-        grid-template-rows: 40px 40px;
+        grid-template-rows: 40px 40px 40px 40px;
         grid-template-columns: 1fr 5fr;
     }
 
         .wrapper .subMenu .subLink {
             color: black;
             text-decoration: none;
-
             font-family: 'Oswald', sans-serif;
             font-size: 16px;
             font-weight: 200;
             text-transform: uppercase;
-
             grid-column: 2;
         }
 
             .wrapper .subMenu .subLink:hover {
                 font-size: 18px;
             }
+
+    .wrapper .subMenuRight {
+        margin-top: 20px;
+        grid-row: 2;
+        grid-column: 3;
+        position: static;
+        top: 80px;
+        display: grid;
+        grid-template-rows: 40px 40px 40px 40px;
+        grid-template-columns: 1fr 5fr;
+    }
+
+        .wrapper .subMenuRight .subLinkRight {
+            color: black;
+            text-decoration: none;
+            font-family: 'Oswald', sans-serif;
+            font-size: 16px;
+            font-weight: 200;
+            text-transform: uppercase;
+            grid-column: 2;
+        }
+
+            .wrapper .subMenuRight .subLinkRight:hover {
+                font-size: 18px;
+            }
+
 
     .wrapper .mainWrapper {
         grid-row: 2;
@@ -220,6 +244,128 @@ body {
             height: 40%;
         }
 
+        .wrapper .mainWrapper .Login {
+            grid-row: 4;
+            grid-column: 2;
+            display: grid;
+            grid-template-rows: auto;
+            grid-template-columns: 1fr;
+            padding-bottom: 20px;
+            height: 40%;
+        }
+
+            .wrapper .mainWrapper .Login .Form-style {
+                grid-row: 1;
+                grid-column: 1;
+                font-family: 'Open Sans Condensed', arial, sans;
+                width: 500px;
+                padding: 30px;
+                background: #FFFFFF;
+                margin: 50px auto;
+                box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+                -moz-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+                -webkit-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+            }
+
+                .wrapper .mainWrapper .Login .Form-style .text,
+                .wrapper .mainWrapper .Login .Form-style .password {
+                    box-sizing: border-box;
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    outline: none;
+                    display: block;
+                    width: 100%;
+                    padding: 7px;
+                    border: none;
+                    border-bottom: 1px solid #ddd;
+                    background: transparent;
+                    margin-bottom: 10px;
+                    font: 16px Arial, Helvetica, sans-serif;
+                    height: 45px;
+                }
+
+                .wrapper .mainWrapper .Login .Form-style .submit {
+                    -moz-box-shadow: inset 0px 1px 0px 0px #45D6D6;
+                    -webkit-box-shadow: inset 0px 1px 0px 0px #45D6D6;
+                    box-shadow: inset 0px 1px 0px 0px #45D6D6;
+                    background-color: #2CBBBB;
+                    border: 1px solid #27A0A0;
+                    display: inline-block;
+                    cursor: pointer;
+                    color: #FFFFFF;
+                    font-family: 'Open Sans Condensed', sans-serif;
+                    font-size: 14px;
+                    padding: 8px 18px;
+                    text-decoration: none;
+                    text-transform: uppercase;
+                }
+
+                .wrapper .mainWrapper .CreateUser .Form-style .submit:hover {
+                    background: linear-gradient(to bottom, #34CACA 5%, #30C9C9 100%);
+                    background-color: #34CACA;
+                }
+
+        .wrapper .mainWrapper .CreateUser {
+            grid-row: 4;
+            grid-column: 2;
+            display: grid;
+            grid-template-rows: auto;
+            grid-template-columns: 1fr;
+            padding-bottom: 20px;
+            height: 40%;
+        }
+
+            .wrapper .mainWrapper .CreateUser .Form-style {
+                grid-row: 1;
+                grid-column: 1;
+                font-family: 'Open Sans Condensed', arial, sans;
+                width: 500px;
+                padding: 30px;
+                background: #FFFFFF;
+                margin: 50px auto;
+                box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+                -moz-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+                -webkit-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+            }
+
+                .wrapper .mainWrapper .CreateUser .Form-style .text,
+                .wrapper .mainWrapper .CreateUser .Form-style .password {
+                    box-sizing: border-box;
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    outline: none;
+                    display: block;
+                    width: 100%;
+                    padding: 7px;
+                    border: none;
+                    border-bottom: 1px solid #ddd;
+                    background: transparent;
+                    margin-bottom: 10px;
+                    font: 16px Arial, Helvetica, sans-serif;
+                    height: 45px;
+                }
+
+                .wrapper .mainWrapper .CreateUser .Form-style .submit {
+                    -moz-box-shadow: inset 0px 1px 0px 0px #45D6D6;
+                    -webkit-box-shadow: inset 0px 1px 0px 0px #45D6D6;
+                    box-shadow: inset 0px 1px 0px 0px #45D6D6;
+                    background-color: #2CBBBB;
+                    border: 1px solid #27A0A0;
+                    display: inline-block;
+                    cursor: pointer;
+                    color: #FFFFFF;
+                    font-family: 'Open Sans Condensed', sans-serif;
+                    font-size: 14px;
+                    padding: 8px 18px;
+                    text-decoration: none;
+                    text-transform: uppercase;
+                }
+
+                    .wrapper .mainWrapper .CreateUser .Form-style .submit:hover {
+                        background: linear-gradient(to bottom, #34CACA 5%, #30C9C9 100%);
+                        background-color: #34CACA;
+                    }
+
         .wrapper .mainWrapper .meetTheTeam {
             grid-row: 4;
             grid-column: 2;
@@ -256,26 +402,34 @@ body {
             justify-content: center;
         }
 
-            .wrapper .mainWrapper .table .fieldOne {
-                display: grid;
-                justify-content: center;
-                align-items: center;
-                border-bottom: solid 1px lightgray;
-            }
-
-            .wrapper .mainWrapper .table .fieldTwo {
-                display: grid;
-                justify-content: center;
-                align-items: center;
-                border-bottom: solid 1px lightgray;
-            }
-
+            .wrapper .mainWrapper .table .fieldOne,
+            .wrapper .mainWrapper .table .fieldTwo,
             .wrapper .mainWrapper .table .fieldThree {
                 display: grid;
                 justify-content: center;
                 align-items: center;
                 border-bottom: solid 1px lightgray;
             }
+
+
+            /*.wrapper .mainWrapper .table .input {
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        border-bottom: solid 1px lightgray;
+        width:100px;
+        border: none;
+        border-right: 100px;
+        outline: none;
+        background-color: transparent;
+        align-items: center;
+        justify-content: center;
+        color: #777;
+        font-family: 'Droid Sans',Arial,Helvetica,sans-serif;
+        font-size: 16px;
+        line-height: 1.6em;
+    }*/
+
 
             .wrapper .mainWrapper .table .table-header {
                 justify-content: center;

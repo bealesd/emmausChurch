@@ -1,0 +1,58 @@
+@model UserInfo
+
+@{
+    var users = (List<UserInfo>)ViewData["users"];
+}
+
+<div class="mainWrapper">
+
+    <div class="title">
+        User Management
+    </div>
+
+    <!--#region table  -->
+    <div class="table">
+
+        <div class="fieldOne table-header">
+            <p>Email</p>
+        </div>
+
+        <div class="fieldTwo table-header">
+            <p>Role</p>
+        </div>
+
+        <div class="fieldThree table-header">
+            <p>Remove</p>
+        </div>
+
+        @foreach (var user in users)
+        {
+            <div class="fieldOne">
+                <p>@user.EmailAddress</p>
+            </div>
+            <div class="fieldTwo">
+                <p>
+                    @user.Role
+                </p>
+            </div>
+            <div class="fieldThree">
+                <p>
+                    <a onclick="ConfirmDelete('Delete User?')"
+                       asp-action="DeleteUser" asp-route-email="@user.EmailAddress">Delete</a>
+                </p>
+            </div>
+        }
+
+        <!--#endregion -->
+
+    </div>
+</div>
+
+<script>
+    function ConfirmDelete(message) {
+        if (confirm(message)) {
+            return;
+        }
+        event.preventDefault();
+    }
+</script>

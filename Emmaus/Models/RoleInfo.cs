@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 
 namespace Emmaus.Models
 {
-    public class ApplicationUser : IdentityUser
+    public class RoleInfo
     {
+        public string Rolename { get; set; }
     }
 }

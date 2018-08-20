@@ -1,6 +1,6 @@
-﻿@model LoginModel
+﻿@model UserInfo
 @{
-    var login = (LoginModel)@ViewBag.Login;
+    var login = (UserInfo)@ViewBag.Login;
 }
 
 <div class="mainWrapper">
@@ -11,7 +11,7 @@
 
     <div class="about">
         <p>
-            @login.Username
+            @login.EmailAddress
         </p>
         <p>
             @login.Password

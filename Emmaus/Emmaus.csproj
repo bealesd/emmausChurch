@@ -9,7 +9,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Ui\CreateUserView.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Ui\Error.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Ui\UserManagement.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Ui\RoleManagement.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Ui\LoggedIn.cshtml">
@@ -27,7 +36,7 @@
     <Content Update="Views\Ui\Services.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Ui\ChildServices.cshtml">
+    <Content Update="Views\Ui\KidServices.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Ui\WiderCommunity.cshtml">
@@ -54,7 +63,7 @@
     <None Update="Data\adultService.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Data\childrenService.csv">
+    <None Update="Data\kidsService.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
