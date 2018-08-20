@@ -9,6 +9,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Ui\CreateRoleView.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Ui\CreateUserView.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

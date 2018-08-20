@@ -305,7 +305,8 @@ body {
                     background-color: #34CACA;
                 }
 
-        .wrapper .mainWrapper .CreateUser {
+        .wrapper .mainWrapper .CreateUser,
+        .wrapper .mainWrapper .CreateRole {
             grid-row: 4;
             grid-column: 2;
             display: grid;
@@ -315,7 +316,8 @@ body {
             height: 40%;
         }
 
-            .wrapper .mainWrapper .CreateUser .Form-style {
+            .wrapper .mainWrapper .CreateUser .Form-style,
+            .wrapper .mainWrapper .CreateRole .Form-style {
                 grid-row: 1;
                 grid-column: 1;
                 font-family: 'Open Sans Condensed', arial, sans;
@@ -329,7 +331,8 @@ body {
             }
 
                 .wrapper .mainWrapper .CreateUser .Form-style .text,
-                .wrapper .mainWrapper .CreateUser .Form-style .password {
+                .wrapper .mainWrapper .CreateUser .Form-style .password,
+                .wrapper .mainWrapper .CreateRole .Form-style .text {
                     box-sizing: border-box;
                     -webkit-box-sizing: border-box;
                     -moz-box-sizing: border-box;
@@ -345,7 +348,8 @@ body {
                     height: 45px;
                 }
 
-                .wrapper .mainWrapper .CreateUser .Form-style .submit {
+                .wrapper .mainWrapper .CreateUser .Form-style .submit,
+                .wrapper .mainWrapper .CreateRole .Form-style .submit {
                     -moz-box-shadow: inset 0px 1px 0px 0px #45D6D6;
                     -webkit-box-shadow: inset 0px 1px 0px 0px #45D6D6;
                     box-shadow: inset 0px 1px 0px 0px #45D6D6;
@@ -361,7 +365,8 @@ body {
                     text-transform: uppercase;
                 }
 
-                    .wrapper .mainWrapper .CreateUser .Form-style .submit:hover {
+                    .wrapper .mainWrapper .CreateUser .Form-style .submit:hover,
+                    .wrapper .mainWrapper .CreateRole .Form-style .submit:hover {
                         background: linear-gradient(to bottom, #34CACA 5%, #30C9C9 100%);
                         background-color: #34CACA;
                     }

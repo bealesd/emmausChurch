@@ -34,7 +34,7 @@ namespace Emmaus.Controllers
 
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> CreateUser(UserInfo login)
-        {//this will lie on a create user management page which will be updated on each create
+        {
             ViewData["Title"] = "User Management";
 
             var user = new ApplicationUser { UserName = login.EmailAddress, Email = login.EmailAddress };
@@ -44,9 +44,9 @@ namespace Emmaus.Controllers
                 Task<IdentityResult> addToRoleResult = _userManager.AddToRoleAsync(user, login.Role);
                 addToRoleResult.Wait();
                 return RedirectToAction(nameof(LoadUserManagementView));
-            }//change this at some point to get the result and pass that back to the view in a a message
+            }
 
-            return View("Error");
+            return View("Error", "User not created");
         }
 
         [Authorize(Roles = "admin")]
@@ -58,8 +58,16 @@ namespace Emmaus.Controllers
         }
 
         [Authorize(Roles = "admin")]
+        public IActionResult LoadCreateRoleView(UserInfo login)
+        {
+            ViewData["Title"] = "CreateRole";
+
+            return View("CreateRoleView");
+        }
+
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> CreateRole(RoleInfo roleInfo)
-        {//this will lie on a role management page which will be updated on each create
+        {
             ViewData["Title"] = "Role Management";
             bool roleExists = await _roleManager.RoleExistsAsync(roleInfo.Rolename);
             if (!roleExists)
@@ -68,8 +76,8 @@ namespace Emmaus.Controllers
                 role.Name = roleInfo.Rolename;
                 await _roleManager.CreateAsync(role);
                 return RedirectToAction(nameof(LoadRoleManagementView));
-            }//change this at some point to get the result and pass that back to the view in a a message
-            return View("Error");
+            }
+            return View("Error", "Role Already Exists");
         }
 
         [ValidateAntiForgeryToken]
@@ -103,7 +111,6 @@ namespace Emmaus.Controllers
             ViewData["Title"] = "Logged Out";
 
             await _signInManager.SignOutAsync();
-            //_logger.LogInformation("User logged out.");
             return LoadLoginView();
         }
 
@@ -114,10 +121,10 @@ namespace Emmaus.Controllers
             var deletedResult = await _userManager.DeleteAsync(user);
             if (deletedResult.Succeeded)
             {
-                //an alert to confirm
+                return await LoadUserManagementView();
             }
 
-            return await LoadUserManagementView();
+            return View("Error", "Could not delete user");
         }
 
         [Authorize(Roles = "admin")]
@@ -127,14 +134,13 @@ namespace Emmaus.Controllers
             if (role != null)
             {
                 await _roleManager.DeleteAsync(role);
+                return LoadRoleManagementView();
+
             }
             else
             {
                 return View("Error");
             }
-            //an alert to confirm
-
-            return LoadRoleManagementView();
         }
 
         [Authorize(Roles = "admin")]

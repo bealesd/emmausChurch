@@ -16,64 +16,71 @@
 
     @functions
     {
-    public string DisplaySubMenu()
-    {
-        string pageName = ViewBag.Title.ToLower();
-
-        if (pageName.Contains("wider community"))
+        public string DisplaySubMenu()
         {
-            var homeLink = "<a class='subLink' href='/Ui/LoadAtHomeView'><p>At Home</p></a>";
-            var overseasLink = "<a class='subLink' href='/Ui/LoadOverseasView'><p>Overseas</p></a>";
-            return String.Concat(homeLink, overseasLink);
-        }
-        else if (pageName.Contains("services"))
-        {
-            var adultLink = "<a class='subLink' href='/Ui/LoadAdultServicesView'><p>Adult</p></a>";
-            var childLink = "<a class='subLink' href='/Ui/LoadChildServicesView'><p>Children</p></a>";
-            return String.Concat(adultLink, childLink);
-        }
+            string pageName = ViewBag.Title.ToLower();
 
-        else if (pageName.Contains("about") || pageName.Contains("history") || pageName.Contains("meet the team"))
-        {
-            var historyLink = "<a class='subLink' href='/Ui/LoadHistoryView'><p>Our&nbsp;History</p></a>";
-            var teamLink = "<a class='subLink' href='/Ui/LoadMeetTheTeamView'><p>Our&nbsp;Team</p></a>";
-            return String.Concat(teamLink, historyLink);
-        }
+            if (pageName.Contains("wider community"))
+            {
+                var homeLink = "<a class='subLink' href='/Ui/LoadAtHomeView'><p>At Home</p></a>";
+                var overseasLink = "<a class='subLink' href='/Ui/LoadOverseasView'><p>Overseas</p></a>";
+                return String.Concat(homeLink, overseasLink);
+            }
+            else if (pageName.Contains("services"))
+            {
+                var adultLink = "<a class='subLink' href='/Ui/LoadAdultServicesView'><p>Adult</p></a>";
+                var childLink = "<a class='subLink' href='/Ui/LoadChildServicesView'><p>Children</p></a>";
+                return String.Concat(adultLink, childLink);
+            }
 
-        else if (pageName.Contains("usermanagement") && User.IsInRole("admin"))
-        {
-            var createUserLink = "<a class='subLink' href='/Ui/LoadCreateUserView'><p>Create&nbsp;User</p></a>";
+            else if (pageName.Contains("about") || pageName.Contains("history") || pageName.Contains("meet the team"))
+            {
+                var historyLink = "<a class='subLink' href='/Ui/LoadHistoryView'><p>Our&nbsp;History</p></a>";
+                var teamLink = "<a class='subLink' href='/Ui/LoadMeetTheTeamView'><p>Our&nbsp;Team</p></a>";
+                return String.Concat(teamLink, historyLink);
+            }
 
-            return String.Concat(createUserLink, "");
-        }
+            else if (pageName.Contains("usermanagement") && User.IsInRole("admin"))
+            {
+                var createUserLink = "<a class='subLink' href='/Ui/LoadCreateUserView'><p>Create&nbsp;User</p></a>";
 
-        return "";
-    }
+                return String.Concat(createUserLink, "");
+            }
 
-    public string DisplaySubMenuRight()
-    {
-        var logoutLink = "";
-        if (User.Identity.IsAuthenticated)
-        {
-            logoutLink = "<a class='subLinkRight'  href='/Ui/Logout'><p>Logout&nbsp;</p></a>";
-        }
-        if (!User.Identity.IsAuthenticated)
-        {
-            return "<a class='subLinkRight'  href='/Ui/LoadLoginView'><p>Login&nbsp;</p></a>";
+            else if (pageName.Contains("rolemanagement") && User.IsInRole("admin"))
+            {
+                var createUserLink = "<a class='subLink' href='/Ui/LoadCreateRoleView'><p>Create&nbsp;Role</p></a>";
+
+                return String.Concat(createUserLink, "");
+            }
+
+            return "";
         }
 
-        var editKidsSerivceLink = "<a class='subLinkRight' href='/Ui/LoadEditKidSericeView'><p>Kids&nbsp;Serivce</p></a>";
-        var editAdultServiceLink = "<a class='subLinkRight' href='/Ui/LoadEditAdultSericeView'><p>Adult&nbsp;Service</p></a>";
-
-        if (User.IsInRole("admin"))
+        public string DisplaySubMenuRight()
         {
-            var userManagementLink = "<a class='subLinkRight' href='/Ui/LoadUserManagementView'><p>User&nbsp;Management</p></a>";
-            var roleManagementLink = "<a class='subLinkRight' href='/Ui/LoadRoleManagementView'><p>Role&nbsp;Management</p></a>";
-            return String.Concat(logoutLink, editKidsSerivceLink, editAdultServiceLink, userManagementLink, roleManagementLink);
-        }
+            var logoutLink = "";
+            if (User.Identity.IsAuthenticated)
+            {
+                logoutLink = "<a class='subLinkRight'  href='/Ui/Logout'><p>Logout&nbsp;</p></a>";
+            }
+            if (!User.Identity.IsAuthenticated)
+            {
+                return "<a class='subLinkRight'  href='/Ui/LoadLoginView'><p>Login&nbsp;</p></a>";
+            }
 
-        return String.Concat(logoutLink, editKidsSerivceLink, editAdultServiceLink);
-    }
+            var editKidsSerivceLink = "<a class='subLinkRight' href='/Ui/LoadEditKidSericeView'><p>Kids&nbsp;Serivce</p></a>";
+            var editAdultServiceLink = "<a class='subLinkRight' href='/Ui/LoadEditAdultSericeView'><p>Adult&nbsp;Service</p></a>";
+
+            if (User.IsInRole("admin"))
+            {
+                var userManagementLink = "<a class='subLinkRight' href='/Ui/LoadUserManagementView'><p>User&nbsp;Management</p></a>";
+                var roleManagementLink = "<a class='subLinkRight' href='/Ui/LoadRoleManagementView'><p>Role&nbsp;Management</p></a>";
+                return String.Concat(logoutLink, editKidsSerivceLink, editAdultServiceLink, userManagementLink, roleManagementLink);
+            }
+
+            return String.Concat(logoutLink, editKidsSerivceLink, editAdultServiceLink);
+        }
     }
 
     <div class="wrapper">

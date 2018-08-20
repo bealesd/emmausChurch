@@ -38,7 +38,7 @@ namespace Emmaus
                 options.Password.RequiredLength = 8;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = true;
-                options.Password.RequireLowercase = false;
+                options.Password.RequireLowercase = true;
                 options.Password.RequiredUniqueChars = 6;
 
                 // Lockout settings
@@ -54,10 +54,10 @@ namespace Emmaus
             {
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
 
                 options.LoginPath = "/Ui/Login";
-                options.AccessDeniedPath = "/Ui/About";
+                options.AccessDeniedPath = "/Ui/Login";
                 options.SlidingExpiration = false;
             });
 
