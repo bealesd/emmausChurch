@@ -36,9 +36,6 @@
     <Content Update="Views\Ui\RoleManagement.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Ui\LoggedIn.cshtml">
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
     <Content Update="Views\Ui\Login.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

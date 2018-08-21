@@ -73,10 +73,8 @@
 
         public string DisplaySubMenuRight()
         {
-            var isAuthenticated = ViewBag.IsAuthenticated ?? false;
-            var isAdmin = ViewBag.IsAdmin ?? false;
             var logoutLink = "";
-            if (isAuthenticated)
+            if (User.Identity.IsAuthenticated)
             {
                 logoutLink = "<a class='subLinkRight'  href='/Ui/Logout'><p>Logout&nbsp;</p></a>";
             }
@@ -88,7 +86,7 @@
             var editKidsSerivceLink = "<a class='subLinkRight' href='/Ui/LoadKidsServiceManagementView'><p>Kids&nbsp;Serivce</p></a>";
             var editAdultServiceLink = "<a class='subLinkRight' href='/Ui/LoadAdultServiceManagementView'><p>Adult&nbsp;Service</p></a>";
 
-            if (isAdmin)
+            if (User.IsInRole("admin"))
             {
                 var userManagementLink = "<a class='subLinkRight' href='/Ui/LoadUserManagementView'><p>User&nbsp;Management</p></a>";
                 var roleManagementLink = "<a class='subLinkRight' href='/Ui/LoadRoleManagementView'><p>Role&nbsp;Management</p></a>";

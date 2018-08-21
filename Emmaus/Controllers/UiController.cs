@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using System.Linq;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Globalization;
 
 namespace Emmaus.Controllers
 {
@@ -36,7 +37,6 @@ namespace Emmaus.Controllers
 
         public async Task<IActionResult> LoadLoginView()
         {
-            await SetIsAdminAndAuthenticatedViewBag();
             ViewData["Title"] = "Login";
             return View("Login");
         }
@@ -44,14 +44,12 @@ namespace Emmaus.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(UserInfo login)
         {
-            await SetIsAdminAndAuthenticatedViewBag();
             ViewBag.Login = login;
 
             var result = await _signInManager.PasswordSignInAsync(login.EmailAddress, login.Password, false, lockoutOnFailure: true);
             if (result.Succeeded)
             {
                 return Redirect("~/ ");
-                //return await LoadLoggedInView(login);
             }
             if (result.IsLockedOut)
             {
@@ -66,32 +64,18 @@ namespace Emmaus.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> LoadLoggedInView(UserInfo login)
-        {
-            await SetIsAdminAndAuthenticatedViewBag(login.EmailAddress);
-            ViewData["Title"] = $"Logged In";
-
-            return View("LoggedIn");
-        }
-
-        [Authorize]
         public async Task<IActionResult> Logout(UserInfo login)
         {
             ViewData["Title"] = "Logged Out";
-            ViewBag.IsAuthenticated = false;
 
             await _signInManager.SignOutAsync();
-            await SetIsAdminAndAuthenticatedViewBag();
 
             return Redirect("~/ ");
-            return await LoadLoginView();
         }
 
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> LoadUserManagementView()
         {
-            await SetIsAdminAndAuthenticatedViewBag();
-
             var users = _userManager.Users.ToList();
             var userInfos = new List<UserInfo>() { };
 
@@ -116,7 +100,6 @@ namespace Emmaus.Controllers
             {
                 return await LoadUserManagementView();
             }
-            await SetIsAdminAndAuthenticatedViewBag();
             return View("Error", "Could not delete user");
         }
 
@@ -124,7 +107,6 @@ namespace Emmaus.Controllers
         public async Task<IActionResult> LoadCreateUserView(UserInfo login)
         {
             ViewData["Title"] = "CreateUser";
-            await SetIsAdminAndAuthenticatedViewBag();
 
             return View("CreateUserView");
         }
@@ -143,15 +125,12 @@ namespace Emmaus.Controllers
                 return RedirectToAction(nameof(LoadUserManagementView));
             }
 
-            await SetIsAdminAndAuthenticatedViewBag();
             return View("Error", "User not created");
         }
 
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> LoadRoleManagementView()
         {
-            await SetIsAdminAndAuthenticatedViewBag();
-
             List<IdentityRole> roles = _roleManager.Roles.ToList();
 
             ViewData["Roles"] = roles;
@@ -171,7 +150,6 @@ namespace Emmaus.Controllers
             }
             else
             {
-                await SetIsAdminAndAuthenticatedViewBag();
                 return View("Error");
             }
         }
@@ -180,8 +158,6 @@ namespace Emmaus.Controllers
         public async Task<IActionResult> LoadCreateRoleView(UserInfo login)
         {
             ViewData["Title"] = "CreateRole";
-            await SetIsAdminAndAuthenticatedViewBag();
-
             return View("CreateRoleView");
         }
 
@@ -197,25 +173,13 @@ namespace Emmaus.Controllers
                 await _roleManager.CreateAsync(role);
                 return RedirectToAction(nameof(LoadRoleManagementView));
             }
-            await SetIsAdminAndAuthenticatedViewBag();
+
             return View("Error", "Role Already Exists");
         }
 
         [Authorize]
-        public async Task<IActionResult> LoadCreateAdultServiceView(UserInfo login)
-        {
-            ViewData["Title"] = "CreateAdultService";
-            await SetIsAdminAndAuthenticatedViewBag();
-
-            return View("CreateAdultServiceView");
-        }
-
-
-        [Authorize]
         public async Task<IActionResult> LoadKidsServiceManagementView()
         {
-            await SetIsAdminAndAuthenticatedViewBag();
-
             ViewData["services"] = _kidsSerivceRepo.GetServices();
             ViewData["Title"] = "KidsServiceManagement";
 
@@ -230,8 +194,15 @@ namespace Emmaus.Controllers
             _kidsSerivceRepo.DeleteService(service);
             return await LoadAdultServiceManagementView();
 
-            await SetIsAdminAndAuthenticatedViewBag();
             return View("Error", "Could not delete service");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> LoadCreateKidsServiceView(UserInfo login)
+        {
+            ViewData["Title"] = "CreateKidsService";
+
+            return View("CreateKidsServiceView");
         }
 
         [Authorize]
@@ -242,15 +213,12 @@ namespace Emmaus.Controllers
             _kidsSerivceRepo.AddService(service);
             return await LoadAdultServiceManagementView();
 
-            await SetIsAdminAndAuthenticatedViewBag();
             return View("Error", "Could not add service");
         }
 
         [Authorize]
         public async Task<IActionResult> LoadAdultServiceManagementView()
         {
-            await SetIsAdminAndAuthenticatedViewBag();
-
             ViewData["services"] = _adultSerivceRepo.GetServices();
             ViewData["Title"] = "AdultServiceManagement";
 
@@ -264,60 +232,59 @@ namespace Emmaus.Controllers
             service.ParseStringToParameters(stringService);
             _adultSerivceRepo.DeleteService(service);
             return await LoadAdultServiceManagementView();
-
-            await SetIsAdminAndAuthenticatedViewBag();
             return View("Error", "Could not delete service");
         }
 
         [Authorize]
-        public async Task<IActionResult> AddAdultService(string date, string summary, string speaker)
+        public async Task<IActionResult> LoadCreateAdultServiceView(UserInfo login)
         {
-            var service = new Service() { Date = date, Summary = summary, Speaker = speaker };
+            ViewData["Title"] = "CreateAdultService";
+
+            return View("CreateAdultServiceView");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> AddAdultService(DateTime date, string summary, string speaker)
+        {
+            var formattedDate = $"{date.Day} " + date.ToString("MMMM", CultureInfo.InvariantCulture);
+            var service = new Service() { Date = formattedDate, Summary = summary, Speaker = speaker };
 
             _adultSerivceRepo.AddService(service);
             return await LoadAdultServiceManagementView();
-
-            await SetIsAdminAndAuthenticatedViewBag();
             return View("Error", "Could not add service");
         }
 
         public async Task<IActionResult> LoadWelcomeView()
         {
-            await SetIsAdminAndAuthenticatedViewBag();
             ViewData["Title"] = "Welcome";
             return View("Welcome");
         }
 
         public async Task<IActionResult> LoadAboutView()
         {
-            await SetIsAdminAndAuthenticatedViewBag();
             ViewData["Title"] = "About";
             return View("About");
         }
         public async Task<IActionResult> LoadHistoryView()
         {
-            await SetIsAdminAndAuthenticatedViewBag();
             ViewData["Title"] = "Church History";
             return View("History");
         }
 
         public async Task<IActionResult> LoadMeetTheTeamView()
         {
-            await SetIsAdminAndAuthenticatedViewBag();
             ViewData["Title"] = "Meet The Team";
             return View("MeetTheTeam");
         }
 
         public async Task<IActionResult> LoadServicesView()
         {
-            await SetIsAdminAndAuthenticatedViewBag();
             ViewData["Title"] = "Services";
             return View("Services");
         }
 
         public async Task<IActionResult> LoadChildServicesView()
         {
-            await SetIsAdminAndAuthenticatedViewBag();
             ViewData["Title"] = "Kids Services";
             ViewData["services"] = _kidsSerivceRepo.GetServices();
             return View("KidServices");
@@ -325,7 +292,6 @@ namespace Emmaus.Controllers
 
         public async Task<IActionResult> LoadAdultServicesView()
         {
-            await SetIsAdminAndAuthenticatedViewBag();
             ViewData["Title"] = "Adult Services";
             ViewData["services"] = _adultSerivceRepo.GetServices();
             return View("AdultServices");
@@ -333,42 +299,36 @@ namespace Emmaus.Controllers
 
         public async Task<IActionResult> LoadLocalCommunityView()
         {
-            await SetIsAdminAndAuthenticatedViewBag();
             ViewData["Title"] = "Local Community";
             return View("LocalCommunity");
         }
 
         public async Task<IActionResult> LoadWiderCommunityView()
         {
-            await SetIsAdminAndAuthenticatedViewBag();
             ViewData["Title"] = "Wider Community";
             return View("WiderCommunity");
         }
 
         public async Task<IActionResult> LoadAtHomeView()
         {
-            await SetIsAdminAndAuthenticatedViewBag();
             ViewData["Title"] = "At Home Wider Community";
             return View("WiderCommunity");
         }
 
         public async Task<IActionResult> LoadOverseasView()
         {
-            await SetIsAdminAndAuthenticatedViewBag();
             ViewData["Title"] = "Overseas Wider Community";
             return View("WiderCommunity");
         }
 
         public async Task<IActionResult> LoadLinksView()
         {
-            await SetIsAdminAndAuthenticatedViewBag();
             ViewData["Title"] = "Links";
             return View("Links");
         }
 
         public async Task<IActionResult> LoadContactUsView()
         {
-            await SetIsAdminAndAuthenticatedViewBag();
             ViewData["Title"] = "Contacts US";
             return View("ContactUs");
         }
@@ -390,23 +350,6 @@ namespace Emmaus.Controllers
                 var appUser = await _userManager.FindByEmailAsync(username);
                 return (await _signInManager.UserManager.GetRolesAsync(appUser))[0];
             }
-        }
-
-        private async Task SetIsAdminAndAuthenticatedViewBag(string email = null, [CallerMemberName] string callerName = "")
-        {
-            if (callerName == "Logout" || callerName == "LoadLoginView")
-            {
-                ViewBag.IsAdmin = false;
-                ViewBag.IsAuthenticated = false;
-                return;
-            }
-
-            var role = await GetCurrentUsersRole(email);
-            if (role == "admin") ViewBag.IsAdmin = true;
-            else ViewBag.IsAdmin = false;
-
-            if (role == null) ViewBag.IsAuthenticated = false;
-            else ViewBag.IsAuthenticated = true;
         }
     }
 }
