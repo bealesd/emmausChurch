@@ -17,14 +17,19 @@ namespace Emmaus.Controllers
         private SignInManager<ApplicationUser> _signInManager;
         private UserManager<ApplicationUser> _userManager;
         private RoleManager<IdentityRole> _roleManager;
+        private IServiceRepo _adultSerivceRepo;
+        private IServiceRepo _kidsSerivceRepo;
 
         public RoleManager<ApplicationUser> RoleManager { get; }
 
-        public UiController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UiController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager,
+            IServiceRepoFactory serviceRepoFactory)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _roleManager = roleManager;
+            _adultSerivceRepo = serviceRepoFactory.CreateServiceRepo($"{AppDomain.CurrentDomain.BaseDirectory}data/adultService.csv");
+            _kidsSerivceRepo = serviceRepoFactory.CreateServiceRepo($"{AppDomain.CurrentDomain.BaseDirectory}data/kidsService.csv");
         }
         public IActionResult LoadLoginView()
         {
@@ -55,6 +60,14 @@ namespace Emmaus.Controllers
             ViewData["Title"] = "CreateUser";
 
             return View("CreateUserView");
+        }
+
+        [Authorize]
+        public IActionResult LoadCreateAdultServiceView(UserInfo login)
+        {
+            ViewData["Title"] = "CreateAdultService";
+
+            return View("CreateAdultServiceView");
         }
 
         [Authorize(Roles = "admin")]
@@ -178,23 +191,51 @@ namespace Emmaus.Controllers
             var childService = ServiceProvider.ReadServices(serviceFilePath);
 
             ViewData["services"] = childService;
-            ViewData["Title"] = "Edit Kids Service";
+            ViewData["Title"] = "KidsServiceManagement";
 
-            return View("KidServices");
+            return View("KidsServiceManagement");
         }
 
         [Authorize]
-        public IActionResult LoadEditAdultSericeView()
+        public IActionResult LoadAdultServiceManagementView()
         {
             var serviceFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}data/adultService.csv";
             var adultService = ServiceProvider.ReadServices(serviceFilePath);
 
             ViewData["services"] = adultService;
-            ViewData["Title"] = "Edit Adult Service";
+            ViewData["Title"] = "AdultServiceManagement";
 
-            return View("AdultServices");
+            return View("AdultServiceManagement");
         }
 
+        [Authorize]
+        public IActionResult AddAdultService(string date, string summary, string speaker)
+        {
+            var service = new Service() { Date=date, Summary = summary, Speaker = speaker};
+
+            var serviceFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}data/adultService.csv";
+            var added = ServiceProvider.AddService(serviceFilePath, service);
+            if (added)
+            {
+                return LoadAdultServiceManagementView();
+            }
+            return View("Error", "Could not add service");
+        }
+        [Authorize]
+        public IActionResult DeleteAdultService(string stringService)
+        {
+            var service = new Service();
+            service.ParseStringToParameters(stringService);
+
+            var serviceFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}data/adultService.csv";
+            var deleteted = ServiceProvider.DeleteService(serviceFilePath, service);
+            if (deleteted)
+            {
+                return LoadAdultServiceManagementView();
+            }
+            return View("Error", "Could not delete service");
+        }
+        
         public IActionResult LoadAboutView()
         {
             ViewData["Title"] = "About";
@@ -221,22 +262,16 @@ namespace Emmaus.Controllers
         }
         public IActionResult LoadChildServicesView()
         {
-            var serviceFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}data/kidsService.csv";
-            var childService = ServiceProvider.ReadServices(serviceFilePath);
-
             ViewData["Title"] = "Kids Services";
-            ViewData["services"] = childService;
+            ViewData["services"] = _kidsSerivceRepo.GetServices();
 
             return View("KidServices");
         }
 
         public IActionResult LoadAdultServicesView()
         {
-            var serviceFilePath = $"{AppDomain.CurrentDomain.BaseDirectory}data/adultService.csv";
-            var adultService = ServiceProvider.ReadServices(serviceFilePath);
-
             ViewData["Title"] = "Adult Services";
-            ViewData["services"] = adultService;
+            ViewData["services"] = _adultSerivceRepo.GetServices();
 
             return View("AdultServices");
         }
@@ -283,8 +318,6 @@ namespace Emmaus.Controllers
             ViewData["Title"] = "Overseas Wider Community";
             return View("WiderCommunity");
         }
-
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

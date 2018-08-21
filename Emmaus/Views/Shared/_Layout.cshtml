@@ -54,6 +54,20 @@
                 return String.Concat(createUserLink, "");
             }
 
+            else if (pageName.Contains("adultservicemanagement") && User.Identity.IsAuthenticated)
+            {
+                var createUserLink = "<a class='subLink' href='/Ui/LoadCreateAdultServiceView'><p>Create&nbsp;Service</p></a>";
+
+                return String.Concat(createUserLink, "");
+            }
+
+            else if (pageName.Contains("kidsservicemanagement") && User.Identity.IsAuthenticated)
+            {
+                var createUserLink = "<a class='subLink' href='/Ui/CreateKidServiceView'><p>Create&nbsp;Service</p></a>";
+
+                return String.Concat(createUserLink, "");
+            }
+
             return "";
         }
 
@@ -70,7 +84,7 @@
             }
 
             var editKidsSerivceLink = "<a class='subLinkRight' href='/Ui/LoadEditKidSericeView'><p>Kids&nbsp;Serivce</p></a>";
-            var editAdultServiceLink = "<a class='subLinkRight' href='/Ui/LoadEditAdultSericeView'><p>Adult&nbsp;Service</p></a>";
+            var editAdultServiceLink = "<a class='subLinkRight' href='/Ui/LoadAdultServiceManagementView'><p>Adult&nbsp;Service</p></a>";
 
             if (User.IsInRole("admin"))
             {

@@ -332,7 +332,8 @@ body {
 
                 .wrapper .mainWrapper .CreateUser .Form-style .text,
                 .wrapper .mainWrapper .CreateUser .Form-style .password,
-                .wrapper .mainWrapper .CreateRole .Form-style .text {
+                .wrapper .mainWrapper .CreateRole .Form-style .text,
+                .wrapper .mainWrapper .CreateRole .Form-style .date {
                     box-sizing: border-box;
                     -webkit-box-sizing: border-box;
                     -moz-box-sizing: border-box;
@@ -416,27 +417,37 @@ body {
                 border-bottom: solid 1px lightgray;
             }
 
-
-            /*.wrapper .mainWrapper .table .input {
-        display: grid;
-        justify-content: center;
-        align-items: center;
-        border-bottom: solid 1px lightgray;
-        width:100px;
-        border: none;
-        border-right: 100px;
-        outline: none;
-        background-color: transparent;
-        align-items: center;
-        justify-content: center;
-        color: #777;
-        font-family: 'Droid Sans',Arial,Helvetica,sans-serif;
-        font-size: 16px;
-        line-height: 1.6em;
-    }*/
-
-
             .wrapper .mainWrapper .table .table-header {
+                justify-content: center;
+                align-items: center;
+                font-weight: 900;
+                text-transform: uppercase;
+                border-bottom: solid 1px lightgray;
+            }
+
+        .wrapper .mainWrapper .editTable {
+            grid-row: 4;
+            grid-column: 2;
+            height: 40%;
+            display: grid;
+            grid-template-columns: repeat(4, 150px);
+            grid-template-rows: repeat(5, 40px);
+            padding-bottom: 20px;
+            align-content: space-around;
+            justify-content: center;
+        }
+
+        .wrapper .mainWrapper .editTable .fieldOne,
+        .wrapper .mainWrapper .editTable .fieldTwo,
+        .wrapper .mainWrapper .editTable .fieldThree,
+        .wrapper .mainWrapper .editTable .fieldfOUR{
+            display: grid;
+            justify-content: center;
+            align-items: center;
+            border-bottom: solid 1px lightgray;
+        }
+
+            .wrapper .mainWrapper .editTable .table-header {
                 justify-content: center;
                 align-items: center;
                 font-weight: 900;

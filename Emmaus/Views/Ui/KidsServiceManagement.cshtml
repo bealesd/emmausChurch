@@ -1,0 +1,46 @@
+@using Emmaus.Helper;
+
+@{
+    var services = (List<Service>)ViewData["services"];
+    string newTitle = ServiceListHelper.Title(services, "Kids");
+}
+
+<div class="mainWrapper">
+
+    <div class="title">
+        @Html.Raw(@newTitle)
+    </div>
+
+    <!--#region table  -->
+    <div class="table">
+
+        <div class="fieldOne table-header">
+            <p>Date</p>
+        </div>
+
+        <div class="fieldTwo table-header">
+            <p>Bible Text</p>
+        </div>
+
+        <div class="fieldThree table-header">
+            <p>Speaker</p>
+        </div>
+
+        @foreach (var service in services)
+        {
+            <div class="fieldOne">
+                <p>@service.Date</p>
+            </div>
+            <div class="fieldTwo">
+                <p>
+                    @service.Summary
+                </p>
+            </div>
+            <div class="fieldThree">
+                <p>@service.Speaker</p>
+            </div>
+        }
+        <!--#endregion -->
+
+    </div>
+</div>
