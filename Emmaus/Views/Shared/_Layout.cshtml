@@ -63,7 +63,7 @@
 
             else if (pageName.Contains("kidsservicemanagement") && User.Identity.IsAuthenticated)
             {
-                var createUserLink = "<a class='subLink' href='/Ui/CreateKidServiceView'><p>Create&nbsp;Service</p></a>";
+                var createUserLink = "<a class='subLink' href='/Ui/LoadCreateKidsServiceView'><p>Create&nbsp;Service</p></a>";
 
                 return String.Concat(createUserLink, "");
             }
@@ -73,20 +73,22 @@
 
         public string DisplaySubMenuRight()
         {
+            var isAuthenticated = ViewBag.IsAuthenticated ?? false;
+            var isAdmin = ViewBag.IsAdmin ?? false;
             var logoutLink = "";
-            if (User.Identity.IsAuthenticated)
+            if (isAuthenticated)
             {
                 logoutLink = "<a class='subLinkRight'  href='/Ui/Logout'><p>Logout&nbsp;</p></a>";
             }
-            if (!User.Identity.IsAuthenticated)
+            else
             {
                 return "<a class='subLinkRight'  href='/Ui/LoadLoginView'><p>Login&nbsp;</p></a>";
             }
 
-            var editKidsSerivceLink = "<a class='subLinkRight' href='/Ui/LoadEditKidSericeView'><p>Kids&nbsp;Serivce</p></a>";
+            var editKidsSerivceLink = "<a class='subLinkRight' href='/Ui/LoadKidsServiceManagementView'><p>Kids&nbsp;Serivce</p></a>";
             var editAdultServiceLink = "<a class='subLinkRight' href='/Ui/LoadAdultServiceManagementView'><p>Adult&nbsp;Service</p></a>";
 
-            if (User.IsInRole("admin"))
+            if (isAdmin)
             {
                 var userManagementLink = "<a class='subLinkRight' href='/Ui/LoadUserManagementView'><p>User&nbsp;Management</p></a>";
                 var roleManagementLink = "<a class='subLinkRight' href='/Ui/LoadRoleManagementView'><p>Role&nbsp;Management</p></a>";
@@ -109,7 +111,6 @@
             <a class="navLink" asp-controller="Ui" asp-action="LoadLinksView"><p>Links</p></a>
             <a class="navLink" asp-controller="Ui" asp-action="LoadContactUsView"><p>Contacts</p></a>
         </div>
-
 
         <div class="subMenu">
             @Html.Raw(DisplaySubMenu())

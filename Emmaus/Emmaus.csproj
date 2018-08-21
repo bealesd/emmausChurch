@@ -9,6 +9,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Ui\CreateKidsServiceView.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Ui\CreateAdultServiceView.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

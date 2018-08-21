@@ -440,7 +440,7 @@ body {
         .wrapper .mainWrapper .editTable .fieldOne,
         .wrapper .mainWrapper .editTable .fieldTwo,
         .wrapper .mainWrapper .editTable .fieldThree,
-        .wrapper .mainWrapper .editTable .fieldfOUR{
+        .wrapper .mainWrapper .editTable .fieldFour{
             display: grid;
             justify-content: center;
             align-items: center;

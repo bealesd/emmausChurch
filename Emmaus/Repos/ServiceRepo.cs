@@ -28,7 +28,7 @@ namespace Emmaus.Repos
 
     public class ServiceRepo: IServiceRepo
     {
-        private List<Service> _services { get; set; }
+        private List<Service> _services = new List<Service>() { };
         private readonly string _filePath;
 
         public ServiceRepo(string filepath)
@@ -36,6 +36,12 @@ namespace Emmaus.Repos
             _filePath = filepath;
         }
  
+
+        private void ClearCache()
+        {
+            _services.Clear();
+        }
+
         public List<Service> GetServices()
         {
             Load();
@@ -68,6 +74,7 @@ namespace Emmaus.Repos
                     reader.WriteLine(csvService + "\n");
                 }
             }
+            ClearCache();
         }
 
         public void DeleteService(Service service)
