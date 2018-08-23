@@ -52,7 +52,6 @@ namespace Emmaus.Controllers
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                 return await LoadLoginView();
             }
         }
@@ -67,7 +66,7 @@ namespace Emmaus.Controllers
             return Redirect("~/ ");
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "powerUser")]
         public async Task<IActionResult> LoadUserManagementView()
         {
             var users = _userManager.Users.ToList();
@@ -85,7 +84,7 @@ namespace Emmaus.Controllers
             return View("UserManagement");
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "powerUser")]
         public async Task<IActionResult> DeleteUser(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
@@ -97,7 +96,7 @@ namespace Emmaus.Controllers
             return View("Error", "Could not delete user");
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "powerUser")]
         public async Task<IActionResult> LoadCreateUserView(UserInfo login)
         {
             ViewData["Title"] = "CreateUser";
@@ -105,7 +104,7 @@ namespace Emmaus.Controllers
             return View("CreateUserView");
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "powerUser")]
         public async Task<IActionResult> CreateUser(UserInfo login)
         {
             ViewData["Title"] = "User Management";
@@ -122,7 +121,7 @@ namespace Emmaus.Controllers
             return View("Error", "User not created");
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "powerUser")]
         public async Task<IActionResult> LoadRoleManagementView()
         {
             List<IdentityRole> roles = _roleManager.Roles.ToList();
@@ -132,7 +131,7 @@ namespace Emmaus.Controllers
             return View("RoleManagement");
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "powerUser")]
         public async Task<IActionResult> DeleteRole(string roleName)
         {
             var role = _roleManager.Roles.First(r => r.Name == roleName) ?? null;
@@ -148,14 +147,14 @@ namespace Emmaus.Controllers
             }
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "powerUser")]
         public async Task<IActionResult> LoadCreateRoleView(UserInfo login)
         {
             ViewData["Title"] = "CreateRole";
             return View("CreateRoleView");
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "powerUser")]
         public async Task<IActionResult> CreateRole(RoleInfo roleInfo)
         {
             ViewData["Title"] = "Role Management";
@@ -172,43 +171,44 @@ namespace Emmaus.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> LoadKidsServiceManagementView()
+        public async Task<IActionResult> LoadKidServiceManagementView()
         {
             ViewData["services"] = await _serviceRepo.GetServices("kid");
-            ViewData["Title"] = "KidsServiceManagement";
+            ViewData["Title"] = "KidServiceManagement";
 
-            return View("KidsServiceManagement");
+            return View("KidServiceManagement");
         }
 
         [Authorize]
-        public async Task<IActionResult> DeleteKidsService(string id)
+        public async Task<IActionResult> DeleteKidService(string id)
         {
             await _serviceRepo.DeleteService(id);
-            return await LoadAdultServiceManagementView();
+            return await LoadKidServiceManagementView();
 
             return View("Error", "Could not delete service");
         }
 
         [Authorize]
-        public async Task<IActionResult> LoadCreateKidsServiceView(UserInfo login)
+        public async Task<IActionResult> LoadCreateKidServiceView(UserInfo login)
         {
-            ViewData["Title"] = "CreateKidsService";
+            ViewData["Title"] = "CreateKidService";
 
-            return View("CreateKidsServiceView");
+            return View("CreateKidServiceView");
         }
 
         [Authorize]
-        public async Task<IActionResult> AddKidService(DateTime date, string summary, string speaker)
+        public async Task<IActionResult> AddKidService(DateTime date, string story, string text, string speaker)
         {
             var service = new Service() {
                 Type ="kid",
                 Date = date,
-                Summary = summary,
+                Story = story,
+                Text = text,
                 Speaker = speaker,
                 Id = Guid.NewGuid().ToString() };
 
             await _serviceRepo.AddService(service);
-            return await LoadAdultServiceManagementView();
+            return await LoadKidServiceManagementView();
 
             return View("Error", "Could not add service");
         }
@@ -240,13 +240,14 @@ namespace Emmaus.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> AddAdultService(DateTime date, string summary, string speaker)
+        public async Task<IActionResult> AddAdultService(DateTime date, string story, string text, string speaker)
         {
             var service = new Service()
             {
                 Type = "adult",
                 Date = date,
-                Summary = summary,
+                Story = story,
+                Text = text,
                 Speaker = speaker,
                 Id = Guid.NewGuid().ToString()
             };
@@ -334,6 +335,12 @@ namespace Emmaus.Controllers
         {
             ViewData["Title"] = "Contacts US";
             return View("ContactUs");
+        }
+
+        public async Task<IActionResult> LoadError()
+        {
+            ViewData["Title"] = "Error";
+            return View("Error");
         }
 
         private async Task<string> GetCurrentUsersRole(string email = null)

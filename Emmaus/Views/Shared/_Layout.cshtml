@@ -83,17 +83,17 @@
                 return "<a class='subLinkRight'  href='/Ui/LoadLoginView'><p>Login&nbsp;</p></a>";
             }
 
-            var editKidsSerivceLink = "<a class='subLinkRight' href='/Ui/LoadKidsServiceManagementView'><p>Kids&nbsp;Serivce</p></a>";
+            var editKidSerivceLink = "<a class='subLinkRight' href='/Ui/LoadKidServiceManagementView'><p>Kids&nbsp;Serivce</p></a>";
             var editAdultServiceLink = "<a class='subLinkRight' href='/Ui/LoadAdultServiceManagementView'><p>Adult&nbsp;Service</p></a>";
 
-            if (User.IsInRole("admin"))
+            if (User.IsInRole("powerUser"))
             {
                 var userManagementLink = "<a class='subLinkRight' href='/Ui/LoadUserManagementView'><p>User&nbsp;Management</p></a>";
                 var roleManagementLink = "<a class='subLinkRight' href='/Ui/LoadRoleManagementView'><p>Role&nbsp;Management</p></a>";
-                return String.Concat(logoutLink, editKidsSerivceLink, editAdultServiceLink, userManagementLink, roleManagementLink);
+                return String.Concat(logoutLink, editKidSerivceLink, editAdultServiceLink, userManagementLink, roleManagementLink);
             }
 
-            return String.Concat(logoutLink, editKidsSerivceLink, editAdultServiceLink);
+            return String.Concat(logoutLink, editKidSerivceLink, editAdultServiceLink);
         }
     }
 
@@ -110,16 +110,6 @@
                 <a class="navLink" asp-controller="Ui" asp-action="LoadLinksView">Links</a>
                 <a class="navLink" asp-controller="Ui" asp-action="LoadContactUsView">Contact&nbsp;Us</a>
             </div>
-         
-            
-            @*<a class="navLink" asp-controller="Ui" asp-action="LoadWelcomeView"><p>Welcome</p></a>
-            <a class="navLink" asp-controller="Ui" asp-action="LoadAboutView"><p>About</p></a>
-            <a class="navLink" asp-controller="Ui" asp-action="LoadServicesView"><p>Services</p></a>
-            <a class="navLink" asp-controller="Ui" asp-action="LoadLocalCommunityView"><p>Local&nbsp;Community</p></a>
-            <a class="navLink" asp-controller="Ui" asp-action="LoadWiderCommunityView"><p>Wider&nbsp;Community</p></a>
-            <a class="navLink" asp-controller="Ui" asp-action="LoadLinksView"><p>Links</p></a>
-            <a class="navLink" asp-controller="Ui" asp-action="LoadContactUsView"><p>Contact&nbsp;Us</p></a>*@
-
         </div>
 
         <div class="subMenu">

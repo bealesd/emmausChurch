@@ -8,11 +8,11 @@
 <div class="mainWrapper">
 
     <div class="title">
-        User Management
+        Role Management
     </div>
 
     <!--#region table  -->
-    <div class="table">
+    <div class="roleManagement">
 
         <div class="fieldOne table-header">
             <p>Name</p>
@@ -36,7 +36,7 @@
             <div class="fieldTwo">
                 <p>
                     <a onclick="ConfirmDelete('Delete Role?')"
-                       asp-action="DeleteRole" asp-route-role="@role.Name">Delete</a>
+                       asp-action="DeleteRole" asp-route-roleName="@role.Name">Delete</a>
                 </p>
             </div>
 

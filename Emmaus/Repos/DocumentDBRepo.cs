@@ -11,16 +11,16 @@ namespace Emmaus.Repos
 {
     public class DocumentDBRepo<T>: IDocumentDBRepository<T> where T : class
     {
-        private readonly string Endpoint = "https://services.documents.azure.com:443/";
-        private readonly string Key = "zQJcswI9WMDOEnw1WhFTDfNflHbuHSUD4Hlb9HdyWCVkeUrnrM7IWsRzJaxuv6EFXRID02dWw71KgSuyNMD0Wg==";
-        private readonly string DatabaseId = "ToDoList";
-        private readonly string CollectionId = "Items";
+        private readonly string Endpoint = "https://emmaus.documents.azure.com:443/";
+        private readonly string Key = "XiVXPE2TCdcjLtcxZUNdli5A5G3umZF2aUuGj4QN5y9CbrE5FSxFie5d2tezpd7WbaWxVxSFCnm4PZV9vX6kOQ==";
+        private readonly string DatabaseId = "Emmaus";
+        private readonly string CollectionId = "Services";
         private DocumentClient client;
 
         public DocumentDBRepo()
         {
             client = new DocumentClient(new Uri(Endpoint), Key);
-            CreateDatabaseIfNotExistsAsync().Wait();
+            CreateDatabaseIfNotExistsAsync().Wait();//failing here
             CreateCollectionIfNotExistsAsync().Wait();
         }
 

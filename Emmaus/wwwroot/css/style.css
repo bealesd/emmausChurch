@@ -418,26 +418,29 @@ body {
             grid-row: 4;
             grid-column: 2;
             display: grid;
-            grid-template-columns: repeat(3, 150px);
+            grid-template-columns: repeat(4, 150px);
             grid-template-rows: repeat(auto, 60px);
-            padding-bottom: 20px;
-            align-content: space-around;
-            justify-content: center;
+            /*padding-bottom: 20px;*/
+            /*align-content: space-around;*/
+            /*justify-content: center;*/
             min-height: 63vh;
         }
 
             .wrapper .mainWrapper .table .fieldOne,
             .wrapper .mainWrapper .table .fieldTwo,
-            .wrapper .mainWrapper .table .fieldThree {
+            .wrapper .mainWrapper .table .fieldThree,
+            .wrapper .mainWrapper .table .fieldFour {
                 display: grid;
-                justify-content: center;
-                align-items: center;
+                padding-left: 25px;
+                /*justify-content: center;
+                align-items: center;*/
                 border-bottom: solid 1px lightgray;
             }
 
             .wrapper .mainWrapper .table .table-header {
-                justify-content: center;
-                align-items: center;
+                /*justify-content: center;
+                align-items: center;*/
+                padding-left: 25px;
                 font-weight: 900;
                 text-transform: uppercase;
                 border-bottom: solid 1px lightgray;
@@ -447,35 +450,80 @@ body {
             grid-row: 4;
             grid-column: 2;
             display: grid;
-            grid-template-columns: repeat(4, 150px);
+            grid-template-columns: repeat(5, 150px);
             grid-template-rows: repeat(auto, 60px);
-            padding-bottom: 20px;
-            align-content: space-around;
-            justify-content: center;
             min-height: 63vh;
         }
 
             .wrapper .mainWrapper .editTable .fieldOne,
             .wrapper .mainWrapper .editTable .fieldTwo,
             .wrapper .mainWrapper .editTable .fieldThree,
-            .wrapper .mainWrapper .editTable .fieldFour {
+            .wrapper .mainWrapper .editTable .fieldFour,
+            .wrapper .mainWrapper .editTable .fieldFive {
                 display: grid;
-                justify-content: center;
-                align-items: center;
+                padding-left: 25px;
                 border-bottom: solid 1px lightgray;
             }
 
             .wrapper .mainWrapper .editTable .table-header {
-                justify-content: center;
-                align-items: center;
+                padding-left: 25px;
                 font-weight: 900;
                 text-transform: uppercase;
                 border-bottom: solid 1px lightgray;
             }
 
-    .wrapper .footer {
-        background-color: whitesmoke;
-        grid-row: 3;
-        grid-column: 1 / 4;
-        text-align: center;
-    }
+        .wrapper .mainWrapper .roleManagement {
+            grid-row: 4;
+            grid-column: 2;
+            display: grid;
+            grid-template-columns: repeat(3, 150px);
+            grid-template-rows: repeat(auto, 60px);
+            min-height: 63vh;
+        }
+
+        .wrapper .mainWrapper .roleManagement .fieldOne,
+        .wrapper .mainWrapper .roleManagement .fieldTwo,
+        .wrapper .mainWrapper .roleManagement .fieldThree {
+            display: grid;
+            padding-left: 25px;
+            border-bottom: solid 1px lightgray;
+        }
+
+            .wrapper .mainWrapper .roleManagement .table-header {
+                padding-left: 25px;
+                font-weight: 900;
+                text-transform: uppercase;
+                border-bottom: solid 1px lightgray;
+            }
+
+        .wrapper .mainWrapper .userManagement {
+            grid-row: 4;
+            grid-column: 2;
+            display: grid;
+            grid-template-columns: 400px 100px 50px;
+            grid-template-rows: repeat(auto, 60px);
+            min-height: 63vh;
+        }
+
+            .wrapper .mainWrapper .userManagement .fieldOne,
+            .wrapper .mainWrapper .userManagement .fieldTwo,
+            .wrapper .mainWrapper .userManagement .fieldThree {
+                display: grid;
+                padding-left: 25px;
+                border-bottom: solid 1px lightgray;
+            }
+
+            .wrapper .mainWrapper .userManagement .table-header {
+                padding-left: 25px;
+                font-weight: 900;
+                text-transform: uppercase;
+                border-bottom: solid 1px lightgray;
+            }
+
+
+.wrapper .footer {
+    background-color: whitesmoke;
+    grid-row: 3;
+    grid-column: 1 / 4;
+    text-align: center;
+}

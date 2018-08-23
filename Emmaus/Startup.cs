@@ -1,15 +1,18 @@
 ﻿using Emmaus.Data;
 using Emmaus.Models;
 using Emmaus.Repos;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
+using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Emmaus
@@ -54,8 +57,8 @@ namespace Emmaus
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
 
-                options.LoginPath = "/Ui/Login";
-                options.AccessDeniedPath = "/Ui/Login";
+                options.LoginPath = "/Ui/LoadLoginView";
+                options.AccessDeniedPath = "/Ui/LoadLoginView";
                 options.SlidingExpiration = false;
             });
 
@@ -68,13 +71,15 @@ namespace Emmaus
         {
             if (env.IsDevelopment())
             {
+                //app.UseMiddleware(typeof(ErrorHandlingMiddleware));
                 app.UseDeveloperExceptionPage();
             }
             else
             {
-                app.UseExceptionHandler("/Ui/Error");
-                app.UseHsts();
+                app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             }
+
+            app.UseHsts();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -96,21 +101,48 @@ namespace Emmaus
             var _userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var _roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            Task<bool> roleExists = _roleManager.RoleExistsAsync("admin");
+            Task<bool> roleExists = _roleManager.RoleExistsAsync("powerUser");
             roleExists.Wait();
             if (!roleExists.Result)
             {
                 var role = new IdentityRole();
-                role.Name = "admin";
+                role.Name = "powerUser";
                 Task<IdentityResult> roleCreated = _roleManager.CreateAsync(role);
                 roleCreated.Wait();
             }
 
             var user = new ApplicationUser { UserName = "david_beales@ymail.com", Email = "david_beales@ymail.com"};
-            Task<IdentityResult> createUserResult = _userManager.CreateAsync(user, "Password1234!");
+            Task<IdentityResult> createUserResult = _userManager.CreateAsync(user, "FucyeegPeavpoj6");
             createUserResult.Wait();
-            Task<IdentityResult> addToRoleResult = _userManager.AddToRoleAsync(user, "admin");
+            Task<IdentityResult> addToRoleResult = _userManager.AddToRoleAsync(user, "powerUser");
             addToRoleResult.Wait();
+        }
+    }
+
+    public class ErrorHandlingMiddleware
+    {
+        private readonly RequestDelegate next;
+
+        public ErrorHandlingMiddleware(RequestDelegate next)
+        {
+            this.next = next;
+        }
+
+        public async Task Invoke(HttpContext context)
+        {
+            try
+            {
+                await next(context);
+            }
+            catch (Exception ex)
+            {
+                await HandleExceptionAsync(context, ex);
+            }
+        }
+
+        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+        {
+            return Task.Run(() => context.Response.Redirect("/Ui/LoadError"));
         }
     }
 }

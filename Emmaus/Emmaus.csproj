@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <UserSecretsId>aeaba022-c220-4323-bfff-ecb31de4f233</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,7 +29,7 @@
     <Content Update="Views\Ui\Error.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Ui\KidsServiceManagement.cshtml">
+    <Content Update="Views\Ui\KidServiceManagement.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Ui\UserManagement.cshtml">

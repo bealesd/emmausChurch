@@ -9,14 +9,47 @@ namespace Emmaus.Models
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
 
-        [JsonProperty(PropertyName = "summary")]
-        public string Summary { get; set; }
-
-        [JsonProperty(PropertyName = "date")]
+       [JsonProperty(PropertyName = "date")]
         public DateTime Date { get; set; }
 
+        private string _story;
+        [JsonProperty(PropertyName = "story")]
+        public string Story {
+            get
+            {
+                return _story.Trim() ?? string.Empty;
+            }
+            set
+            {
+                _story = value.Trim() ?? string.Empty;
+            }
+        }
+
+        private string _text;
+        [JsonProperty(PropertyName = "text")]
+        public string Text {
+            get
+            {
+                return _text.Trim() ?? string.Empty;
+            }
+            set
+            {
+                _text = value.Trim() ?? string.Empty;
+            }
+        }
+
+        private string _speaker;
         [JsonProperty(PropertyName = "speaker")]
-        public string Speaker { get; set; }
+        public string Speaker {
+            get
+            {
+                return _speaker.Trim() ?? string.Empty;
+            }
+            set
+            {
+                _speaker = value.Trim() ?? string.Empty;
+            }
+        }
 
         [JsonProperty(PropertyName = "type")]
         public string Type { get; set; }

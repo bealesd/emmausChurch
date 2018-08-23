@@ -18,14 +18,18 @@
         </div>
 
         <div class="fieldTwo table-header">
-            <p>Bible Text</p>
+            <p>Story</p>
         </div>
 
         <div class="fieldThree table-header">
-            <p>Speaker</p>
+            <p>Text</p>
         </div>
 
         <div class="fieldFour table-header">
+            <p>Speaker</p>
+        </div>
+
+        <div class="fieldFive table-header">
             <p>Delete</p>
         </div>
 
@@ -36,15 +40,18 @@
             </div>
             <div class="fieldTwo">
                 <p>
-                    @service.Summary
+                    @service.Story
                 </p>
             </div>
             <div class="fieldThree">
-                <p>@service.Speaker</p>
+                <p>@service.Text</p>
             </div>
             <div class="fieldFour">
+                <p>@service.Speaker</p>
+            </div>
+            <div class="fieldFive">
                 <p>
-                    <a onclick="ConfirmDelete('Delete Service?')" asp-action="DeleteKidsService" asp-route-id="@service.Id">Delete</a>
+                    <a onclick="ConfirmDelete('Delete Service?')" asp-action="DeleteKidService" asp-route-id="@service.Id">Delete</a>
                 </p>
             </div>
         }
@@ -55,10 +62,10 @@
 
 
 <script>
-        function ConfirmDelete(message) {
-            if (confirm(message)) {
-                return;
-            }
-            event.preventDefault();
+    function ConfirmDelete(message) {
+        if (confirm(message)) {
+            return;
         }
+        event.preventDefault();
+    }
 </script>
