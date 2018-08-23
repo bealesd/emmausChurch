@@ -7,16 +7,16 @@ namespace Emmaus.Repos
 {
     public interface IServiceRepo
     {
-        List<Service> GetServices();
-        void DeleteService(Service service);
-        void AddService(Service service);
+        Task<IEnumerable<Service>> GetServices(string id);
+        Task DeleteService(string id);
+        Task AddService(Service service);
     }
 
-    public class ServiceCosmosRepo
+    public class ServiceCosmosRepo: IServiceRepo
     {
-        public DocumentDBRepo<Service> _documentDBRepo;
+        public IDocumentDBRepository<Service> _documentDBRepo;
 
-        public ServiceCosmosRepo(DocumentDBRepo<Service> documentDBRepo)
+        public ServiceCosmosRepo(IDocumentDBRepository<Service> documentDBRepo)
         {
             _documentDBRepo = documentDBRepo;
         }

@@ -9,7 +9,7 @@ using Microsoft.Azure.Documents.Linq;
 
 namespace Emmaus.Repos
 {
-    public class DocumentDBRepo<T> where T : class
+    public class DocumentDBRepo<T>: IDocumentDBRepository<T> where T : class
     {
         private readonly string Endpoint = "https://services.documents.azure.com:443/";
         private readonly string Key = "zQJcswI9WMDOEnw1WhFTDfNflHbuHSUD4Hlb9HdyWCVkeUrnrM7IWsRzJaxuv6EFXRID02dWw71KgSuyNMD0Wg==";

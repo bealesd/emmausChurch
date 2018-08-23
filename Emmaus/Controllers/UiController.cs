@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Emmaus.Models;
 using Emmaus.Repos;
@@ -9,8 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Globalization;
 
 namespace Emmaus.Controllers
 {
@@ -19,19 +16,17 @@ namespace Emmaus.Controllers
         private SignInManager<ApplicationUser> _signInManager;
         private UserManager<ApplicationUser> _userManager;
         private RoleManager<IdentityRole> _roleManager;
-        private ServiceCosmosRepo _adultServiceRepo;
-        private ServiceCosmosRepo _kidsServiceRepo;
+        private IServiceRepo _serviceRepo;
 
         public RoleManager<ApplicationUser> RoleManager { get; }
 
         public UiController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager, IServiceRepo serviceRepo)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _roleManager = roleManager;
-            _adultServiceRepo = new ServiceCosmosRepo(new DocumentDBRepo<Service>());
-            _kidsServiceRepo = new ServiceCosmosRepo(new DocumentDBRepo<Service>());
+            _serviceRepo = serviceRepo;
         }
 
         public async Task<IActionResult> LoadLoginView()
@@ -179,7 +174,7 @@ namespace Emmaus.Controllers
         [Authorize]
         public async Task<IActionResult> LoadKidsServiceManagementView()
         {
-            ViewData["services"] = await _kidsServiceRepo.GetServices("kid");
+            ViewData["services"] = await _serviceRepo.GetServices("kid");
             ViewData["Title"] = "KidsServiceManagement";
 
             return View("KidsServiceManagement");
@@ -188,7 +183,7 @@ namespace Emmaus.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteKidsService(string id)
         {
-            await _kidsServiceRepo.DeleteService(id);
+            await _serviceRepo.DeleteService(id);
             return await LoadAdultServiceManagementView();
 
             return View("Error", "Could not delete service");
@@ -212,7 +207,7 @@ namespace Emmaus.Controllers
                 Speaker = speaker,
                 Id = Guid.NewGuid().ToString() };
 
-            await _kidsServiceRepo.AddService(service);
+            await _serviceRepo.AddService(service);
             return await LoadAdultServiceManagementView();
 
             return View("Error", "Could not add service");
@@ -221,7 +216,7 @@ namespace Emmaus.Controllers
         [Authorize]
         public async Task<IActionResult> LoadAdultServiceManagementView()
         {
-            ViewData["services"] = await _adultServiceRepo.GetServices("adult");
+            ViewData["services"] = await _serviceRepo.GetServices("adult");
             ViewData["Title"] = "AdultServiceManagement";
 
             return View("AdultServiceManagement");
@@ -230,7 +225,7 @@ namespace Emmaus.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteAdultService(string id)
         {
-            await _adultServiceRepo.DeleteService(id);
+            await _serviceRepo.DeleteService(id);
 
             return await LoadAdultServiceManagementView();
             return View("Error", "Could not delete service");
@@ -256,7 +251,7 @@ namespace Emmaus.Controllers
                 Id = Guid.NewGuid().ToString()
             };
 
-            await _kidsServiceRepo.AddService(service);
+            await _serviceRepo.AddService(service);
 
             return await LoadAdultServiceManagementView();
             return View("Error", "Could not add service");
@@ -294,14 +289,14 @@ namespace Emmaus.Controllers
         public async Task<IActionResult> LoadChildServicesView()
         {
             ViewData["Title"] = "Kids Services";
-            ViewData["services"] = await _kidsServiceRepo.GetServices("kid");
+            ViewData["services"] = await _serviceRepo.GetServices("kid");
             return View("KidServices");
         }
 
         public async Task<IActionResult> LoadAdultServicesView()
         {
             ViewData["Title"] = "Adult Services";
-            ViewData["services"] = await _adultServiceRepo.GetServices("adult");
+            ViewData["services"] = await _serviceRepo.GetServices("adult");
             return View("AdultServices");
         }
 
