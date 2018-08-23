@@ -1,7 +1,7 @@
 @using Emmaus.Helper;
 
 @{
-    var services = (List<Service>)ViewData["services"];
+    var services = (IEnumerable<ServiceCosmos>)ViewData["services"];
     string newTitle = ServiceListHelper.Title(services, "Kids");
 }
 

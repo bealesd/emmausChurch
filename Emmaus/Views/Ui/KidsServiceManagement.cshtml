@@ -1,6 +1,6 @@
 @using Emmaus.Helper;
 @{
-    var services = (List<Service>)ViewData["services"];
+    var services = (IEnumerable<ServiceCosmos>)ViewData["services"];
     string newTitle = ServiceListHelper.Title(services, "Kids");
 }
 
@@ -44,7 +44,7 @@
             </div>
             <div class="fieldFour">
                 <p>
-                    <a onclick="ConfirmDelete('Delete Service?')" asp-action="DeleteKidsService" asp-route-stringService="@service.ToString()">Delete</a>
+                    <a onclick="ConfirmDelete('Delete Service?')" asp-action="DeleteKidsService" asp-route-id="@service.Id">Delete</a>
                 </p>
             </div>
         }

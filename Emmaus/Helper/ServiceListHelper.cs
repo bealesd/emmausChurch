@@ -2,34 +2,47 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace Emmaus.Helper
 {
     public static class ServiceListHelper
     {
-        public static string Title(List<Service> services, string pageTitle)
+        public static readonly string Nbsp = "&nbsp;";
+
+        public static string Title(IEnumerable<ServiceCosmos> services, string pageTitle)
         {
-            string dateStart = services[0].Date.Trim();
-            string dateEnd = services[services.Count - 1].Date.Trim();
             pageTitle = pageTitle.ReplaceWhitespaceWithNbsp();
 
-            var monthStart = dateStart.Split(' ')[1].GetAbbreviatedFromFullName() ?? dateStart.Split(' ')[1];
-            var monthEnd = dateEnd.Split(' ')[1].GetAbbreviatedFromFullName() ?? dateEnd.Split(' ')[1];
+            var servicesList = services.ToList();
+            if (servicesList.Count <= 1) return pageTitle;
 
-            return String.Concat(pageTitle, Helper.Nbsp, monthStart, Helper.Nbsp, "-", Helper.Nbsp, monthEnd, Helper.Nbsp, DateTime.Now.Year);
+            var monthStart = servicesList[0].Date.ToString("MMM", CultureInfo.CurrentCulture);
+            var monthEnd = servicesList[servicesList.Count - 1].Date.ToString("MMM", CultureInfo.CurrentCulture);
+
+            return String.Concat(
+                pageTitle, Nbsp, 
+                monthStart, Nbsp,
+                "-", Nbsp,
+                monthEnd, Nbsp, 
+                servicesList[0].Date.Year);
         }
 
-        public static string GetAbbreviatedFromFullName(this string fullname)
+        public static string ReplaceWhitespaceWithNbsp(this string inputString)
         {
-            DateTime month;
-            return DateTime.TryParseExact(
-                    fullname,
-                    "MMMM",
-                    CultureInfo.CurrentCulture,
-                    DateTimeStyles.None,
-                    out month)
-                ? month.ToString("MMM")
-                : null;
+            string newString = string.Empty;
+            foreach (var item in inputString)
+            {
+                if (char.IsWhiteSpace(item))
+                {
+                    newString += Nbsp;
+                }
+                else
+                {
+                    newString += item;
+                }
+            }
+            return newString;
         }
     }
 }

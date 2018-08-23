@@ -19,8 +19,8 @@ namespace Emmaus.Controllers
         private SignInManager<ApplicationUser> _signInManager;
         private UserManager<ApplicationUser> _userManager;
         private RoleManager<IdentityRole> _roleManager;
-        private IServiceRepo _adultSerivceRepo;
-        private IServiceRepo _kidsSerivceRepo;
+        private ServiceCosmosRepo _adultServiceRepo;
+        private ServiceCosmosRepo _kidsServiceRepo;
 
         public RoleManager<ApplicationUser> RoleManager { get; }
 
@@ -30,9 +30,8 @@ namespace Emmaus.Controllers
             _signInManager = signInManager;
             _userManager = userManager;
             _roleManager = roleManager;
-            var serviceRepoFactory = new ServiceRepoFactory();
-            _adultSerivceRepo = serviceRepoFactory.CreateServiceRepo($"{AppDomain.CurrentDomain.BaseDirectory}data/adultService.csv");
-            _kidsSerivceRepo = serviceRepoFactory.CreateServiceRepo($"{AppDomain.CurrentDomain.BaseDirectory}data/kidsService.csv");
+            _adultServiceRepo = new ServiceCosmosRepo(new DocumentDBRepo<ServiceCosmos>());
+            _kidsServiceRepo = new ServiceCosmosRepo(new DocumentDBRepo<ServiceCosmos>());
         }
 
         public async Task<IActionResult> LoadLoginView()
@@ -180,18 +179,16 @@ namespace Emmaus.Controllers
         [Authorize]
         public async Task<IActionResult> LoadKidsServiceManagementView()
         {
-            ViewData["services"] = _kidsSerivceRepo.GetServices();
+            ViewData["services"] = await _kidsServiceRepo.GetServices("kid");
             ViewData["Title"] = "KidsServiceManagement";
 
             return View("KidsServiceManagement");
         }
 
         [Authorize]
-        public async Task<IActionResult> DeleteKidsService(string stringService)
+        public async Task<IActionResult> DeleteKidsService(string id)
         {
-            var service = new Service();
-            service.ParseStringToParameters(stringService);
-            _kidsSerivceRepo.DeleteService(service);
+            await _kidsServiceRepo.DeleteService(id);
             return await LoadAdultServiceManagementView();
 
             return View("Error", "Could not delete service");
@@ -206,11 +203,16 @@ namespace Emmaus.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> AddKidService(string date, string summary, string speaker)
+        public async Task<IActionResult> AddKidService(DateTime date, string summary, string speaker)
         {
-            var service = new Service() { Date = date, Summary = summary, Speaker = speaker };
+            var service = new ServiceCosmos() {
+                Type ="kid",
+                Date = date,
+                Summary = summary,
+                Speaker = speaker,
+                Id = Guid.NewGuid().ToString() };
 
-            _kidsSerivceRepo.AddService(service);
+            await _kidsServiceRepo.AddService(service);
             return await LoadAdultServiceManagementView();
 
             return View("Error", "Could not add service");
@@ -219,18 +221,17 @@ namespace Emmaus.Controllers
         [Authorize]
         public async Task<IActionResult> LoadAdultServiceManagementView()
         {
-            ViewData["services"] = _adultSerivceRepo.GetServices();
+            ViewData["services"] = await _adultServiceRepo.GetServices("adult");
             ViewData["Title"] = "AdultServiceManagement";
 
             return View("AdultServiceManagement");
         }
 
         [Authorize]
-        public async Task<IActionResult> DeleteAdultService(string stringService)
+        public async Task<IActionResult> DeleteAdultService(string id)
         {
-            var service = new Service();
-            service.ParseStringToParameters(stringService);
-            _adultSerivceRepo.DeleteService(service);
+            await _adultServiceRepo.DeleteService(id);
+
             return await LoadAdultServiceManagementView();
             return View("Error", "Could not delete service");
         }
@@ -246,10 +247,17 @@ namespace Emmaus.Controllers
         [Authorize]
         public async Task<IActionResult> AddAdultService(DateTime date, string summary, string speaker)
         {
-            var formattedDate = $"{date.Day} " + date.ToString("MMMM", CultureInfo.InvariantCulture);
-            var service = new Service() { Date = formattedDate, Summary = summary, Speaker = speaker };
+            var service = new ServiceCosmos()
+            {
+                Type = "adult",
+                Date = date,
+                Summary = summary,
+                Speaker = speaker,
+                Id = Guid.NewGuid().ToString()
+            };
 
-            _adultSerivceRepo.AddService(service);
+            await _kidsServiceRepo.AddService(service);
+
             return await LoadAdultServiceManagementView();
             return View("Error", "Could not add service");
         }
@@ -286,14 +294,14 @@ namespace Emmaus.Controllers
         public async Task<IActionResult> LoadChildServicesView()
         {
             ViewData["Title"] = "Kids Services";
-            ViewData["services"] = _kidsSerivceRepo.GetServices();
+            ViewData["services"] = await _kidsServiceRepo.GetServices("kid");
             return View("KidServices");
         }
 
         public async Task<IActionResult> LoadAdultServicesView()
         {
             ViewData["Title"] = "Adult Services";
-            ViewData["services"] = _adultSerivceRepo.GetServices();
+            ViewData["services"] = await _adultServiceRepo.GetServices("adult");
             return View("AdultServices");
         }
 
