@@ -1,31 +1,29 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace Emmaus.Models
 {
-    public class ServiceCosmos
+    public class Service
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
 
-        [RegularExpression(" ^[^,] + $", ErrorMessage = "Commas are not allowed")]
         [JsonProperty(PropertyName = "summary")]
         public string Summary { get; set; }
 
         [JsonProperty(PropertyName = "date")]
         public DateTime Date { get; set; }
 
-        [RegularExpression(" ^[^,] + $", ErrorMessage = "Commas are not allowed")]
         [JsonProperty(PropertyName = "speaker")]
         public string Speaker { get; set; }
 
         [JsonProperty(PropertyName = "type")]
         public string Type { get; set; }
 
-        public override string ToString()
+        public string ToDayMonth()
         {
-            return string.Join(',', new string[] { Date.ToString(), Summary, Speaker });
+            return String.Concat( Date.Day, " ", Date.ToString("MMM", CultureInfo.CurrentCulture));
         }
     }
 }

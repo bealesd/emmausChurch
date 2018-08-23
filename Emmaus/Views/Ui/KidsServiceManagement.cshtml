@@ -1,6 +1,6 @@
 @using Emmaus.Helper;
 @{
-    var services = (IEnumerable<ServiceCosmos>)ViewData["services"];
+    var services = (IEnumerable<Service>)ViewData["services"];
     string newTitle = ServiceListHelper.Title(services, "Kids");
 }
 
@@ -32,7 +32,7 @@
         @foreach (var service in services)
         {
             <div class="fieldOne">
-                <p>@service.Date</p>
+                <p>@service.ToDayMonth()</p>
             </div>
             <div class="fieldTwo">
                 <p>

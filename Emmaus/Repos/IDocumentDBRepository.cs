@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents;
 
-namespace todo
+namespace Emmaus.Repos
 {
     public interface IDocumentDBRepository<T> where T : class
     {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Emmaus.Models;
 
@@ -8,23 +7,31 @@ namespace Emmaus.Repos
 {
     public interface IServiceRepo
     {
-        List<ServiceCosmos> GetServices();
-        void DeleteService(ServiceCosmos service);
-        void AddService(ServiceCosmos service);
+        List<Service> GetServices();
+        void DeleteService(Service service);
+        void AddService(Service service);
     }
 
     public class ServiceCosmosRepo
     {
-        public DocumentDBRepo<ServiceCosmos> _documentDBRepo;
+        public DocumentDBRepo<Service> _documentDBRepo;
 
-        public ServiceCosmosRepo(DocumentDBRepo<ServiceCosmos> documentDBRepo)
+        public ServiceCosmosRepo(DocumentDBRepo<Service> documentDBRepo)
         {
             _documentDBRepo = documentDBRepo;
         }
 
-        public async Task<IEnumerable<ServiceCosmos>> GetServices(string type)
+        public async Task<IEnumerable<Service>> GetServices(string type)
         {
-            return await _documentDBRepo.GetItemsAsync(d => d.Type == type);
+            try
+            {
+                return await _documentDBRepo.GetItemsAsync(d => d.Type == type);
+            }
+            catch (Exception)
+            {
+
+                throw new Exception("Could not get services");
+            }
         }
 
         public async Task DeleteService(string id)
@@ -39,7 +46,7 @@ namespace Emmaus.Repos
             }
         }
 
-        public async Task AddService(ServiceCosmos service)
+        public async Task AddService(Service service)
         {
             try
             {

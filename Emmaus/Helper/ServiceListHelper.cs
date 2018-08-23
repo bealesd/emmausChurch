@@ -10,7 +10,7 @@ namespace Emmaus.Helper
     {
         public static readonly string Nbsp = "&nbsp;";
 
-        public static string Title(IEnumerable<ServiceCosmos> services, string pageTitle)
+        public static string Title(IEnumerable<Service> services, string pageTitle)
         {
             pageTitle = pageTitle.ReplaceWhitespaceWithNbsp();
 

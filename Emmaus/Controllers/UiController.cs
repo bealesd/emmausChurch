@@ -30,8 +30,8 @@ namespace Emmaus.Controllers
             _signInManager = signInManager;
             _userManager = userManager;
             _roleManager = roleManager;
-            _adultServiceRepo = new ServiceCosmosRepo(new DocumentDBRepo<ServiceCosmos>());
-            _kidsServiceRepo = new ServiceCosmosRepo(new DocumentDBRepo<ServiceCosmos>());
+            _adultServiceRepo = new ServiceCosmosRepo(new DocumentDBRepo<Service>());
+            _kidsServiceRepo = new ServiceCosmosRepo(new DocumentDBRepo<Service>());
         }
 
         public async Task<IActionResult> LoadLoginView()
@@ -205,7 +205,7 @@ namespace Emmaus.Controllers
         [Authorize]
         public async Task<IActionResult> AddKidService(DateTime date, string summary, string speaker)
         {
-            var service = new ServiceCosmos() {
+            var service = new Service() {
                 Type ="kid",
                 Date = date,
                 Summary = summary,
@@ -247,7 +247,7 @@ namespace Emmaus.Controllers
         [Authorize]
         public async Task<IActionResult> AddAdultService(DateTime date, string summary, string speaker)
         {
-            var service = new ServiceCosmos()
+            var service = new Service()
             {
                 Type = "adult",
                 Date = date,
