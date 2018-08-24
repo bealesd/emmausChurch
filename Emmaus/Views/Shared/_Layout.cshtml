@@ -61,9 +61,9 @@
                 return String.Concat(createUserLink, "");
             }
 
-            else if (pageName.Contains("kidsservicemanagement") && User.Identity.IsAuthenticated)
+            else if (pageName.Contains("kidservicemanagement") && User.Identity.IsAuthenticated)
             {
-                var createUserLink = "<a class='subLink' href='/Ui/LoadCreateKidsServiceView'><p>Create&nbsp;Service</p></a>";
+                var createUserLink = "<a class='subLink' href='/Ui/LoadCreateKidServiceView'><p>Create&nbsp;Service</p></a>";
 
                 return String.Concat(createUserLink, "");
             }

@@ -9,10 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 using System;
-using System.IO;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace Emmaus
@@ -64,7 +61,8 @@ namespace Emmaus
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddSingleton<IServiceRepo>(new ServiceCosmosRepo(new DocumentDBRepo<Service>()));
+            //services.AddSingleton<IServiceRepo>(new ServiceCosmosRepo(new DocumentDBRepo<Service>()));
+            services.AddSingleton<IServiceRepo>(new ServiceTableRepo());
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)

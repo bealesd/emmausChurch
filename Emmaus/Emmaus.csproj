@@ -8,10 +8,11 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.Azure.DocumentDB.Core" Version="1.9.1" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.1.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Views\Ui\CreateKidsServiceView.cshtml">
+    <Content Update="Views\Ui\CreateKidServiceView.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Ui\CreateAdultServiceView.cshtml">

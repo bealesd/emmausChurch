@@ -1,20 +1,22 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.WindowsAzure.Storage.Table;
+using Newtonsoft.Json;
 using System;
 using System.Globalization;
 
 namespace Emmaus.Models
 {
-    public class Service
+    public class Service : TableEntity
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
 
-       [JsonProperty(PropertyName = "date")]
+        [JsonProperty(PropertyName = "date")]
         public DateTime Date { get; set; }
 
         private string _story;
         [JsonProperty(PropertyName = "story")]
-        public string Story {
+        public string Story
+        {
             get
             {
                 return _story.Trim() ?? string.Empty;
@@ -27,7 +29,8 @@ namespace Emmaus.Models
 
         private string _text;
         [JsonProperty(PropertyName = "text")]
-        public string Text {
+        public string Text
+        {
             get
             {
                 return _text.Trim() ?? string.Empty;
@@ -40,7 +43,8 @@ namespace Emmaus.Models
 
         private string _speaker;
         [JsonProperty(PropertyName = "speaker")]
-        public string Speaker {
+        public string Speaker
+        {
             get
             {
                 return _speaker.Trim() ?? string.Empty;
@@ -54,9 +58,14 @@ namespace Emmaus.Models
         [JsonProperty(PropertyName = "type")]
         public string Type { get; set; }
 
+        public string ToMonth()
+        {
+            return Date.ToString("MMM", CultureInfo.CurrentCulture);
+        }
+
         public string ToDayMonth()
         {
-            return String.Concat( Date.Day, " ", Date.ToString("MMM", CultureInfo.CurrentCulture));
+            return String.Concat(Date.Day, " ", Date.ToString("MMM", CultureInfo.CurrentCulture));
         }
     }
 }

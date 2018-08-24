@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
 using System.Collections.Generic;
+using Emmaus.Helper;
 
 namespace Emmaus.Controllers
 {
@@ -197,11 +198,12 @@ namespace Emmaus.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> AddKidService(DateTime date, string story, string text, string speaker)
+        public async Task<IActionResult> AddKidService(DateTime dateTime, string story, string text, string speaker)
         {
+            DateTime d = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 12, 12, 12);
             var service = new Service() {
                 Type ="kid",
-                Date = date,
+                Date = d,
                 Story = story,
                 Text = text,
                 Speaker = speaker,
@@ -240,12 +242,13 @@ namespace Emmaus.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> AddAdultService(DateTime date, string story, string text, string speaker)
+        public async Task<IActionResult> AddAdultService(DateTime dateTime, string story, string text, string speaker)
         {
+            DateTime d = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 12, 12, 12);
             var service = new Service()
             {
                 Type = "adult",
-                Date = date,
+                Date = d,
                 Story = story,
                 Text = text,
                 Speaker = speaker,
@@ -255,7 +258,6 @@ namespace Emmaus.Controllers
             await _serviceRepo.AddService(service);
 
             return await LoadAdultServiceManagementView();
-            return View("Error", "Could not add service");
         }
 
         public async Task<IActionResult> LoadWelcomeView()

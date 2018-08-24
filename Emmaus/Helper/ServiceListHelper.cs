@@ -17,8 +17,8 @@ namespace Emmaus.Helper
             var servicesList = services.ToList();
             if (servicesList.Count <= 1) return pageTitle;
 
-            var monthStart = servicesList[0].Date.ToString("MMM", CultureInfo.CurrentCulture);
-            var monthEnd = servicesList[servicesList.Count - 1].Date.ToString("MMM", CultureInfo.CurrentCulture);
+            var monthStart = servicesList[0].ToMonth();
+            var monthEnd = servicesList[servicesList.Count - 1].ToMonth();
 
             return String.Concat(
                 pageTitle, Nbsp, 
