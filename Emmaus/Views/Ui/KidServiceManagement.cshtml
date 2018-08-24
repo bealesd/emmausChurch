@@ -33,25 +33,32 @@
             <p>Delete</p>
         </div>
 
+        <div class="fieldSix table-header">
+            <p>Edit</p>
+        </div>
+
         @foreach (var service in services)
         {
             <div class="fieldOne">
-                <p>@service.ToDayMonth()</p>
+                <p>@service.ToDayMonth()<input class="input date" type="date" name="dateTime" value="@service.Date" /></p>
             </div>
             <div class="fieldTwo">
-                <p>
-                    @service.Story
-                </p>
+                <textarea name="Story" cols="40" rows="5">@service.Story</textarea>
             </div>
             <div class="fieldThree">
-                <p>@service.Text</p>
+                <textarea name="Text" cols="40" rows="5">@service.Text</textarea>
             </div>
             <div class="fieldFour">
-                <p>@service.Speaker</p>
+                <textarea name="Speaker" cols="40" rows="5">@service.Speaker</textarea>
             </div>
             <div class="fieldFive">
                 <p>
                     <a onclick="ConfirmDelete('Delete Service?')" asp-action="DeleteKidService" asp-route-id="@service.Id">Delete</a>
+                </p>
+            </div>
+            <div id="@service.Id" class="fieldSix">
+                <p>
+                    <a onclick="EditService(this)">Edit</a>
                 </p>
             </div>
         }
@@ -60,7 +67,6 @@
     <!--#endregion -->
 </div>
 
-
 <script>
     function ConfirmDelete(message) {
         if (confirm(message)) {
@@ -68,4 +74,23 @@
         }
         event.preventDefault();
     }
+
+    function EditService(self) {
+        var divParent = self.parentElement.parentElement;
+        var divArray = Array.prototype.slice.call(document.getElementsByClassName('editTable')[0].children);
+        var pos = divArray.indexOf(divParent);
+        var speaker = divArray[pos - 2].children[0].value;
+        var text = divArray[pos - 3].children[0].value;
+        var story = divArray[pos - 4].children[0].value;
+        var id = divParent.id;
+        var date = divArray[pos - 5];
+        let newDate = date.children[0].children[0].value;
+        if (newDate === '') {
+            newDate = '1999-01-01';
+        }
+
+        var url = '@Html.Raw(@Url.Action("EditKidService", "Ui"))' + '?dateTime=' + newDate + '&story=' + story + '&speaker=' + speaker + '&text=' + text + '&id=' + id;
+        divArray[pos].getElementsByTagName("a")[0].href = url;
+    }
+
 </script>

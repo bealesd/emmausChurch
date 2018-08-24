@@ -87,7 +87,11 @@ namespace Emmaus.Repos
 
             retrieveEntity.Text = service.Text;
             retrieveEntity.Story = service.Story;
-            retrieveEntity.Date = service.Date;
+            retrieveEntity.Speaker = service.Speaker;
+            if (service.Date.Year != 1999 || service.Date.Year > DateTime.Now.Year - 1)
+            {
+                retrieveEntity.Date = service.Date;
+            }
 
             TableOperation tableOperation = TableOperation.Replace(retrieveEntity);
             await _table.ExecuteAsync(tableOperation);

@@ -185,8 +185,22 @@ namespace Emmaus.Controllers
         {
             await _serviceRepo.DeleteService(id);
             return await LoadKidServiceManagementView();
+        }
 
-            return View("Error", "Could not delete service");
+        [Authorize]
+        public async Task<IActionResult> EditKidService(DateTime dateTime, string story, string text, string speaker, string id)
+        {
+            var service = new Service() { Date = dateTime, Story = story, Text = text, Speaker = speaker, Id = id };
+            await _serviceRepo.UpdateService(service);
+            return await LoadKidServiceManagementView();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> EditAdultService(DateTime dateTime, string story, string text, string speaker, string id)
+        {
+            var service = new Service() { Date = dateTime, Story = story, Text = text, Speaker = speaker, Id = id };
+            await _serviceRepo.UpdateService(service);
+            return await LoadAdultServiceManagementView();
         }
 
         [Authorize]
@@ -230,7 +244,6 @@ namespace Emmaus.Controllers
             await _serviceRepo.DeleteService(id);
 
             return await LoadAdultServiceManagementView();
-            return View("Error", "Could not delete service");
         }
 
         [Authorize]

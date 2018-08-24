@@ -450,7 +450,7 @@ body {
             grid-row: 4;
             grid-column: 2;
             display: grid;
-            grid-template-columns: repeat(5, 150px);
+            grid-template-columns: repeat(6, 150px);
             grid-template-rows: repeat(auto, 60px);
             min-height: 63vh;
         }
@@ -459,7 +459,8 @@ body {
             .wrapper .mainWrapper .editTable .fieldTwo,
             .wrapper .mainWrapper .editTable .fieldThree,
             .wrapper .mainWrapper .editTable .fieldFour,
-            .wrapper .mainWrapper .editTable .fieldFive {
+            .wrapper .mainWrapper .editTable .fieldFive,
+            .wrapper .mainWrapper .editTable .fieldSix {
                 display: grid;
                 padding-left: 25px;
                 border-bottom: solid 1px lightgray;
