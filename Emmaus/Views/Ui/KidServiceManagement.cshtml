@@ -86,7 +86,7 @@
         var date = divArray[pos - 5];
         let newDate = date.children[0].children[0].value;
         if (newDate === '') {
-            newDate = '1999-01-01';
+            newDate = '1999-01-01'; 
         }
 
         var url = '@Html.Raw(@Url.Action("EditKidService", "Ui"))' + '?dateTime=' + newDate + '&story=' + story + '&speaker=' + speaker + '&text=' + text + '&id=' + id;

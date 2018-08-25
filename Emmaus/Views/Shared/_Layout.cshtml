@@ -40,14 +40,14 @@
                 return String.Concat(teamLink, historyLink);
             }
 
-            else if (pageName.Contains("usermanagement") && User.IsInRole("admin"))
+            else if (pageName.Contains("usermanagement") && User.IsInRole("powerUser"))
             {
                 var createUserLink = "<a class='subLink' href='/Ui/LoadCreateUserView'><p>Create&nbsp;User</p></a>";
 
                 return String.Concat(createUserLink, "");
             }
 
-            else if (pageName.Contains("rolemanagement") && User.IsInRole("admin"))
+            else if (pageName.Contains("rolemanagement") && User.IsInRole("powerUser"))
             {
                 var createUserLink = "<a class='subLink' href='/Ui/LoadCreateRoleView'><p>Create&nbsp;Role</p></a>";
 
