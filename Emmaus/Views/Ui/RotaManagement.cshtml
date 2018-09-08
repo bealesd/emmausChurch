@@ -1,0 +1,82 @@
+﻿@using Emmaus.Helper;
+@{
+    var rotas = (List<RotaDto>)ViewData["rota"];
+    var names = rotas.Select(r => r.Name).Distinct().OrderBy(n => n);
+    var dates = rotas.Select(r => r.Date.Date).Distinct().OrderBy(d => d);
+    var dateToListOfRolesMap = new Dictionary<DateTime, List<string>>();
+    foreach (var date in dates)
+    {
+        var roles = new List<string>();
+        foreach (var name in names)
+        {
+
+            var rota = rotas.FirstOrDefault(r => r.Date.Date == date && r.Name == name);
+            if (rota != null)
+            {
+                roles.Add(rota.Role);
+            }
+            else
+            {
+                roles.Add("--");
+            }
+        }
+        dateToListOfRolesMap[date] = roles;
+    }
+}
+
+<div class="mainWrapper">
+
+    <div class="title">
+        Rota Management
+    </div>
+
+    <!--#region table  -->
+    <div class="rotaManagement">
+
+        <table style="">
+            <tr>
+                <th class="table-header">Date</th>
+
+                @if (rotas.Count > 0)
+                {
+                    @foreach (var name in names)
+                    {
+                        <th class="table-header">@name</th>
+                    }
+                }
+                else
+                {
+                    <th class="table-header">Name</th>
+                }
+
+            </tr>
+
+            @if (rotas.Count > 0)
+            {
+                @foreach (var date in dates)
+                {
+                    <tr>
+                        <td class="field">@date.Date.ToFriendlyDate()</td>
+
+                        @foreach (var role in dateToListOfRolesMap[date])
+                        {
+                            <td class="field">@role</td>
+                        }
+                    </tr>
+                }
+
+            }
+
+        </table>
+
+    </div>
+</div>
+
+<script>
+    function ConfirmDelete(message) {
+        if (confirm(message)) {
+            return;
+        }
+        event.preventDefault();
+    }
+</script>

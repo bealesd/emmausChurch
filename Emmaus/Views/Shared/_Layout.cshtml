@@ -68,6 +68,15 @@
                 return String.Concat(createUserLink, "");
             }
 
+            else if (pageName.Contains("rotamanagement") && User.Identity.IsAuthenticated)
+            {
+                var createUserLink = "<a class='subLink' href='/Ui/LoadCreateEventView'><p>Create&nbsp;event</p></a>";
+
+                return String.Concat(createUserLink, "");
+            }
+
+
+
             return "";
         }
 
@@ -90,7 +99,8 @@
             {
                 var userManagementLink = "<a class='subLinkRight' href='/Ui/LoadUserManagementView'><p>User&nbsp;Management</p></a>";
                 var roleManagementLink = "<a class='subLinkRight' href='/Ui/LoadRoleManagementView'><p>Role&nbsp;Management</p></a>";
-                return String.Concat(logoutLink, editKidSerivceLink, editAdultServiceLink, userManagementLink, roleManagementLink);
+                var rotaManagementLink = "<a class='subLinkRight' href='/Ui/LoadRotaManagementView'><p>Rota&nbsp;Management</p></a>";
+                return String.Concat(logoutLink, editKidSerivceLink, editAdultServiceLink, userManagementLink, roleManagementLink, rotaManagementLink);
             }
 
             return String.Concat(logoutLink, editKidSerivceLink, editAdultServiceLink);

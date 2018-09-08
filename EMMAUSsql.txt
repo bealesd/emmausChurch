@@ -1,0 +1,21 @@
+UPDATE dbo.aspnetuserroles
+SET ROLEID = '5e3f5c03-c4bc-4b4a-997a-850f8dfdd00d'
+WHERE USERID = 'caa278e2-489f-48d6-b45c-0402af43c64b'
+
+select * from dbo.aspnetuserroles
+
+select * from dbo.aspnetroles
+caa278e2-489f-48d6-b45c-0402a
+
+select ID from dbo.aspnetusers
+
+MSDEPLOY_RENAME_LOCKED_FILES = 1
+
+emmausAuth_db
+adavid
+widyoikCojoott4
+
+Server=tcp:emmaus.database.windows.net,1433;Initial Catalog=emmausAuth_db;Persist Security Info=False;User ID={your_username};Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+Data Source=emmaus.database.windows.net;Initial Catalog=emmausAuth_db;User ID=adavid;Password=widyoikCojoott4;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False
+
+Server=(localdb)\mssqllocaldb;Database=aspnet-IdentityDemo-7939A8EF-89B2-46F3-9E64-E33629F164CB;Trusted_Connection=True;MultipleActiveResultSets=true

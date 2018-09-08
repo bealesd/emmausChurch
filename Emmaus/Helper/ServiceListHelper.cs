@@ -44,5 +44,10 @@ namespace Emmaus.Helper
             }
             return newString;
         }
+
+        public static string ToFriendlyDate(this DateTime dateTime)
+        {
+            return String.Concat(dateTime.Day, " ", dateTime.ToString("MMM", CultureInfo.CurrentCulture));
+        }
     }
 }

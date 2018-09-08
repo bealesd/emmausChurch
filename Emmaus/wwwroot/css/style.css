@@ -473,6 +473,29 @@ body {
                 border-bottom: solid 1px lightgray;
             }
 
+
+        .wrapper .mainWrapper .rotaManagement {
+            grid-row: 4;
+            grid-column: 2;
+            display: grid;
+            grid-template-columns: repeat(2, 150px);
+            grid-template-rows: repeat(auto, 60px);
+            min-height: 63vh;
+        }
+
+            .wrapper .mainWrapper .rotaManagement .field {
+                padding-left: 25px;
+                border-bottom: solid 1px lightgray;
+            }
+
+            .wrapper .mainWrapper .rotaManagement .table-header {
+                padding-left: 25px;
+                font-weight: 900;
+                text-transform: uppercase;
+                border-bottom: solid 1px lightgray;
+            }
+
+
         .wrapper .mainWrapper .roleManagement {
             grid-row: 4;
             grid-column: 2;
@@ -482,13 +505,13 @@ body {
             min-height: 63vh;
         }
 
-        .wrapper .mainWrapper .roleManagement .fieldOne,
-        .wrapper .mainWrapper .roleManagement .fieldTwo,
-        .wrapper .mainWrapper .roleManagement .fieldThree {
-            display: grid;
-            padding-left: 25px;
-            border-bottom: solid 1px lightgray;
-        }
+            .wrapper .mainWrapper .roleManagement .fieldOne,
+            .wrapper .mainWrapper .roleManagement .fieldTwo,
+            .wrapper .mainWrapper .roleManagement .fieldThree {
+                display: grid;
+                padding-left: 25px;
+                border-bottom: solid 1px lightgray;
+            }
 
             .wrapper .mainWrapper .roleManagement .table-header {
                 padding-left: 25px;
@@ -522,9 +545,9 @@ body {
             }
 
 
-.wrapper .footer {
-    background-color: whitesmoke;
-    grid-row: 3;
-    grid-column: 1 / 4;
-    text-align: center;
-}
+    .wrapper .footer {
+        background-color: whitesmoke;
+        grid-row: 3;
+        grid-column: 1 / 4;
+        text-align: center;
+    }

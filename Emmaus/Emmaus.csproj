@@ -12,6 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Ui\CreateEventView.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Ui\CreateKidServiceView.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
@@ -33,10 +36,10 @@
     <Content Update="Views\Ui\KidServiceManagement.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Ui\UserManagement.cshtml">
+    <Content Update="Views\Ui\RoleManagement.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Ui\RoleManagement.cshtml">
+    <Content Update="Views\Ui\UserManagement.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Ui\Login.cshtml">
@@ -72,12 +75,6 @@
     <Content Update="wwwroot\images\bluesky50.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Data\adultService.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

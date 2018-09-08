@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAzure.Storage.Table;
+﻿using Emmaus.Helper;
+using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
 using System;
 using System.Globalization;
@@ -65,7 +66,7 @@ namespace Emmaus.Models
 
         public string ToDayMonth()
         {
-            return String.Concat(Date.Day, " ", Date.ToString("MMM", CultureInfo.CurrentCulture));
+            return Date.ToFriendlyDate();
         }
     }
 }

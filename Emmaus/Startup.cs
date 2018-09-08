@@ -63,6 +63,7 @@ namespace Emmaus
 
             //services.AddSingleton<IServiceRepo>(new ServiceCosmosRepo(new DocumentDBRepo<Service>()));
             services.AddSingleton<IServiceRepo>(new ServiceTableRepo());
+            services.AddSingleton<IRotaRepo>(new RotaRepo());
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
