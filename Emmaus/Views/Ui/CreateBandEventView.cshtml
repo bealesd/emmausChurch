@@ -1,0 +1,24 @@
+﻿@using Emmaus.Helper;
+
+<div class="mainWrapper">
+
+    <div class="title">
+        @{
+            (ViewData["Title"] as string).ReplaceWhitespaceWithNbsp();
+        }
+    </div>
+
+    <div class="CreateRole">
+
+        <div class="Form-style">
+
+            <form asp-action="AddBandRota" method="post">
+
+                <input class="input date" type="date" name="dateTime" />
+                <select class="input" name="Name" asp-items="Html.GetEnumSelectList<BandLeader>()"></select>
+                <select class="input" name="Role" asp-items="Html.GetEnumSelectList<BandRole>()"></select>
+                <button class="submit" type="submit">Add</button>
+            </form>
+        </div>
+    </div>
+</div>

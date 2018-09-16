@@ -7,22 +7,22 @@ namespace Emmaus.Repos
 {
     public interface IServiceRepo
     {
-        Task<IEnumerable<Service>> GetServices(string id);
+        Task<IEnumerable<Models.Service>> GetServices(string id);
         Task DeleteService(string id);
-        Task AddService(Service service);
-        Task UpdateService(Service service);
+        Task AddService(Models.Service service);
+        Task UpdateService(Models.Service service);
     }
 
     public class ServiceCosmosRepo : IServiceRepo
     {
-        public IDocumentDBRepository<Service> _documentDBRepo;
+        public IDocumentDBRepository<Models.Service> _documentDBRepo;
 
-        public ServiceCosmosRepo(IDocumentDBRepository<Service> documentDBRepo)
+        public ServiceCosmosRepo(IDocumentDBRepository<Models.Service> documentDBRepo)
         {
             _documentDBRepo = documentDBRepo;
         }
 
-        public async Task<IEnumerable<Service>> GetServices(string type)
+        public async Task<IEnumerable<Models.Service>> GetServices(string type)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace Emmaus.Repos
             }
         }
 
-        public async Task AddService(Service service)
+        public async Task AddService(Models.Service service)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace Emmaus.Repos
             }
         }
 
-        public Task UpdateService(Service service)
+        public Task UpdateService(Models.Service service)
         {
             throw new NotImplementedException();
         }

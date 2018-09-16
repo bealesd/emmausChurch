@@ -1,7 +1,11 @@
-﻿<div class="mainWrapper">
+﻿@using Emmaus.Helper;
+
+<div class="mainWrapper">
 
     <div class="title">
-        Add&nbsp;Event
+        @{
+            (ViewData["Title"] as string).ReplaceWhitespaceWithNbsp();
+        }
     </div>
 
     <div class="CreateRole">
@@ -11,8 +15,6 @@
             <form asp-action="AddYouthClubRota" method="post">
 
                 <input class="input date" type="date" name="dateTime" />
-                @*<input class="input text" type="text" name="Name" placeholder="Name" />
-                <input class="input text" type="text" name="Role" placeholder="Role" />*@
                 <select class="input" name="Name" asp-items="Html.GetEnumSelectList<YouthClubLeader>()"></select>
                 <select class="input" name="Role" asp-items="Html.GetEnumSelectList<YouthClubRole>()"></select>
                 <button class="submit" type="submit">Add</button>

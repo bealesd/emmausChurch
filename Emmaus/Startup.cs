@@ -1,6 +1,7 @@
 ﻿using Emmaus.Data;
 using Emmaus.Models;
 using Emmaus.Repos;
+using Emmaus.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -63,7 +64,8 @@ namespace Emmaus
 
             //services.AddSingleton<IServiceRepo>(new ServiceCosmosRepo(new DocumentDBRepo<Service>()));
             services.AddSingleton<IServiceRepo>(new ServiceTableRepo());
-            services.AddSingleton<IRotaRepo>(new RotaRepo());
+            //services.AddSingleton<IRotaRepo>(new RotaRepo());
+            services.AddSingleton<IRotaService>(new RotaService(new RotaRepo()));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)

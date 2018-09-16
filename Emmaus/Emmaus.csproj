@@ -12,7 +12,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Views\Ui\CreateEventView.cshtml">
+    <Content Update="Views\Ui\CreateProjectionEventView.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Ui\CreateBandEventView.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Ui\CreateYouthEventView.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Ui\CreateKidServiceView.cshtml">

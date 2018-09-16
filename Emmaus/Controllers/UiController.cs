@@ -1,5 +1,6 @@
 ﻿using Emmaus.Models;
 using Emmaus.Repos;
+using Emmaus.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -17,18 +18,18 @@ namespace Emmaus.Controllers
         private UserManager<ApplicationUser> _userManager;
         private RoleManager<IdentityRole> _roleManager;
         private IServiceRepo _serviceRepo;
-        private readonly IRotaRepo rotaRepo;
+        private readonly IRotaService _rotaService;
 
         public RoleManager<ApplicationUser> RoleManager { get; }
 
         public UiController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager, IServiceRepo serviceRepo,  IRotaRepo rotaRepo)
+            RoleManager<IdentityRole> roleManager, IServiceRepo serviceRepo, IRotaService rotaService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _roleManager = roleManager;
             _serviceRepo = serviceRepo;
-            this.rotaRepo = rotaRepo;
+            _rotaService = rotaService;
         }
 
         public async Task<IActionResult> LoadLoginView()
@@ -71,13 +72,13 @@ namespace Emmaus.Controllers
         [Authorize(Roles = "powerUser")]
         public async Task<IActionResult> LoadUserManagementView()
         {
-            List<ApplicationUser> users = _userManager.Users.ToList();
-            List<UserInfo> userInfos = new List<UserInfo>() { };
+            var users = _userManager.Users.ToList();
+            var userInfos = new List<UserInfo>() { };
 
             foreach (ApplicationUser user in users)
             {
                 ApplicationUser applicationUser = await _userManager.FindByEmailAsync(user.Email);
-                string role = (await _signInManager.UserManager.GetRolesAsync(applicationUser))[0];
+                var role = (await _signInManager.UserManager.GetRolesAsync(applicationUser))[0];
                 userInfos.Add(new UserInfo() { EmailAddress = user.Email, Role = role });
             }
 
@@ -111,7 +112,7 @@ namespace Emmaus.Controllers
         {
             ViewData["Title"] = "User Management";
 
-            ApplicationUser user = new ApplicationUser { UserName = login.EmailAddress, Email = login.EmailAddress };
+            var user = new ApplicationUser { UserName = login.EmailAddress, Email = login.EmailAddress };
             IdentityResult result = await _userManager.CreateAsync(user, login.Password);
             if (result.Succeeded)
             {
@@ -126,7 +127,7 @@ namespace Emmaus.Controllers
         [Authorize(Roles = "powerUser")]
         public async Task<IActionResult> LoadRoleManagementView()
         {
-            List<IdentityRole> roles = _roleManager.Roles.ToList();
+            var roles = _roleManager.Roles.ToList();
 
             ViewData["Roles"] = roles;
             ViewData["Title"] = "RoleManagement";
@@ -160,10 +161,10 @@ namespace Emmaus.Controllers
         public async Task<IActionResult> CreateRole(RoleInfo roleInfo)
         {
             ViewData["Title"] = "Role Management";
-            bool roleExists = await _roleManager.RoleExistsAsync(roleInfo.Rolename);
+            var roleExists = await _roleManager.RoleExistsAsync(roleInfo.Rolename);
             if (!roleExists)
             {
-                IdentityRole role = new IdentityRole();
+                var role = new IdentityRole();
                 role.Name = roleInfo.Rolename;
                 await _roleManager.CreateAsync(role);
                 return RedirectToAction(nameof(LoadRoleManagementView));
@@ -191,7 +192,7 @@ namespace Emmaus.Controllers
         [Authorize]
         public async Task<IActionResult> EditKidService(DateTime dateTime, string story, string text, string speaker, string id)
         {
-            Service service = new Service() { Date = dateTime, Story = story, Text = text, Speaker = speaker, Id = id };
+            var service = new Models.Service() { Date = dateTime, Story = story, Text = text, Speaker = speaker, Id = id };
             await _serviceRepo.UpdateService(service);
             return await LoadKidServiceManagementView();
         }
@@ -199,7 +200,7 @@ namespace Emmaus.Controllers
         [Authorize]
         public async Task<IActionResult> EditAdultService(DateTime dateTime, string story, string text, string speaker, string id)
         {
-            Service service = new Service() { Date = dateTime, Story = story, Text = text, Speaker = speaker, Id = id };
+            var service = new Models.Service() { Date = dateTime, Story = story, Text = text, Speaker = speaker, Id = id };
             await _serviceRepo.UpdateService(service);
             return await LoadAdultServiceManagementView();
         }
@@ -215,8 +216,8 @@ namespace Emmaus.Controllers
         [Authorize]
         public async Task<IActionResult> AddKidService(DateTime dateTime, string story, string text, string speaker)
         {
-            DateTime d = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 12, 12, 12);
-            Service service = new Service()
+            var d = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 12, 12, 12);
+            var service = new Models.Service()
             {
                 Type = "kid",
                 Date = d,
@@ -260,8 +261,8 @@ namespace Emmaus.Controllers
         [Authorize]
         public async Task<IActionResult> AddAdultService(DateTime dateTime, string story, string text, string speaker)
         {
-            DateTime d = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 12, 12, 12);
-            Service service = new Service()
+            var d = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 12, 12, 12);
+            var service = new Models.Service()
             {
                 Type = "adult",
                 Date = d,
@@ -272,57 +273,156 @@ namespace Emmaus.Controllers
             };
 
             await _serviceRepo.AddService(service);
-
             return await LoadAdultServiceManagementView();
         }
 
         [Authorize]
-        public async Task<IActionResult> LoadRotaManagementView()
+        public async Task<IActionResult> LoadCreateYouthView()
         {
+            ViewData["Title"] = "Create Youth Event";
+            return View("CreateYouthEventView");
+        }
 
-            //Rota rota = new Rota(
-            //    new List<Name>() { Name.carol, Name.damian },
-            //    new List<Role>() { Role.craft, Role.games });
+        [Authorize]
+        public async Task<IActionResult> LoadCreateBandView()
+        {
+            ViewData["Title"] = "Create Band Event";
+            return View("CreateBandEventView");
+        }
 
-            //rota.AddEvent(DateTime.Now, new Dictionary<Name, Role>() {
-            //    [Name.carol] = Role.craft,
-            //    [Name.damian] = Role.food,
-            //    [Name.damian] = Role.games
-            //});
-
-            var rotas = await rotaRepo.GetRota("youthclub");
-
-            ViewData["rota"] = rotas;
-            ViewData["Title"] = "RotaManagement";
-
-            return View("RotaManagement");
+        [Authorize]
+        public async Task<IActionResult> LoadCreateProjectionView()
+        {
+            ViewData["Title"] = "Create Projection Event";
+            return View("CreateProjectionEventView");
         }
 
 
         [Authorize]
-        public async Task<IActionResult> LoadCreateEventView()
+        public async Task<IActionResult> LoadYouthRotaView()
         {
-            ViewData["Title"] = "CreateEvent";
+            RotaDictionary rota = await _rotaService.GetRota(YouthClubLeader.CarolMiller);
+            ViewData["rota"] = rota;
+            ViewData["names"] = Enum.GetNames(typeof(YouthClubLeader)).OrderBy(n => n).ToList();
+            ViewData["Title"] = "Youth Rota";
+            return View("RotaManagement");
+        }
 
-            return View("CreateEventView");
+        [Authorize]
+        public async Task<IActionResult> LoadBandRotaView()
+        {
+            RotaDictionary rotas = await _rotaService.GetRota(BandLeader.Hetty);
+            ViewData["rota"] = rotas;
+            ViewData["names"] = Enum.GetNames(typeof(BandLeader)).OrderBy(n => n).ToList();
+            ViewData["Title"] = "Band Rota";
+            return View("RotaManagement");
+        }
+        [Authorize]
+        public async Task<IActionResult> LoadProjectionRotaView()
+        {
+            RotaDictionary rotas = await _rotaService.GetRota(ProjectionLeader.BillBeales);
+            ViewData["rota"] = rotas;
+            ViewData["names"] = Enum.GetNames(typeof(ProjectionLeader)).OrderBy(n => n).ToList();
+            ViewData["Title"] = "Projection Rota";
+            return View("RotaManagement");
         }
 
         [Authorize]
         public async Task<IActionResult> AddYouthClubRota(DateTime dateTime, YouthClubLeader name, YouthClubRole role)
         {
-            DateTime d = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 12, 12, 12);
-            RotaDto rota = new RotaDto()
+            var rota = new RotaDto()
             {
-                Type = "youthclub",
-                Date = d,
+                Type = YouthClubLeader.CarolMiller.GetType().Name,
+                Date = new Date(dateTime.Year, dateTime.Month, dateTime.Day),
                 Name = name.ToString(),
                 Role = role.ToString(),
                 Id = Guid.NewGuid().ToString()
             };
 
-            await rotaRepo.AddRota(rota);
+            await _rotaService.AddRota(rota);
 
-            return await LoadRotaManagementView();
+            return await LoadYouthRotaView();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> AddBandRota(DateTime dateTime, BandLeader name, BandRole role)
+        {
+            var rota = new RotaDto()
+            {
+                Type = BandLeader.Hetty.GetType().Name,
+                Date = new Date(dateTime.Year, dateTime.Month, dateTime.Day),
+                Name = name.ToString(),
+                Role = role.ToString(),
+                Id = Guid.NewGuid().ToString()
+            };
+            await _rotaService.AddRota(rota);
+
+            return await LoadBandRotaView();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> AddProjectionRota(DateTime dateTime, ProjectionLeader name, ProjectionRole role)
+        {
+            var rota = new RotaDto()
+            {
+                Type = ProjectionLeader.CarolMiller.GetType().Name,
+                Date = new Date(dateTime.Year, dateTime.Month, dateTime.Day),
+                Name = name.ToString(),
+                Role = role.ToString(),
+                Id = Guid.NewGuid().ToString()
+            };
+
+            await _rotaService.AddRota(rota);
+
+            return await LoadProjectionRotaView();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> DeleteFromRotaYouthClub(int year, int month, int day, string name, string role)
+        {
+            var rota = new RotaDto()
+            {
+                Type = YouthClubLeader.CarolMiller.GetType().Name,
+                Date = new Date(year, month, day),
+                Name = name,
+                Role = role
+            };
+
+            await _rotaService.DeleteFromRota(rota);
+
+            return await LoadYouthRotaView();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> DeleteFromRotaProjection(int year, int month, int day, string name, string role)
+        {
+            var rota = new RotaDto()
+            {
+                Type = ProjectionLeader.CarolMiller.GetType().Name,
+                Date = new Date(year, month, day),
+                Name = name,
+                Role = role
+            };
+
+            await _rotaService.DeleteFromRota(rota);
+
+            return await LoadProjectionRotaView();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> DeleteFromRotaBand(int year, int month, int day, string name, string role)
+        {
+            var rota = new RotaDto()
+            {
+                Type = BandLeader.Hetty.GetType().Name,
+                Date = new Date(year, month, day),
+                Name = name,
+                Role = role
+            };
+
+            await _rotaService.DeleteFromRota(rota);
+
+            return await LoadBandRotaView();
         }
 
         public async Task<IActionResult> LoadWelcomeView()
@@ -419,7 +519,7 @@ namespace Emmaus.Controllers
             }
             else
             {
-                string username = _userManager.GetUserName(HttpContext.User);
+                var username = _userManager.GetUserName(HttpContext.User);
                 if (username == null)
                 {
                     return null;

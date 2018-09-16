@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Table;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Emmaus.Models;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Emmaus.Repos
 {
@@ -23,14 +22,14 @@ namespace Emmaus.Repos
 
         }
 
-        public async Task<IEnumerable<Service>> GetServices(string type)
+        public async Task<IEnumerable<Models.Service>> GetServices(string type)
         {
             try
             {
-                TableQuery<Service> query = new TableQuery<Service>()
+                TableQuery<Models.Service> query = new TableQuery<Models.Service>()
                     .Where(TableQuery.GenerateFilterCondition("Type", QueryComparisons.Equal, type));
-                var a = await _table.ExecuteQuerySegmentedAsync(query, null);
-                var b = a.OrderBy(s => s.Date.Year).ThenBy(s => s.Date.Month).ThenBy(s => s.Date.Day);
+                TableQuerySegment<Models.Service> a = await _table.ExecuteQuerySegmentedAsync(query, null);
+                IOrderedEnumerable<Models.Service> b = a.OrderBy(s => s.Date.Year).ThenBy(s => s.Date.Month).ThenBy(s => s.Date.Day);
                 return (b).ToList();
             }
             catch (Exception)
@@ -43,9 +42,9 @@ namespace Emmaus.Repos
         {
             try
             {
-                TableOperation retrieveOperation = TableOperation.Retrieve<Service>(id, id);
+                var retrieveOperation = TableOperation.Retrieve<Models.Service>(id, id);
                 TableResult retrievedResult = await _table.ExecuteAsync(retrieveOperation);
-                Service deleteEntity = (Service)retrievedResult.Result;
+                var deleteEntity = (Models.Service)retrievedResult.Result;
 
                 TableOperation deleteOperation = TableOperation.Delete(deleteEntity);
                 await _table.ExecuteAsync(deleteOperation);
@@ -56,7 +55,7 @@ namespace Emmaus.Repos
             }
         }
 
-        public async Task AddService(Service service)
+        public async Task AddService(Models.Service service)
         {
             try
             {
@@ -71,11 +70,11 @@ namespace Emmaus.Repos
             }
         }
 
-        public async Task UpdateService(Service service)
+        public async Task UpdateService(Models.Service service)
         {
-            TableOperation retrieveOperation = TableOperation.Retrieve<Service>(service.Id, service.Id);
+            TableOperation retrieveOperation = TableOperation.Retrieve<Models.Service>(service.Id, service.Id);
             TableResult retrievedResult = await _table.ExecuteAsync(retrieveOperation);
-            Service retrieveEntity = (Service)retrievedResult.Result;
+            var retrieveEntity = (Models.Service)retrievedResult.Result;
 
             retrieveEntity.Text = service.Text;
             retrieveEntity.Story = service.Story;

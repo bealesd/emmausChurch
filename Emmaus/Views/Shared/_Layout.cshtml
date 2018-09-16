@@ -16,7 +16,7 @@
 
     @functions
     {
-        public string DisplaySubMenu()
+        public string DisplaySubMenuLeft()
         {
             string pageName = ViewBag.Title.ToLower();
 
@@ -68,9 +68,21 @@
                 return String.Concat(createUserLink, "");
             }
 
-            else if (pageName.Contains("rotamanagement") && User.Identity.IsAuthenticated)
+            else if (pageName.Contains("youth rota") && User.Identity.IsAuthenticated)
             {
-                var createUserLink = "<a class='subLink' href='/Ui/LoadCreateEventView'><p>Create&nbsp;event</p></a>";
+                var createUserLink = "<a class='subLink' href='/Ui/LoadCreateYouthView'><p>Add&nbsp;to&nbsp;rota</p></a>";
+
+                return String.Concat(createUserLink, "");
+            }
+            else if (pageName.Contains("projection rota") && User.Identity.IsAuthenticated)
+            {
+                var createUserLink = "<a class='subLink' href='/Ui/LoadCreateProjectionView'><p>Add&nbsp;to&nbsp;rota</p></a>";
+
+                return String.Concat(createUserLink, "");
+            }
+            else if (pageName.Contains("band rota") && User.Identity.IsAuthenticated)
+            {
+                var createUserLink = "<a class='subLink' href='/Ui/LoadCreateBandView'><p>Add&nbsp;to&nbsp;rota</p></a>";
 
                 return String.Concat(createUserLink, "");
             }
@@ -99,8 +111,11 @@
             {
                 var userManagementLink = "<a class='subLinkRight' href='/Ui/LoadUserManagementView'><p>User&nbsp;Management</p></a>";
                 var roleManagementLink = "<a class='subLinkRight' href='/Ui/LoadRoleManagementView'><p>Role&nbsp;Management</p></a>";
-                var rotaManagementLink = "<a class='subLinkRight' href='/Ui/LoadRotaManagementView'><p>Rota&nbsp;Management</p></a>";
-                return String.Concat(logoutLink, editKidSerivceLink, editAdultServiceLink, userManagementLink, roleManagementLink, rotaManagementLink);
+                var youthRotaLink = "<a class='subLinkRight' href='/Ui/LoadYouthRotaView'><p>Youth&nbsp;Rota</p></a>";
+                var bandRotaLink = "<a class='subLinkRight' href='/Ui/LoadBandRotaView'><p>Band&nbsp;Rota</p></a>";
+                var projectionRotaLink = "<a class='subLinkRight' href='/Ui/LoadProjectionRotaView'><p>Projection&nbsp;Rota</p></a>";
+                return String.Concat(logoutLink, editKidSerivceLink, editAdultServiceLink, userManagementLink, roleManagementLink,
+                    youthRotaLink, bandRotaLink, projectionRotaLink);
             }
 
             return String.Concat(logoutLink, editKidSerivceLink, editAdultServiceLink);
@@ -123,7 +138,7 @@
         </div>
 
         <div class="subMenu">
-            @Html.Raw(DisplaySubMenu())
+            @Html.Raw(DisplaySubMenuLeft())
         </div>
 
         <div class="subMenuRight">

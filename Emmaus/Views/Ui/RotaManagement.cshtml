@@ -1,27 +1,33 @@
 ﻿@using Emmaus.Helper;
 @{
-    var rotas = (List<RotaDto>)ViewData["rota"];
-    var names = rotas.Select(r => r.Name).Distinct().OrderBy(n => n);
-    var dates = rotas.Select(r => r.Date.Date).Distinct().OrderBy(d => d);
-    var dateToListOfRolesMap = new Dictionary<DateTime, List<string>>();
-    foreach (var date in dates)
-    {
-        var roles = new List<string>();
-        foreach (var name in names)
-        {
+    var title = (string)ViewData["Title"];
+    var rota = (RotaDictionary)ViewData["rota"];
+    //var rotas = (List<RotaDto>)ViewData["rota"];
+    var names = ((List<string>)ViewData["names"]);
+    //var dates = rotas.Select(r => new Date(r.Year, r.Month, r.Day)).ToList().DistinctBy(r => new { r.Year, r.Month, r.Day }).ToList().OrderBy(d => d.Year).ThenBy(d => d.Month).ThenBy(d => d.Day);
+    //var dateToListOfRolesMap = new Dictionary<string, Dictionary<string, string>>();
+    //foreach (var date in dates)
+    //{
+    //    var rolesNameMap = new Dictionary<string, string>();
+    //    foreach (var name in names)
+    //    {
 
-            var rota = rotas.FirstOrDefault(r => r.Date.Date == date && r.Name == name);
-            if (rota != null)
-            {
-                roles.Add(rota.Role);
-            }
-            else
-            {
-                roles.Add("--");
-            }
-        }
-        dateToListOfRolesMap[date] = roles;
-    }
+    //        var rota = rotas.Where(r => r.Year == date.Year && r.Month == date.Month && r.Day == date.Day && r.Name == name).ToList();
+    //        if (rota.Count == 1)
+    //        {
+    //            rolesNameMap.Add(name, rota[0].Role);
+    //        }
+    //        else if (rota.Count > 1)
+    //        {
+    //            rolesNameMap.Add(name, String.Join(" ", rota.Select(r => r.Role)));
+    //        }
+    //        else
+    //        {
+    //            rolesNameMap.Add(name, "--");
+    //        }
+    //    }
+    //    dateToListOfRolesMap[date.ToString()] = rolesNameMap;
+    //}
 }
 
 <div class="mainWrapper">
@@ -37,11 +43,11 @@
             <tr>
                 <th class="table-header">Date</th>
 
-                @if (rotas.Count > 0)
+                @if (names.Count > 0)
                 {
                     @foreach (var name in names)
                     {
-                        <th class="table-header">@name</th>
+                        <th class="table-header">@name.JoinedCapitalizedNameToSpaceSeparatedName()</th>
                     }
                 }
                 else
@@ -51,16 +57,44 @@
 
             </tr>
 
-            @if (rotas.Count > 0)
+            @if (rota.DateNameJobListPairs.Count > 0)
             {
-                @foreach (var date in dates)
+                @foreach (var date in rota.DateNameJobListPairs.Keys)
                 {
                     <tr>
-                        <td class="field">@date.Date.ToFriendlyDate()</td>
+                        <td class="field">@date.ToFriendly()</td>
 
-                        @foreach (var role in dateToListOfRolesMap[date])
+                        @foreach (string name in names)
                         {
-                            <td class="field">@role</td>
+
+                            <td class="field">
+                                <p hidden>Remove @name.JoinedCapitalizedNameToSpaceSeparatedName() from rota on: @date.ToFriendly()</p>
+                                @{
+                                    foreach (var role in @rota.DateNameJobListPairs[date].KeyValues[name])
+                                    {
+                                        if (title == "Band Rota")
+                                        {
+                                            <a onclick="ConfirmDelete(this)" asp-action="DeleteFromRotaBand" asp-route-year="@date.Year"asp-route-month="@date.Month"  asp-route-day= "@date.Day" asp-route-name="@name" asp-route-role="@role">
+                                                @role
+                                            </a>
+                                        }
+                                        else if (title == "Projection Rota")
+                                        {
+                                            <a onclick="ConfirmDelete(this)" asp-action="DeleteFromRotaProjection" asp-route-year="@date.Year"asp-route-month="@date.Month"  asp-route-day= "@date.Day" asp-route-name="@name" asp-route-role="@role">
+                                                @role
+                                            </a>
+                                        }
+                                        else if (title == "Youth Rota")
+                                        {
+                                            <a onclick="ConfirmDelete(this)" asp-action="DeleteFromRotaYouthClub" asp-route-year="@date.Year"asp-route-month="@date.Month"  asp-route-day= "@date.Day" asp-route-name="@name" asp-route-role="@role">
+                                                @role
+                                            </a>
+                                        }
+                                    }
+
+                                }
+
+                            </td>
                         }
                     </tr>
                 }
@@ -73,7 +107,8 @@
 </div>
 
 <script>
-    function ConfirmDelete(message) {
+    function ConfirmDelete(self) {
+        let message = self.parentElement.getElementsByTagName("p")[0].innerHTML;
         if (confirm(message)) {
             return;
         }
