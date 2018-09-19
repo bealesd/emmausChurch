@@ -1,4 +1,9 @@
-﻿$navBarWidth: 822px;
+﻿:root {
+    --nav-bar-color: #333;
+    --side-bar-color: #333;
+    --bar-height: 46.4px;
+    --hover-color: red/*#555*/;
+}
 
 html {
     height: 100%
@@ -7,504 +12,32 @@ html {
 body {
     background-size: cover;
     margin: 0 auto;
-    background-color: #DDDDDD;
+    /*background-color: #DDDDDD;*/
     background-attachment: fixed
 }
 
 @media screen and (max-width: 804px) {
     .wrapper {
         height: 100vh;
-        min-width: 600px;
         display: grid;
-        grid-template-columns: 1fr 2fr 1fr;
-        grid-template-rows: auto auto 46.4px;
+        grid-template-columns: 150px auto 150px;
+        grid-template-rows: auto auto var(--bar-height);
     }
 }
 
-@media screen and (min-width: 805px) {
+@media screen and (min-width: 804px) {
     .wrapper {
         height: 100vh;
-        min-width: 600px;
         display: grid;
-        grid-template-columns: 1fr 2fr 1fr;
-        grid-template-rows: 46.4px auto 46.4px;
+        grid-template-columns: 200px auto 200px;
+        grid-template-rows: 46.4px auto var(--bar-height);
     }
 }
-
-.wrapper .mainWrapper p {
-    color: #777;
-    font-family: 'Droid Sans',Arial,Helvetica,sans-serif;
-    line-height: 1.6em;
-}
-
-.wrapper .mainWrapper h4 {
-    font-family: 'Lato',Arial,Helvetica,sans-serif;
-    font-size: 16px;
-    font-weight: normal;
-    text-transform: uppercase;
-}
-
-.wrapper .mainWrapper h2 {
-    text-align: left;
-    font-family: 'Lato',Arial,Helvetica,sans-serif;
-    font-weight: normal;
-    font-size: 22px;
-    text-transform: uppercase;
-}
-
-.wrapper .mainWrapper a {
-    text-decoration: none;
-}
-
-    .wrapper .mainWrapper a:hover {
-        text-decoration: underline;
-    }
-
-    .wrapper .mainWrapper a:visited {
-        color: blue;
-    }
-
-/*.wrapper .navBarContainer {
-        background-color: whitesmoke;
-        grid-row: 1;
-        grid-column: 1 / 4;
-        display: grid;
-        grid-template-rows: auto;
-        grid-template-columns: 300px auto;
-        padding-top: 22px;
-    }*/
-
-.wrapper .subMenu {
-    margin-top: 20px;
-    grid-row: 2;
-    grid-column: 1;
-    position: static;
-    top: 80px;
-    display: grid;
-    grid-template-rows: 40px 40px 40px 40px 40px 40px 40px 40px;
-    grid-template-columns: 1fr 5fr;
-}
-
-    .wrapper .subMenu .subLink {
-        color: black;
-        text-decoration: none;
-        font-family: 'Oswald', sans-serif;
-        font-size: 14px;
-        font-weight: 200;
-        text-transform: uppercase;
-        grid-column: 2;
-    }
-
-        .wrapper .subMenu .subLink:hover {
-            font-size: 18px;
-        }
-
-.wrapper .subMenuRight {
-    margin-top: 20px;
-    grid-row: 2;
-    grid-column: 3;
-    position: static;
-    top: 80px;
-    display: grid;
-    grid-template-rows: 40px 40px 40px 40px 40px 40px 40px 40px;
-    grid-template-columns: 1fr 5fr;
-}
-
-    .wrapper .subMenuRight .subLinkRight {
-        color: black;
-        text-decoration: none;
-        font-family: 'Oswald', sans-serif;
-        font-size: 16px;
-        font-weight: 200;
-        text-transform: uppercase;
-        grid-column: 2;
-    }
-
-        .wrapper .subMenuRight .subLinkRight:hover {
-            font-size: 18px;
-        }
-
-
-.wrapper .mainWrapper {
-    grid-row: 2;
-    grid-column: 2 / span 1;
-    display: grid;
-    grid-template-rows: 30px 40px 30px auto;
-    grid-template-columns: 1fr 15fr 1fr;
-    grid-column-gap: 20px;
-    background-color: whitesmoke;
-    margin: 20px;
-}
-
-    .wrapper .mainWrapper .title {
-        grid-row: 2;
-        grid-column: 2;
-        text-align: left;
-        font-family: 'Lato',Arial,Helvetica,sans-serif;
-        font-weight: normal;
-        font-size: 2.2em;
-        text-transform: uppercase;
-        padding: 5px 0 3px 12px;
-        border-width: 0 0 0 1px;
-        border-style: solid;
-    }
-
-    .wrapper .mainWrapper .links {
-        grid-row: 4;
-        grid-column: 2;
-        display: grid;
-        grid-template-rows: auto;
-        grid-template-columns: 1fr;
-        padding-bottom: 20px;
-        min-height: 63vh;
-    }
-
-        .wrapper .mainWrapper .links .content {
-            grid-row: 1;
-            grid-column: 1;
-            text-align: left;
-        }
-
-    .wrapper .mainWrapper .welcome {
-        grid-row: 4;
-        grid-column: 2;
-        display: grid;
-        padding-bottom: 20px;
-    }
-
-    .wrapper .mainWrapper .about {
-        grid-row: 4;
-        grid-column: 2;
-        display: grid;
-        padding-bottom: 20px;
-        min-height: 63vh;
-    }
-
-    .wrapper .mainWrapper .services {
-        grid-row: 4;
-        grid-column: 2;
-        display: grid;
-        grid-template-rows: auto;
-        grid-template-columns: 1fr;
-        padding-bottom: 20px;
-    }
-
-
-    .wrapper .mainWrapper .contactUs {
-        grid-row: 4;
-        grid-column: 2;
-        display: grid;
-        grid-template-rows: auto;
-        grid-template-columns: 1fr;
-        padding-bottom: 20px;
-    }
-
-    .wrapper .mainWrapper .LocalCommunity {
-        grid-row: 4;
-        grid-column: 2;
-        display: grid;
-        grid-template-rows: auto;
-        grid-template-columns: 1fr;
-        padding-bottom: 20px;
-    }
-
-    .wrapper .mainWrapper .WiderCommunity {
-        grid-row: 4;
-        grid-column: 2;
-        display: grid;
-        grid-template-rows: auto;
-        grid-template-columns: 1fr;
-        padding-bottom: 20px;
-    }
-
-    .wrapper .mainWrapper .Login {
-        grid-row: 4;
-        grid-column: 2;
-        display: grid;
-        grid-template-rows: auto;
-        grid-template-columns: 1fr;
-        padding-bottom: 20px;
-        min-height: 63vh;
-    }
-
-        .wrapper .mainWrapper .Login .Form-style {
-            grid-row: 1;
-            grid-column: 1;
-            font-family: 'Open Sans Condensed', arial, sans;
-            width: 500px;
-            padding: 30px;
-            background: #FFFFFF;
-            margin: 50px auto;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
-            -moz-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
-            -webkit-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
-            height: 200px;
-        }
-
-            .wrapper .mainWrapper .Login .Form-style .text,
-            .wrapper .mainWrapper .Login .Form-style .password {
-                box-sizing: border-box;
-                -webkit-box-sizing: border-box;
-                -moz-box-sizing: border-box;
-                outline: none;
-                display: block;
-                width: 100%;
-                padding: 7px;
-                border: none;
-                border-bottom: 1px solid #ddd;
-                background: transparent;
-                margin-bottom: 10px;
-                font: 16px Arial, Helvetica, sans-serif;
-                height: 45px;
-            }
-
-            .wrapper .mainWrapper .Login .Form-style .submit {
-                -moz-box-shadow: inset 0px 1px 0px 0px #45D6D6;
-                -webkit-box-shadow: inset 0px 1px 0px 0px #45D6D6;
-                box-shadow: inset 0px 1px 0px 0px #45D6D6;
-                background-color: #2CBBBB;
-                border: 1px solid #27A0A0;
-                display: inline-block;
-                cursor: pointer;
-                color: #FFFFFF;
-                font-family: 'Open Sans Condensed', sans-serif;
-                font-size: 14px;
-                padding: 8px 18px;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-    .wrapper .mainWrapper .CreateUser .Form-style .submit:hover {
-        background: linear-gradient(to bottom, #34CACA 5%, #30C9C9 100%);
-        background-color: #34CACA;
-    }
-
-    .wrapper .mainWrapper .CreateUser,
-    .wrapper .mainWrapper .CreateRole {
-        grid-row: 4;
-        grid-column: 2;
-        display: grid;
-        grid-template-rows: auto;
-        grid-template-columns: 1fr;
-        padding-bottom: 20px;
-        min-height: 63vh;
-    }
-
-        .wrapper .mainWrapper .CreateUser .Form-style,
-        .wrapper .mainWrapper .CreateRole .Form-style {
-            grid-row: 1;
-            grid-column: 1;
-            font-family: 'Open Sans Condensed', arial, sans;
-            width: 500px;
-            padding: 30px;
-            background: #FFFFFF;
-            margin: 50px auto;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
-            -moz-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
-            -webkit-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
-        }
-
-            .wrapper .mainWrapper .CreateUser .Form-style .text,
-            .wrapper .mainWrapper .CreateUser .Form-style .password,
-            .wrapper .mainWrapper .CreateRole .Form-style .text,
-            .wrapper .mainWrapper .CreateRole .Form-style .date {
-                box-sizing: border-box;
-                -webkit-box-sizing: border-box;
-                -moz-box-sizing: border-box;
-                outline: none;
-                display: block;
-                width: 100%;
-                padding: 7px;
-                border: none;
-                border-bottom: 1px solid #ddd;
-                background: transparent;
-                margin-bottom: 10px;
-                font: 16px Arial, Helvetica, sans-serif;
-                height: 45px;
-            }
-
-            .wrapper .mainWrapper .CreateUser .Form-style .submit,
-            .wrapper .mainWrapper .CreateRole .Form-style .submit {
-                -moz-box-shadow: inset 0px 1px 0px 0px #45D6D6;
-                -webkit-box-shadow: inset 0px 1px 0px 0px #45D6D6;
-                box-shadow: inset 0px 1px 0px 0px #45D6D6;
-                background-color: #2CBBBB;
-                border: 1px solid #27A0A0;
-                display: inline-block;
-                cursor: pointer;
-                color: #FFFFFF;
-                font-family: 'Open Sans Condensed', sans-serif;
-                font-size: 14px;
-                padding: 8px 18px;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-                .wrapper .mainWrapper .CreateUser .Form-style .submit:hover,
-                .wrapper .mainWrapper .CreateRole .Form-style .submit:hover {
-                    background: linear-gradient(to bottom, #34CACA 5%, #30C9C9 100%);
-                    background-color: #34CACA;
-                }
-
-    .wrapper .mainWrapper .meetTheTeam {
-        grid-row: 4;
-        grid-column: 2;
-        display: grid;
-        grid-template-rows: auto;
-        grid-template-columns: 1fr;
-        padding-bottom: 20px;
-    }
-
-
-    .wrapper .mainWrapper .history {
-        grid-row: 4;
-        grid-column: 2;
-        display: grid;
-        grid-template-rows: auto;
-        grid-template-columns: 1fr;
-        padding-bottom: 20px;
-    }
-
-    .wrapper .mainWrapper .table {
-        grid-row: 4;
-        grid-column: 2;
-        display: grid;
-        grid-template-columns: repeat(4, 150px);
-        grid-template-rows: repeat(auto, 60px);
-        min-height: 63vh;
-    }
-
-        .wrapper .mainWrapper .table .fieldOne,
-        .wrapper .mainWrapper .table .fieldTwo,
-        .wrapper .mainWrapper .table .fieldThree,
-        .wrapper .mainWrapper .table .fieldFour {
-            display: grid;
-            padding-left: 25px;
-            border-bottom: solid 1px lightgray;
-        }
-
-        .wrapper .mainWrapper .table .table-header {
-            padding-left: 25px;
-            font-weight: 900;
-            text-transform: uppercase;
-            border-bottom: solid 1px lightgray;
-        }
-
-    .wrapper .mainWrapper .editTable {
-        grid-row: 4;
-        grid-column: 2;
-        display: grid;
-        grid-template-columns: repeat(6, 150px);
-        grid-template-rows: repeat(auto, 60px);
-        min-height: 63vh;
-    }
-
-        .wrapper .mainWrapper .editTable .fieldOne,
-        .wrapper .mainWrapper .editTable .fieldTwo,
-        .wrapper .mainWrapper .editTable .fieldThree,
-        .wrapper .mainWrapper .editTable .fieldFour,
-        .wrapper .mainWrapper .editTable .fieldFive,
-        .wrapper .mainWrapper .editTable .fieldSix {
-            display: grid;
-            padding-left: 25px;
-            border-bottom: solid 1px lightgray;
-        }
-
-        .wrapper .mainWrapper .editTable .table-header {
-            padding-left: 25px;
-            font-weight: 900;
-            text-transform: uppercase;
-            border-bottom: solid 1px lightgray;
-        }
-
-
-    .wrapper .mainWrapper .rotaManagement {
-        grid-row: 4;
-        grid-column: 2;
-        display: grid;
-        grid-template-columns: repeat(2, 150px);
-        grid-template-rows: repeat(auto, 60px);
-        min-height: 63vh;
-    }
-
-        .wrapper .mainWrapper .rotaManagement .field {
-            padding-left: 25px;
-            border-bottom: solid 1px lightgray;
-        }
-
-        .wrapper .mainWrapper .rotaManagement .table-header {
-            padding-left: 25px;
-            font-weight: 900;
-            text-transform: uppercase;
-            border-bottom: solid 1px lightgray;
-        }
-
-
-    .wrapper .mainWrapper .roleManagement {
-        grid-row: 4;
-        grid-column: 2;
-        display: grid;
-        grid-template-columns: repeat(3, 150px);
-        grid-template-rows: repeat(auto, 60px);
-        min-height: 63vh;
-    }
-
-        .wrapper .mainWrapper .roleManagement .fieldOne,
-        .wrapper .mainWrapper .roleManagement .fieldTwo,
-        .wrapper .mainWrapper .roleManagement .fieldThree {
-            display: grid;
-            padding-left: 25px;
-            border-bottom: solid 1px lightgray;
-        }
-
-        .wrapper .mainWrapper .roleManagement .table-header {
-            padding-left: 25px;
-            font-weight: 900;
-            text-transform: uppercase;
-            border-bottom: solid 1px lightgray;
-        }
-
-    .wrapper .mainWrapper .userManagement {
-        grid-row: 4;
-        grid-column: 2;
-        display: grid;
-        grid-template-columns: 400px 100px 50px;
-        grid-template-rows: repeat(auto, 60px);
-        min-height: 63vh;
-    }
-
-        .wrapper .mainWrapper .userManagement .fieldOne,
-        .wrapper .mainWrapper .userManagement .fieldTwo,
-        .wrapper .mainWrapper .userManagement .fieldThree {
-            display: grid;
-            padding-left: 25px;
-            border-bottom: solid 1px lightgray;
-        }
-
-        .wrapper .mainWrapper .userManagement .table-header {
-            padding-left: 25px;
-            font-weight: 900;
-            text-transform: uppercase;
-            border-bottom: solid 1px lightgray;
-        }
-
-
-.wrapper .footer {
-    background-color: #333;
-    grid-row: 3;
-    grid-column: 1 / 4;
-    text-align: center;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 16px;
-    color: white;
-}
-
-
 
 .navbar {
     grid-row: 1;
     grid-column: 1 / 4;
-    background-color: #333;
+    background-color: var(--nav-bar-color);
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -550,8 +83,7 @@ body {
     }
 
     .navbar a:hover, .dropdown:hover .dropbtn {
-        background-color: red;
-        /*border-bottom: 2px solid cadetblue;*/
+        background-color: var(--hover-color);
     }
 
 .dropdown-content {
@@ -578,4 +110,460 @@ body {
 
 .dropdown:hover .dropdown-content {
     display: block;
+}
+
+ul:nth-child(2) {
+    grid-row: 2;
+    grid-column: 1;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: var(--side-bar-color);
+    border: 1px solid #555;
+}
+
+ul:nth-child(3) {
+    grid-row: 2;
+    grid-column: 3;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: var(--side-bar-color);
+    border: 1px solid #555;
+}
+
+li a {
+    display: block;
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+li {
+    text-align: center;
+    border-bottom: 1px solid #555;
+}
+
+    li:last-child {
+        border-bottom: none;
+    }
+
+    li a.active {
+        background-color: red;
+        color: white;
+    }
+
+    li a:hover:not(.active) {
+        background-color: var(--hover-color);
+        color: white;
+    }
+
+.mainWrapper {
+    grid-row: 2;
+    grid-column: 2 / span 1;
+    max-height: calc(100vh-(var(--bar-height)*2));
+    min-height: 100px;
+    min-width: 100px;
+    overflow: auto;
+    display: grid;
+    grid-template-rows: 30px 40px 30px auto;
+    grid-template-columns: 1fr 15fr 1fr;
+    /*grid-column-gap: 20px;*/
+    background-color: whitesmoke;
+    /*margin: 20px;*/
+}
+
+    .mainWrapper p {
+        color: #777;
+        font-family: 'Droid Sans',Arial,Helvetica,sans-serif;
+        line-height: 1.6em;
+    }
+
+    .mainWrapper h4 {
+        font-family: 'Lato',Arial,Helvetica,sans-serif;
+        font-size: 16px;
+        font-weight: normal;
+        text-transform: uppercase;
+    }
+
+    .mainWrapper h2 {
+        text-align: left;
+        font-family: 'Lato',Arial,Helvetica,sans-serif;
+        font-weight: normal;
+        font-size: 22px;
+        text-transform: uppercase;
+    }
+
+    .mainWrapper a {
+        text-decoration: none;
+    }
+
+        .mainWrapper a:hover {
+            text-decoration: underline;
+        }
+
+        .mainWrapper a:visited {
+            color: blue;
+        }
+
+    .mainWrapper .title {
+        grid-row: 2;
+        grid-column: 2;
+        text-align: left;
+        font-family: 'Lato',Arial,Helvetica,sans-serif;
+        font-weight: normal;
+        font-size: 2.2em;
+        text-transform: uppercase;
+        padding: 5px 0 3px 12px;
+        border-width: 0 0 0 1px;
+        border-style: solid;
+    }
+
+    .mainWrapper .links {
+        grid-row: 4;
+        grid-column: 2;
+        display: grid;
+        grid-template-rows: auto;
+        grid-template-columns: 1fr;
+        padding-bottom: 20px;
+        min-height: 63vh;
+    }
+
+        .mainWrapper .links .content {
+            grid-row: 1;
+            grid-column: 1;
+            text-align: left;
+        }
+
+    .mainWrapper .welcome {
+        grid-row: 4;
+        grid-column: 2;
+        display: grid;
+        padding-bottom: 20px;
+    }
+
+    .mainWrapper .about {
+        grid-row: 4;
+        grid-column: 2;
+        display: grid;
+        padding-bottom: 20px;
+        min-height: 63vh;
+    }
+
+    .mainWrapper .services {
+        grid-row: 4;
+        grid-column: 2;
+        display: grid;
+        grid-template-rows: auto;
+        grid-template-columns: 1fr;
+        padding-bottom: 20px;
+    }
+
+
+    .mainWrapper .contactUs {
+        grid-row: 4;
+        grid-column: 2;
+        display: grid;
+        grid-template-rows: auto;
+        grid-template-columns: 1fr;
+        padding-bottom: 20px;
+    }
+
+    .mainWrapper .LocalCommunity {
+        grid-row: 4;
+        grid-column: 2;
+        display: grid;
+        grid-template-rows: auto;
+        grid-template-columns: 1fr;
+        padding-bottom: 20px;
+    }
+
+    .mainWrapper .WiderCommunity {
+        grid-row: 4;
+        grid-column: 2;
+        display: grid;
+        grid-template-rows: auto;
+        grid-template-columns: 1fr;
+        padding-bottom: 20px;
+    }
+
+    .mainWrapper .Login {
+        grid-row: 4;
+        grid-column: 2;
+        display: grid;
+        grid-template-rows: auto;
+        grid-template-columns: 1fr;
+        padding-bottom: 20px;
+        min-height: 63vh;
+    }
+
+        .mainWrapper .Login .Form-style {
+            grid-row: 1;
+            grid-column: 1;
+            font-family: 'Open Sans Condensed', arial, sans;
+            width: 500px;
+            padding: 30px;
+            background: #FFFFFF;
+            margin: 50px auto;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+            -moz-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+            -webkit-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+            height: 200px;
+        }
+
+            .mainWrapper .Login .Form-style .text,
+            .mainWrapper .Login .Form-style .password {
+                box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                outline: none;
+                display: block;
+                width: 100%;
+                padding: 7px;
+                border: none;
+                /*border-bottom: 1px solid #ddd;*/
+                background: transparent;
+                margin-bottom: 10px;
+                font: 16px Arial, Helvetica, sans-serif;
+                height: 45px;
+            }
+
+            .mainWrapper .Login .Form-style .submit {
+                -moz-box-shadow: inset 0px 1px 0px 0px #45D6D6;
+                -webkit-box-shadow: inset 0px 1px 0px 0px #45D6D6;
+                box-shadow: inset 0px 1px 0px 0px #45D6D6;
+                background-color: #2CBBBB;
+                border: 1px solid #27A0A0;
+                display: inline-block;
+                cursor: pointer;
+                color: #FFFFFF;
+                font-family: 'Open Sans Condensed', sans-serif;
+                font-size: 14px;
+                padding: 8px 18px;
+                text-decoration: none;
+                text-transform: uppercase;
+            }
+
+    .mainWrapper .CreateUser .Form-style .submit:hover {
+        background: linear-gradient(to bottom, #34CACA 5%, #30C9C9 100%);
+        background-color: #34CACA;
+    }
+
+    .mainWrapper .CreateUser,
+    .mainWrapper .CreateRole {
+        grid-row: 4;
+        grid-column: 2;
+        display: grid;
+        grid-template-rows: auto;
+        grid-template-columns: 1fr;
+        padding-bottom: 20px;
+        min-height: 63vh;
+    }
+
+        .mainWrapper .CreateUser .Form-style,
+        .mainWrapper .CreateRole .Form-style {
+            grid-row: 1;
+            grid-column: 1;
+            font-family: 'Open Sans Condensed', arial, sans;
+            width: 500px;
+            padding: 30px;
+            background: #FFFFFF;
+            margin: 50px auto;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+            -moz-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+            -webkit-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+        }
+
+            .mainWrapper .CreateUser .Form-style .text,
+            .mainWrapper .CreateUser .Form-style .password,
+            .mainWrapper .CreateRole .Form-style .text,
+            .mainWrapper .CreateRole .Form-style .date {
+                box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                outline: none;
+                display: block;
+                width: 100%;
+                padding: 7px;
+                border: none;
+                border-bottom: 1px solid #ddd;
+                background: transparent;
+                margin-bottom: 10px;
+                font: 16px Arial, Helvetica, sans-serif;
+                height: 45px;
+            }
+
+            .mainWrapper .CreateUser .Form-style .submit,
+            .mainWrapper .CreateRole .Form-style .submit {
+                -moz-box-shadow: inset 0px 1px 0px 0px #45D6D6;
+                -webkit-box-shadow: inset 0px 1px 0px 0px #45D6D6;
+                box-shadow: inset 0px 1px 0px 0px #45D6D6;
+                background-color: #2CBBBB;
+                border: 1px solid #27A0A0;
+                display: inline-block;
+                cursor: pointer;
+                color: #FFFFFF;
+                font-family: 'Open Sans Condensed', sans-serif;
+                font-size: 14px;
+                padding: 8px 18px;
+                text-decoration: none;
+                text-transform: uppercase;
+            }
+
+                .mainWrapper .CreateUser .Form-style .submit:hover,
+                .mainWrapper .CreateRole .Form-style .submit:hover {
+                    background: linear-gradient(to bottom, #34CACA 5%, #30C9C9 100%);
+                    background-color: #34CACA;
+                }
+
+    .mainWrapper .meetTheTeam {
+        grid-row: 4;
+        grid-column: 2;
+        display: grid;
+        grid-template-rows: auto;
+        grid-template-columns: 1fr;
+        padding-bottom: 20px;
+    }
+
+
+    .mainWrapper .history {
+        grid-row: 4;
+        grid-column: 2;
+        display: grid;
+        grid-template-rows: auto;
+        grid-template-columns: 1fr;
+        padding-bottom: 20px;
+    }
+
+    .mainWrapper .table {
+        grid-row: 4;
+        grid-column: 2;
+        display: grid;
+        grid-template-columns: repeat(4, 150px);
+        grid-template-rows: repeat(auto, 60px);
+        min-height: 63vh;
+    }
+
+        .mainWrapper .table .fieldOne,
+        .mainWrapper .table .fieldTwo,
+        .mainWrapper .table .fieldThree,
+        .mainWrapper .table .fieldFour {
+            display: grid;
+            padding-left: 25px;
+            border-bottom: solid 1px lightgray;
+        }
+
+        .mainWrapper .table .table-header {
+            padding-left: 25px;
+            font-weight: 900;
+            text-transform: uppercase;
+            border-bottom: solid 1px lightgray;
+        }
+
+    .mainWrapper .editTable {
+        grid-row: 4;
+        grid-column: 2;
+        display: grid;
+        grid-template-columns: repeat(6, 150px);
+        grid-template-rows: repeat(auto, 60px);
+        min-height: 63vh;
+    }
+
+        .mainWrapper .editTable .fieldOne,
+        .mainWrapper .editTable .fieldTwo,
+        .mainWrapper .editTable .fieldThree,
+        .mainWrapper .editTable .fieldFour,
+        .mainWrapper .editTable .fieldFive,
+        .mainWrapper .editTable .fieldSix {
+            display: grid;
+            padding-left: 25px;
+            border-bottom: solid 1px lightgray;
+        }
+
+        .mainWrapper .editTable .table-header {
+            padding-left: 25px;
+            font-weight: 900;
+            text-transform: uppercase;
+            border-bottom: solid 1px lightgray;
+        }
+
+
+    .mainWrapper .rotaManagement {
+        grid-row: 4;
+        grid-column: 2;
+        display: grid;
+        grid-template-columns: repeat(2, 150px);
+        grid-template-rows: repeat(auto, 60px);
+        min-height: 63vh;
+    }
+
+        .mainWrapper .rotaManagement .field {
+            padding-left: 25px;
+            border-bottom: solid 1px lightgray;
+        }
+
+        .mainWrapper .rotaManagement .table-header {
+            padding-left: 25px;
+            font-weight: 900;
+            text-transform: uppercase;
+            border-bottom: solid 1px lightgray;
+        }
+
+
+    .mainWrapper .roleManagement {
+        grid-row: 4;
+        grid-column: 2;
+        display: grid;
+        grid-template-columns: repeat(3, 150px);
+        grid-template-rows: repeat(auto, 60px);
+        min-height: 63vh;
+    }
+
+        .mainWrapper .roleManagement .fieldOne,
+        .mainWrapper .roleManagement .fieldTwo,
+        .mainWrapper .roleManagement .fieldThree {
+            display: grid;
+            padding-left: 25px;
+            border-bottom: solid 1px lightgray;
+        }
+
+        .mainWrapper .roleManagement .table-header {
+            padding-left: 25px;
+            font-weight: 900;
+            text-transform: uppercase;
+            border-bottom: solid 1px lightgray;
+        }
+
+    .mainWrapper .userManagement {
+        grid-row: 4;
+        grid-column: 2;
+        display: grid;
+        grid-template-columns: 400px 100px 50px;
+        grid-template-rows: repeat(auto, 60px);
+        min-height: 63vh;
+    }
+
+        .mainWrapper .userManagement .fieldOne,
+        .mainWrapper .userManagement .fieldTwo,
+        .mainWrapper .userManagement .fieldThree {
+            display: grid;
+            padding-left: 25px;
+            border-bottom: solid 1px lightgray;
+        }
+
+        .mainWrapper .userManagement .table-header {
+            padding-left: 25px;
+            font-weight: 900;
+            text-transform: uppercase;
+            border-bottom: solid 1px lightgray;
+        }
+
+.footer {
+    background-color: var(--nav-bar-color);
+    grid-row: 3;
+    grid-column: 1 / 4;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    color: white;
 }
