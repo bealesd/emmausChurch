@@ -16,125 +16,129 @@
 
     @functions
     {
-        public string DisplaySubMenuLeft()
+    public string DisplaySubMenuLeft()
+    {
+        string pageName = ViewBag.Title.ToLower();
+
+        if (pageName.Contains("wider community"))
         {
-            string pageName = ViewBag.Title.ToLower();
-
-            if (pageName.Contains("wider community"))
-            {
-                var homeLink = "<a class='subLink' href='/Ui/LoadAtHomeView'><p>At Home</p></a>";
-                var overseasLink = "<a class='subLink' href='/Ui/LoadOverseasView'><p>Overseas</p></a>";
-                return String.Concat(homeLink, overseasLink);
-            }
-            else if (pageName.Contains("services"))
-            {
-                var adultLink = "<a class='subLink' href='/Ui/LoadAdultServicesView'><p>Adult</p></a>";
-                var childLink = "<a class='subLink' href='/Ui/LoadChildServicesView'><p>Children</p></a>";
-                return String.Concat(adultLink, childLink);
-            }
-
-            else if (pageName.Contains("about") || pageName.Contains("history") || pageName.Contains("meet the team"))
-            {
-                var historyLink = "<a class='subLink' href='/Ui/LoadHistoryView'><p>Our&nbsp;History</p></a>";
-                var teamLink = "<a class='subLink' href='/Ui/LoadMeetTheTeamView'><p>Our&nbsp;Team</p></a>";
-                return String.Concat(teamLink, historyLink);
-            }
-
-            else if (pageName.Contains("usermanagement") && User.IsInRole("powerUser"))
-            {
-                var createUserLink = "<a class='subLink' href='/Ui/LoadCreateUserView'><p>Create&nbsp;User</p></a>";
-
-                return String.Concat(createUserLink, "");
-            }
-
-            else if (pageName.Contains("rolemanagement") && User.IsInRole("powerUser"))
-            {
-                var createUserLink = "<a class='subLink' href='/Ui/LoadCreateRoleView'><p>Create&nbsp;Role</p></a>";
-
-                return String.Concat(createUserLink, "");
-            }
-
-            else if (pageName.Contains("adultservicemanagement") && User.Identity.IsAuthenticated)
-            {
-                var createUserLink = "<a class='subLink' href='/Ui/LoadCreateAdultServiceView'><p>Create&nbsp;Service</p></a>";
-
-                return String.Concat(createUserLink, "");
-            }
-
-            else if (pageName.Contains("kidservicemanagement") && User.Identity.IsAuthenticated)
-            {
-                var createUserLink = "<a class='subLink' href='/Ui/LoadCreateKidServiceView'><p>Create&nbsp;Service</p></a>";
-
-                return String.Concat(createUserLink, "");
-            }
-
-            else if (pageName.Contains("youth rota") && User.Identity.IsAuthenticated)
-            {
-                var createUserLink = "<a class='subLink' href='/Ui/LoadCreateYouthView'><p>Add&nbsp;to&nbsp;rota</p></a>";
-
-                return String.Concat(createUserLink, "");
-            }
-            else if (pageName.Contains("projection rota") && User.Identity.IsAuthenticated)
-            {
-                var createUserLink = "<a class='subLink' href='/Ui/LoadCreateProjectionView'><p>Add&nbsp;to&nbsp;rota</p></a>";
-
-                return String.Concat(createUserLink, "");
-            }
-            else if (pageName.Contains("band rota") && User.Identity.IsAuthenticated)
-            {
-                var createUserLink = "<a class='subLink' href='/Ui/LoadCreateBandView'><p>Add&nbsp;to&nbsp;rota</p></a>";
-
-                return String.Concat(createUserLink, "");
-            }
-
-
-
-            return "";
+            var homeLink = "<a class='subLink' href='/Ui/LoadAtHomeView'><p>At Home</p></a>";
+            var overseasLink = "<a class='subLink' href='/Ui/LoadOverseasView'><p>Overseas</p></a>";
+            return String.Concat(homeLink, overseasLink);
+        }
+        else if (pageName.Contains("services"))
+        {
+            var adultLink = "<a class='subLink' href='/Ui/LoadAdultServicesView'><p>Adult</p></a>";
+            var childLink = "<a class='subLink' href='/Ui/LoadChildServicesView'><p>Children</p></a>";
+            return String.Concat(adultLink, childLink);
         }
 
-        public string DisplaySubMenuRight()
+        else if (pageName.Contains("about") || pageName.Contains("history") || pageName.Contains("meet the team"))
         {
-            var logoutLink = "";
-            if (User.Identity.IsAuthenticated)
-            {
-                logoutLink = "<a class='subLinkRight'  href='/Ui/Logout'><p>Logout&nbsp;</p></a>";
-            }
-            else
-            {
-                return "<a class='subLinkRight'  href='/Ui/LoadLoginView'><p>Login&nbsp;</p></a>";
-            }
-
-            var editKidSerivceLink = "<a class='subLinkRight' href='/Ui/LoadKidServiceManagementView'><p>Kids&nbsp;Serivce</p></a>";
-            var editAdultServiceLink = "<a class='subLinkRight' href='/Ui/LoadAdultServiceManagementView'><p>Adult&nbsp;Service</p></a>";
-
-            if (User.IsInRole("powerUser"))
-            {
-                var userManagementLink = "<a class='subLinkRight' href='/Ui/LoadUserManagementView'><p>User&nbsp;Management</p></a>";
-                var roleManagementLink = "<a class='subLinkRight' href='/Ui/LoadRoleManagementView'><p>Role&nbsp;Management</p></a>";
-                var youthRotaLink = "<a class='subLinkRight' href='/Ui/LoadYouthRotaView'><p>Youth&nbsp;Rota</p></a>";
-                var bandRotaLink = "<a class='subLinkRight' href='/Ui/LoadBandRotaView'><p>Band&nbsp;Rota</p></a>";
-                var projectionRotaLink = "<a class='subLinkRight' href='/Ui/LoadProjectionRotaView'><p>Projection&nbsp;Rota</p></a>";
-                return String.Concat(logoutLink, editKidSerivceLink, editAdultServiceLink, userManagementLink, roleManagementLink,
-                    youthRotaLink, bandRotaLink, projectionRotaLink);
-            }
-
-            return String.Concat(logoutLink, editKidSerivceLink, editAdultServiceLink);
+            var historyLink = "<a class='subLink' href='/Ui/LoadHistoryView'><p>Our&nbsp;History</p></a>";
+            var teamLink = "<a class='subLink' href='/Ui/LoadMeetTheTeamView'><p>Our&nbsp;Team</p></a>";
+            return String.Concat(teamLink, historyLink);
         }
+
+        else if (pageName.Contains("usermanagement") && User.IsInRole("powerUser"))
+        {
+            var createUserLink = "<a class='subLink' href='/Ui/LoadCreateUserView'><p>Create&nbsp;User</p></a>";
+
+            return String.Concat(createUserLink, "");
+        }
+
+        else if (pageName.Contains("rolemanagement") && User.IsInRole("powerUser"))
+        {
+            var createUserLink = "<a class='subLink' href='/Ui/LoadCreateRoleView'><p>Create&nbsp;Role</p></a>";
+
+            return String.Concat(createUserLink, "");
+        }
+
+        else if (pageName.Contains("adultservicemanagement") && User.Identity.IsAuthenticated)
+        {
+            var createUserLink = "<a class='subLink' href='/Ui/LoadCreateAdultServiceView'><p>Create&nbsp;Service</p></a>";
+
+            return String.Concat(createUserLink, "");
+        }
+
+        else if (pageName.Contains("kidservicemanagement") && User.Identity.IsAuthenticated)
+        {
+            var createUserLink = "<a class='subLink' href='/Ui/LoadCreateKidServiceView'><p>Create&nbsp;Service</p></a>";
+
+            return String.Concat(createUserLink, "");
+        }
+
+        else if (pageName.Contains("youth rota") && User.Identity.IsAuthenticated)
+        {
+            var createUserLink = "<a class='subLink' href='/Ui/LoadCreateYouthView'><p>Add&nbsp;to&nbsp;rota</p></a>";
+
+            return String.Concat(createUserLink, "");
+        }
+        else if (pageName.Contains("projection rota") && User.Identity.IsAuthenticated)
+        {
+            var createUserLink = "<a class='subLink' href='/Ui/LoadCreateProjectionView'><p>Add&nbsp;to&nbsp;rota</p></a>";
+
+            return String.Concat(createUserLink, "");
+        }
+        else if (pageName.Contains("band rota") && User.Identity.IsAuthenticated)
+        {
+            var createUserLink = "<a class='subLink' href='/Ui/LoadCreateBandView'><p>Add&nbsp;to&nbsp;rota</p></a>";
+
+            return String.Concat(createUserLink, "");
+        }
+
+
+
+        return "";
+    }
+
+    public string DisplaySubMenuRight()
+    {
+        var logoutLink = "";
+        if (User.Identity.IsAuthenticated)
+        {
+            logoutLink = "<a class='subLinkRight'  href='/Ui/Logout'><p>Logout&nbsp;</p></a>";
+        }
+        else
+        {
+            return "<a class='subLinkRight'  href='/Ui/LoadLoginView'><p>Login&nbsp;</p></a>";
+        }
+
+        var editKidSerivceLink = "<a class='subLinkRight' href='/Ui/LoadKidServiceManagementView'><p>Kids&nbsp;Serivce</p></a>";
+        var editAdultServiceLink = "<a class='subLinkRight' href='/Ui/LoadAdultServiceManagementView'><p>Adult&nbsp;Service</p></a>";
+
+        if (User.IsInRole("powerUser"))
+        {
+            var userManagementLink = "<a class='subLinkRight' href='/Ui/LoadUserManagementView'><p>User&nbsp;Management</p></a>";
+            var roleManagementLink = "<a class='subLinkRight' href='/Ui/LoadRoleManagementView'><p>Role&nbsp;Management</p></a>";
+            var youthRotaLink = "<a class='subLinkRight' href='/Ui/LoadYouthRotaView'><p>Youth&nbsp;Rota</p></a>";
+            var bandRotaLink = "<a class='subLinkRight' href='/Ui/LoadBandRotaView'><p>Band&nbsp;Rota</p></a>";
+            var projectionRotaLink = "<a class='subLinkRight' href='/Ui/LoadProjectionRotaView'><p>Projection&nbsp;Rota</p></a>";
+            return String.Concat(logoutLink, editKidSerivceLink, editAdultServiceLink, userManagementLink, roleManagementLink,
+                youthRotaLink, bandRotaLink, projectionRotaLink);
+        }
+
+        return String.Concat(logoutLink, editKidSerivceLink, editAdultServiceLink);
+    }
     }
 
     <div class="wrapper">
-
-        <div class="navBarContainer">
-            <p class="mainTitle">&nbsp;Emmaus Church Centre</p>
-            <div class="navLinkContainer">
-                <a class="navLink" asp-controller="Ui" asp-action="LoadWelcomeView">Welcome</a>
-                <a class="navLink" asp-controller="Ui" asp-action="LoadAboutView">About</a>
-                <a class="navLink" asp-controller="Ui" asp-action="LoadServicesView">Services</a>
-                <a class="navLink" asp-controller="Ui" asp-action="LoadLocalCommunityView">Local&nbsp;Community</a>
-                <a class="navLink" asp-controller="Ui" asp-action="LoadWiderCommunityView">Wider&nbsp;Community</a>
-                <a class="navLink" asp-controller="Ui" asp-action="LoadLinksView">Links</a>
-                <a class="navLink" asp-controller="Ui" asp-action="LoadContactUsView">Contact&nbsp;Us</a>
+        <div class="navbar">
+            <p>Emmaus Church Centre</p>
+            <a asp-controller="Ui" asp-action="LoadWelcomeView">Welcome</a>
+            <a asp-controller="Ui" asp-action="LoadAboutView">About</a>
+            <a asp-controller="Ui" asp-action="LoadServicesView">Services</a>
+            <div class="dropdown">
+                <button class="dropbtn">
+                    Community
+                </button>
+                <div class="dropdown-content">
+                    <a asp-controller="Ui" asp-action="LoadLocalCommunityView">Local&nbsp;Community</a>
+                    <a asp-controller="Ui" asp-action="LoadWiderCommunityView">Wider&nbsp;Community</a>
+                </div>
             </div>
+            <a asp-controller="Ui" asp-action="LoadLinksView">Links</a>
+            <a asp-controller="Ui" asp-action="LoadContactUsView">Contact&nbsp;Us</a>
         </div>
 
         <div class="subMenu">
@@ -171,51 +175,6 @@
             let elmnt = document.getElementById(divName);
             elmnt.scrollIntoView();
         }
-
-        class MainTitle {
-            constructor() {
-                this.titleText = blinkObject.innerHTML;
-                this.blinkerState = 0;
-                this.index = 5;
-                this.id;
-            }
-
-            UpdateTitle(text) {
-                blinkObject.innerHTML = text;
-            }
-
-            SetTitle(word) {
-                word = word.substring(0, this.index);
-                switch (this.blinkerState) {
-                    case 0: this.blinkerState = 1; break
-                    case 1: word += ""; this.blinkerState = 0; break
-                    default: break
-                }
-                this.UpdateTitle(word);
-                this.Continue();
-            }
-
-            Continue() {
-                if (this.blinkerState === 1) {
-                    this.index++;
-                }
-                if (this.index <= this.titleText.length) {
-                    this.StartBlinker(this.titleText);
-                }
-            }
-
-            StartBlinker(word) {
-                var self = this;
-                setTimeout(function () {
-                    self.SetTitle(word);
-                }, 50)
-            }
-        }
-
-        var blinkObject = document.getElementsByClassName('mainTitle')[0]
-        var mainTitle = new MainTitle();
-        mainTitle.StartBlinker(mainTitle.titleText);
-
     </script>
 
 </body>
