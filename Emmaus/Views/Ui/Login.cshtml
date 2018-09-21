@@ -2,12 +2,11 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 <div class="mainWrapper">
-
-    <div class="title">
-        Login
-    </div>
-
     <div class="Login">
+        <div class="title">
+            Login
+        </div>
+
         <div class="Form-style">
             <form asp-action="Login" method="post">
                 <div class="form-group">
@@ -18,7 +17,7 @@
                 @Html.AntiForgeryToken()
                 <div asp-validation-summary="All"></div>
             </form>
-
         </div>
+
     </div>
 </div>
