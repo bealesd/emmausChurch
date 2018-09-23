@@ -5,16 +5,14 @@
     string newTitle = ServiceListHelper.Title(services, "Adults");
 }
 
-
-
 <div class="mainWrapper">
-
-    <div class="title positionedTitle">
-        @Html.Raw(@newTitle)
-    </div>
 
     <!--#region table  -->
     <div class="table">
+
+        <div class="title">
+            @*@Html.Raw(@newTitle)*@Adults
+        </div>
 
         <div class="fieldOne table-header">
             <p>Date</p>
