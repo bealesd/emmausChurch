@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="~/css/style.css" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/css/bootstrap.min.css" />
     <meta itemprop="name" content="Emmaus Church Center" />
     <meta itemprop="description" content="Emmaus Church of Severn Beach welcomes everyone from the community to join us." />
     <meta itemprop="image" content="/images/emmausbuilding.jpg" />
@@ -14,119 +14,120 @@
 </head>
 
 <body background="/images/blueSky.jpg">
-
-
+    @{
+        var message = @ViewData["Message"] != null ? ViewData["Message"] : "";
+    }
 
     @functions
     {
-        public string DisplaySubMenuLeft()
+    public string DisplaySubMenuLeft()
+    {
+        string pageName = ViewBag.Title.ToLower();
+
+        if (pageName.Contains("wider community"))
         {
-            string pageName = ViewBag.Title.ToLower();
-
-            if (pageName.Contains("wider community"))
-            {
-                var homeLink = "<li><a href='/Ui/LoadAtHomeView'><p>At Home</p></a></li>";
-                var overseasLink = "<li><a href='/Ui/LoadOverseasView'><p>Overseas</p></a></li>";
-                return String.Concat(homeLink, overseasLink);
-            }
-            else if (pageName.Contains("services"))
-            {
-                var adultLink = "<li><a href='/Ui/LoadAdultServicesView'><p>Adult</p></a></li>";
-                var childLink = "<li><a href='/Ui/LoadChildServicesView'><p>Children</p></a></li>";
-                return String.Concat(adultLink, childLink);
-            }
-
-            else if (pageName.Contains("about") || pageName.Contains("history") || pageName.Contains("meet the team"))
-            {
-                var historyLink = "<li><a href='/Ui/LoadHistoryView'><p>Our&nbsp;History</p></a></li>";
-                var teamLink = "<li><a href='/Ui/LoadMeetTheTeamView'><p>Our&nbsp;Team</p></a></li>";
-                return String.Concat(teamLink, historyLink);
-            }
-
-            else if (pageName.Contains("usermanagement") && User.IsInRole("powerUser"))
-            {
-                var createUserLink = "<li><a href='/Ui/LoadCreateUserView'><p>Create&nbsp;User</p></a></li>";
-
-                return String.Concat(createUserLink, "");
-            }
-
-            else if (pageName.Contains("rolemanagement") && User.IsInRole("powerUser"))
-            {
-                var createUserLink = "<li><a href='/Ui/LoadCreateRoleView'><p>Create&nbsp;Role</p></a></li>";
-
-                return String.Concat(createUserLink, "");
-            }
-
-            else if (pageName.Contains("adultservicemanagement") && User.Identity.IsAuthenticated)
-            {
-                var createUserLink = "<li><a href='/Ui/LoadCreateAdultServiceView'><p>Create&nbsp;Service</p></a></li>";
-
-                return String.Concat(createUserLink, "");
-            }
-
-            else if (pageName.Contains("kidservicemanagement") && User.Identity.IsAuthenticated)
-            {
-                var createUserLink = "<li><a href='/Ui/LoadCreateKidServiceView'><p>Create&nbsp;Service</p></a></li>";
-
-                return String.Concat(createUserLink, "");
-            }
-
-            else if (pageName.Contains("youth rota") && User.Identity.IsAuthenticated)
-            {
-                var createUserLink = "<li><a href='/Ui/LoadCreateYouthView'><p>Add&nbsp;to&nbsp;rota</p></a></li>";
-
-                return String.Concat(createUserLink, "");
-            }
-            else if (pageName.Contains("projection rota") && User.Identity.IsAuthenticated)
-            {
-                var createUserLink = "<li><a href='/Ui/LoadCreateProjectionView'><p>Add&nbsp;to&nbsp;rota</p></a></li>";
-
-                return String.Concat(createUserLink, "");
-            }
-            else if (pageName.Contains("band rota") && User.Identity.IsAuthenticated)
-            {
-                var createUserLink = "<li><a href='/Ui/LoadCreateBandView'><p>Add&nbsp;to&nbsp;rota</p></a></li>";
-
-                return String.Concat(createUserLink, "");
-            }
-
-            return "";
+            var homeLink = "<li><a href='/Ui/LoadAtHomeView'><p>At Home</p></a></li>";
+            var overseasLink = "<li><a href='/Ui/LoadOverseasView'><p>Overseas</p></a></li>";
+            return String.Concat(homeLink, overseasLink);
+        }
+        else if (pageName.Contains("services"))
+        {
+            var adultLink = "<li><a href='/Ui/LoadAdultServicesView'><p>Adult</p></a></li>";
+            var childLink = "<li><a href='/Ui/LoadChildServicesView'><p>Children</p></a></li>";
+            return String.Concat(adultLink, childLink);
         }
 
-        public string DisplaySubMenuRight()
+        else if (pageName.Contains("about") || pageName.Contains("history") || pageName.Contains("meet the team"))
         {
-            if (!User.Identity.IsAuthenticated) return "";
-
-            var editKidSerivceLink = "<li><a href='/Ui/LoadKidServiceManagementView'><p>Kids</p></a></li>";
-            var editAdultServiceLink = "<li><a href='/Ui/LoadAdultServiceManagementView'><p>Adults</p></a></li>";
-
-            if (User.IsInRole("powerUser"))
-            {
-                var userManagementLink = "<li><a href='/Ui/LoadUserManagementView'><p>Users</p></a></li>";
-                var roleManagementLink = "<li><a href='/Ui/LoadRoleManagementView'><p>Roles</p></a></li>";
-                var youthRotaLink = "<li><a href='/Ui/LoadYouthRotaView'><p>Youth</p></a></li>";
-                var bandRotaLink = "<li><a href='/Ui/LoadBandRotaView'><p>Band</p></a></li>";
-                var projectionRotaLink = "<li><a href='/Ui/LoadProjectionRotaView'><p>Projector</p></a></li>";
-                return String.Concat(editKidSerivceLink, editAdultServiceLink, userManagementLink, roleManagementLink,
-                    youthRotaLink, bandRotaLink, projectionRotaLink);
-            }
-
-            return String.Concat(editKidSerivceLink, editAdultServiceLink);
+            var historyLink = "<li><a href='/Ui/LoadHistoryView'><p>Our&nbsp;History</p></a></li>";
+            var teamLink = "<li><a href='/Ui/LoadMeetTheTeamView'><p>Our&nbsp;Team</p></a></li>";
+            return String.Concat(teamLink, historyLink);
         }
 
-        public string GetAuthenticatedLink()
+        else if (pageName.Contains("usermanagement") && User.IsInRole("powerUser"))
         {
-            var link = "";
-            if (User.Identity.IsAuthenticated)
-            {
-                link = "<a href='/Ui/Logout'>Logout</a>";
-            }
-            else
-            {
-                link = "<a href='/Ui/LoadLoginView'>Login</a>";
-            }
-            return link;
+            var createUserLink = "<li><a href='/Ui/LoadCreateUserView'><p>Create&nbsp;User</p></a></li>";
+
+            return String.Concat(createUserLink, "");
         }
+
+        else if (pageName.Contains("rolemanagement") && User.IsInRole("powerUser"))
+        {
+            var createUserLink = "<li><a href='/Ui/LoadCreateRoleView'><p>Create&nbsp;Role</p></a></li>";
+
+            return String.Concat(createUserLink, "");
+        }
+
+        else if (pageName.Contains("adultservicemanagement") && User.Identity.IsAuthenticated)
+        {
+            var createUserLink = "<li><a href='/Ui/LoadCreateAdultServiceView'><p>Create&nbsp;Service</p></a></li>";
+
+            return String.Concat(createUserLink, "");
+        }
+
+        else if (pageName.Contains("kidservicemanagement") && User.Identity.IsAuthenticated)
+        {
+            var createUserLink = "<li><a href='/Ui/LoadCreateKidServiceView'><p>Create&nbsp;Service</p></a></li>";
+
+            return String.Concat(createUserLink, "");
+        }
+
+        else if (pageName.Contains("youth rota") && User.Identity.IsAuthenticated)
+        {
+            var createUserLink = "<li><a href='/Ui/LoadCreateYouthView'><p>Add&nbsp;to&nbsp;rota</p></a></li>";
+
+            return String.Concat(createUserLink, "");
+        }
+        else if (pageName.Contains("projection rota") && User.Identity.IsAuthenticated)
+        {
+            var createUserLink = "<li><a href='/Ui/LoadCreateProjectionView'><p>Add&nbsp;to&nbsp;rota</p></a></li>";
+
+            return String.Concat(createUserLink, "");
+        }
+        else if (pageName.Contains("band rota") && User.Identity.IsAuthenticated)
+        {
+            var createUserLink = "<li><a href='/Ui/LoadCreateBandView'><p>Add&nbsp;to&nbsp;rota</p></a></li>";
+
+            return String.Concat(createUserLink, "");
+        }
+
+        return "";
+    }
+
+    public string DisplaySubMenuRight()
+    {
+        if (!User.Identity.IsAuthenticated) return "";
+
+        var editKidSerivceLink = "<li><a href='/Ui/LoadKidServiceManagementView'><p>Kids</p></a></li>";
+        var editAdultServiceLink = "<li><a href='/Ui/LoadAdultServiceManagementView'><p>Adults</p></a></li>";
+
+        if (User.IsInRole("powerUser"))
+        {
+            var userManagementLink = "<li><a href='/Ui/LoadUserManagementView'><p>Users</p></a></li>";
+            var roleManagementLink = "<li><a href='/Ui/LoadRoleManagementView'><p>Roles</p></a></li>";
+            var youthRotaLink = "<li><a href='/Ui/LoadYouthRotaView'><p>Youth</p></a></li>";
+            var bandRotaLink = "<li><a href='/Ui/LoadBandRotaView'><p>Band</p></a></li>";
+            var projectionRotaLink = "<li><a href='/Ui/LoadProjectionRotaView'><p>Projector</p></a></li>";
+            return String.Concat(editKidSerivceLink, editAdultServiceLink, userManagementLink, roleManagementLink,
+                youthRotaLink, bandRotaLink, projectionRotaLink);
+        }
+
+        return String.Concat(editKidSerivceLink, editAdultServiceLink);
+    }
+
+    public string GetAuthenticatedLink()
+    {
+        var link = "";
+        if (User.Identity.IsAuthenticated)
+        {
+            link = "<a href='/Ui/Logout'>Logout</a>";
+        }
+        else
+        {
+            link = "<a href='/Ui/LoadLoginView'>Login</a>";
+        }
+        return link;
+    }
 
     }
 
@@ -135,7 +136,16 @@
         <div class="v1">
             <div class="navbar">
                 <p>Emmaus&nbsp;Church&nbsp;Centre</p>
-                <a asp-controller="Ui" asp-action="LoadWelcomeView">Welcome</a>
+                <a class="link-visible"  asp-controller="Ui" asp-action="LoadWelcomeView">Welcome</a>
+
+                <div class="dropdown-visible dropdown">
+                    <button class="dropbtn"><a asp-controller="Ui" asp-action="LoadWelcomeView">Welcome</a></button>
+                    <div class="dropdown-content">
+                        <a>&nbsp</a>
+                        <a asp-controller="Ui" asp-action="LoadEventsView">Events&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    </div>
+                </div>
+
                 <a asp-controller="Ui" asp-action="LoadAboutView">About</a>
                 <a asp-controller="Ui" asp-action="LoadServicesView">Services</a>
                 <div class="dropdown-visible dropdown">
@@ -162,6 +172,7 @@
                     <div class="dropdown-content">
                         <a>&nbsp</a>
                         <a asp-controller="Ui" asp-action="LoadWelcomeView">Welcome</a>
+                        <a asp-controller="Ui" asp-action="LoadEventsView">Whats&nbsp;On</a>
                         <a asp-controller="Ui" asp-action="LoadAboutView">About</a>
                         <a asp-controller="Ui" asp-action="LoadServicesView">Services</a>
                         <a asp-controller="Ui" asp-action="LoadLocalCommunityView">Local&nbsp;Community</a>
@@ -204,22 +215,32 @@
 
     <script>
         let model = @Html.Raw(Json.Serialize(ViewBag.Title));
+        let message = '@ViewData["Message"]';
 
-        window.onload = scrollIfRequired();
+            window.onload = function() {
+                scrollIfRequired();
+                printMessasge();
+            };
 
-        function scrollIfRequired() {
-             if (model === 'At Home Wider Community') {
-                 scrollToDiv("atHome");
-             }
-             else if (model === 'Overseas Wider Community') {
-                 scrollToDiv("overseas");
-             }
-        }
+            function scrollIfRequired() {
+                if (model === 'At Home Wider Community') {
+                    scrollToDiv("atHome");
+                }
+                else if (model === 'Overseas Wider Community') {
+                    scrollToDiv("overseas");
+                }
+            }
 
-        function scrollToDiv(divName) {
-            let elmnt = document.getElementById(divName);
-            elmnt.scrollIntoView();
-        }
+            function scrollToDiv(divName) {
+                let elmnt = document.getElementById(divName);
+                elmnt.scrollIntoView();
+            }
+
+            function printMessasge() {
+                if (message !== "") {
+                    alert(message);
+                }
+            }
     </script>
 
 </body>

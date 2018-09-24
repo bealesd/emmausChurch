@@ -9,7 +9,7 @@
     --side-bar-color: rgba(245, 245, 245, 0.5);
     --side-bar-border: 1px solid #555;
     --side-bar-padding: 8px 16px;
-    --side-bar-padding-middle: 8px calc((50px - 32px)/2);
+    --side-bar-padding-middle: 8px calc((50px - 36px)/2);
     --side-bar-margin: 0px;
     --side-bar-width-large: 30vw;
     --side-bar-width-small: 20vw;
@@ -95,7 +95,7 @@ body {
         grid-column: 1;
         display: grid;
         grid-template-columns: calc(100vw - var(--nav-bar-items-width)) repeat(7, auto);
-        grid-template-rows: 1fr;
+        grid-template-rows: var(--nav-bar-height);
         background-color: var(--nav-bar-color);
         font-family: var(--bar-font-family);
         text-transform: uppercase;
@@ -131,9 +131,9 @@ body {
     }
 
         .dropdown .dropbtn {
+            max-height: var(--nav-bar-height);
             margin: 0;
             padding: var(--nav-bar-padding);
-            outline: none;
             border: none;
             background-color: inherit;
             z-index: 2;
@@ -146,6 +146,8 @@ body {
 
         .navbar a:hover, .dropdown:hover .dropbtn {
             background-color: var(--hover-color);
+            color: white;
+            text-decoration: none;
         }
 
     .dropdown-content {
@@ -156,6 +158,7 @@ body {
 
         .dropdown-content a {
             display: block;
+            max-height: var(--nav-bar-height);
         }
 
             .dropdown-content a:nth-child(n+2) {
@@ -165,6 +168,10 @@ body {
                 width: inherit;
                 background-color: #f9f9f9;
                 box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            }
+
+            .dropdown-content a:first-child:hover {
+                background-color: none;
             }
 
             .dropdown-content a:hover {
@@ -337,8 +344,27 @@ body {
         text-align: left;
     }
 
+    .sideBarLeft ul li:first-child a:hover {
+        background-color: var(--side-bar-hover-color);
+        text-decoration: none;
+        border-radius: 0px 10px 0px 0px;
+    }
+
+    .sideBarRight ul li:first-child a:hover {
+        background-color: var(--side-bar-hover-color);
+        text-decoration: none;
+        border-radius: 10px 0px 0px 0px;
+    }
+
+    .sideBarRight ul li:last-child a:hover {
+        background-color: var(--side-bar-hover-color);
+        text-decoration: none;
+        border-radius: 0px 0px 0px 10px;
+    }
+
         li a:hover {
             background-color: var(--side-bar-hover-color);
+            text-decoration: none;
         }
 
     li {
@@ -402,9 +428,28 @@ body {
         text-align: center;
     }
 
-        li a:hover {
-            background-color: var(--side-bar-hover-color);
-        }
+    .sideBarLeft ul li:first-child a:hover {
+        background-color: var(--side-bar-hover-color);
+        text-decoration: none;
+        border-radius: 0px 10px 0px 0px;
+    }
+
+    .sideBarRight ul li:first-child a:hover {
+        background-color: var(--side-bar-hover-color);
+        text-decoration: none;
+        border-radius: 10px 0px 0px 0px;
+    }
+
+    .sideBarRight ul li:last-child a:hover {
+        background-color: var(--side-bar-hover-color);
+        text-decoration: none;
+        border-radius: 0px 0px 0px 10px;
+    }
+
+    li a:hover {
+        background-color: var(--side-bar-hover-color);
+        text-decoration: none;
+    }
 
     li {
         border-bottom: var(--side-bar-border);
@@ -463,6 +508,8 @@ body {
 
         li a:hover {
             background-color: var(--side-bar-hover-color);
+            text-decoration: none;
+            border-radius: 10px 10px 10px 10px;
         }
 
     li {
@@ -503,11 +550,10 @@ body {
         .clear .welcome p {
             color: whitesmoke;
             font-family: "Domaine Text Light Regular",serif;
-            font-size: 2rem;
+            font-size: 3rem;
             margin-bottom: 3.75rem;
             line-height: 1.4;
             max-width: 600px;
-            /*text-shadow: -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000, 0.5px 0.5px 0 #000;*/
         }
 
         .clear .welcome h1 {
@@ -529,13 +575,11 @@ body {
 .mainWrapper {
     grid-row: 2;
     grid-column: 2 / span 1;
-    min-height: 100px;
-    /*min-width: 250px;*/
-    /*min-width: var(--main-wrapper-desktop-width);*/
-    /*max-width: var(--main-wrapper-width);*/
+    min-height: 500px;
+    min-width: 200px;
     overflow: auto;
     display: grid;
-    grid-template-rows: 200px /*calc(100vh-(var(--nav-bar-height)*2))*/;
+    grid-template-rows: 200px;
     grid-template-columns: auto;
     background-color: var(--main-wrapper-background-color);
     margin-top: 20px;
@@ -547,7 +591,9 @@ body {
         color: #777;
         font-family: 'Droid Sans',Arial,Helvetica,sans-serif;
         line-height: 1.6em;
-        padding: 10px
+        font-size: 16px;
+        padding: 10px ;
+        margin: 1em 0px;
     }
 
     .mainWrapper h4 {
@@ -604,41 +650,18 @@ body {
     grid-column: 1;
     min-height: 79vh;
 }
-
     .mainWrapper .about img {
-        /*width: 100%;
+        /*max-width: 100%;
+        max-height: auto;*/
+        width: 100%;
         height: auto;
-        max-width: 200px;
-        padding: 20px;
-        float: left;*/
-        max-width: 100%;
-        max-height: 100%;
+        padding: 15px 5px 5px 5px;
     }
 
 .mainWrapper .contactUs {
     grid-row: 1;
     grid-column: 1;
 }
-
-/*@media screen and (min-width:400px) {
-    .mainWrapper .LocalCommunity {
-        grid-row: 1;
-        grid-column: 1;
-        display: grid;
-        grid-template-columns: var(--main-wrapper-desktop-width);
-        grid-template-rows: 600px;
-    }
-}
-
-@media screen and (max-width:400px) {
-    .mainWrapper .LocalCommunity {
-        grid-row: 1;
-        grid-column: 1;
-        display: grid;
-        grid-template-columns: var(--main-wrapper-mobile-width);
-        grid-template-rows: 600px;
-    }
-}*/
 
 .mainWrapper .LocalCommunity {
     grid-row: 1;
@@ -657,7 +680,6 @@ body {
     grid-template-rows: auto;
     grid-template-columns: 1fr;
     padding-bottom: 20px;
-    min-height: 63vh;
 }
 
     .mainWrapper .Login .title {
@@ -731,7 +753,6 @@ body {
     grid-row: 1;
     grid-column: 1;
     padding-bottom: 20px;
-    min-height: 63vh;
 }
 
     .mainWrapper .CreateUser .Form-style, .mainWrapper .CreateRole .Form-style {
@@ -803,7 +824,6 @@ body {
 .mainWrapper .table {
     grid-row: 1;
     grid-column: 1;
-    min-height: 63vh;
     display: grid;
     grid-template-columns: repeat(4,auto);
     grid-template-rows: auto repeat(auto, 60px);
@@ -814,7 +834,10 @@ body {
         grid-column: 1 / 5;
     }
 
-    .mainWrapper .table .fieldOne, .mainWrapper .table .fieldTwo, .mainWrapper .table .fieldThree, .mainWrapper .table .fieldFour {
+    .mainWrapper .table .fieldOne,
+    .mainWrapper .table .fieldTwo,
+    .mainWrapper .table .fieldThree,
+    .mainWrapper .table .fieldFour {
         display: grid;
         border-bottom: solid 1px lightgray;
     }
@@ -829,7 +852,6 @@ body {
     display: grid;
     grid-template-columns: repeat(6, auto);
     grid-template-rows: repeat(auto, 60px);
-    min-height: 63vh;
 }
 
     .mainWrapper .editTable .title {
@@ -837,7 +859,12 @@ body {
         grid-column: 1 / 7;
     }
 
-    .mainWrapper .editTable .fieldOne, .mainWrapper .editTable .fieldTwo, .mainWrapper .editTable .fieldThree, .mainWrapper .editTable .fieldFour, .mainWrapper .editTable .fieldFive, .mainWrapper .editTable .fieldSix {
+    .mainWrapper .editTable .fieldOne,
+    .mainWrapper .editTable .fieldTwo,
+    .mainWrapper .editTable .fieldThree,
+    .mainWrapper .editTable .fieldFour,
+    .mainWrapper .editTable .fieldFive,
+    .mainWrapper .editTable .fieldSix {
         display: grid;
         border-bottom: solid 1px lightgray;
     }
@@ -850,7 +877,7 @@ mainWrapper .rotaManagement {
     grid-row: 1;
     grid-column: 1;
     display: grid;
-    grid-template-columns: /*repeat(2, 150px)*/ auto;
+    grid-template-columns: auto;
     grid-template-rows: 58.64px auto;
 }
 
@@ -877,15 +904,21 @@ mainWrapper .rotaManagement {
 }
 
 .mainWrapper .roleManagement {
-    grid-row: 2;
+    grid-row: 1;
     grid-column: 1;
     display: grid;
-    grid-template-columns: repeat(3, 150px);
+    grid-template-columns: repeat(2, auto);
     grid-template-rows: repeat(auto, 60px);
-    min-height: 63vh;
 }
 
-    .mainWrapper .roleManagement .fieldOne, .mainWrapper .roleManagement .fieldTwo, .mainWrapper .roleManagement .fieldThree {
+    .mainWrapper .roleManagement .title {
+        grid-row: 1;
+        grid-column: 1/ 3;
+    }
+
+    .mainWrapper .roleManagement .fieldOne,
+    .mainWrapper .roleManagement .fieldTwo {
+        grid-row: auto;
         display: grid;
         padding-left: 25px;
         border-bottom: solid 1px lightgray;
@@ -899,13 +932,17 @@ mainWrapper .rotaManagement {
     }
 
 .mainWrapper .userManagement {
-    grid-row: 2;
+    grid-row: 1;
     grid-column: 1;
     display: grid;
-    grid-template-columns: 400px 100px 50px;
+    grid-template-columns: repeat(3, auto);
     grid-template-rows: repeat(auto, 60px);
-    min-height: 63vh;
 }
+
+    .mainWrapper .userManagement .title {
+        grid-row: 1;
+        grid-column: 1 / 4;
+    }
 
     .mainWrapper .userManagement .fieldOne, .mainWrapper .userManagement .fieldTwo, .mainWrapper .userManagement .fieldThree {
         display: grid;
@@ -919,19 +956,6 @@ mainWrapper .rotaManagement {
         text-transform: uppercase;
         border-bottom: solid 1px lightgray;
     }
-
-/*.footer {
-    background-color: var(--nav-bar-color);
-    grid-row: auto;
-    grid-column: 1 / 4;
-    text-align: center;
-    font-family: var(--nav-bar-font-family);
-    font-size: var(--nav-bar-font-size);
-    letter-spacing: var(--nav-bar-letter-spacing);
-    text-transform: uppercase;
-    color: var(--bar-font-color);
-    height: var(--nav-bar-height);
-}*/
 
 .footer {
     background-color: var(--nav-bar-color);

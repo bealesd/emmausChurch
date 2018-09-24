@@ -46,15 +46,16 @@ namespace Emmaus.Controllers
             Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(login.EmailAddress, login.Password, false, lockoutOnFailure: true);
             if (result.Succeeded)
             {
-                return Redirect("~/ ");
+                return RedirectToAction("LoadAboutView");
             }
             if (result.IsLockedOut)
             {
-                ViewData["Title"] = "Error";
-                return RedirectToPage("Error");
+                ViewData["Message"] = "Account locked out";
+                return await LoadLoginView();
             }
             else
             {
+                ViewData["Message"] = "Username or password incorrect";
                 return await LoadLoginView();
             }
         }
@@ -431,11 +432,18 @@ namespace Emmaus.Controllers
             return View("Welcome");
         }
 
+        public async Task<IActionResult> LoadEventsView()
+        {
+            ViewData["Title"] = "Event";
+            return View("Events");
+        }
+
         public async Task<IActionResult> LoadAboutView()
         {
             ViewData["Title"] = "About";
             return View("About");
         }
+
         public async Task<IActionResult> LoadHistoryView()
         {
             ViewData["Title"] = "Church History";

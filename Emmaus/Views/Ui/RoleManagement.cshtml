@@ -7,22 +7,18 @@
 
 <div class="mainWrapper">
 
-    <div class="title positionedTitle">
-        Role Management
-    </div>
-
     <!--#region table  -->
     <div class="roleManagement">
+
+        <div class="title">
+            Role Management
+        </div>
 
         <div class="fieldOne table-header">
             <p>Name</p>
         </div>
 
         <div class="fieldTwo table-header">
-            <p>Remove</p>
-        </div>
-
-        <div class="fieldThree table-header">
             <p></p>
         </div>
 
@@ -36,12 +32,8 @@
             <div class="fieldTwo">
                 <p>
                     <a onclick="ConfirmDelete('Delete Role?')"
-                       asp-action="DeleteRole" asp-route-roleName="@role.Name">Delete</a>
+                       asp-action="DeleteRole" asp-route-roleName="@role.Name"><span class="glyphicon glyphicon-trash"></span></a>
                 </p>
-            </div>
-
-            <div class="fieldThree">
-                <p></p>
             </div>
         }
 

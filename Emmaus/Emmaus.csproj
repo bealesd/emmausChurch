@@ -12,6 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Ui\Events.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Ui\CreateProjectionEventView.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

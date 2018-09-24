@@ -14,7 +14,7 @@
         </div>
 
         <div class="fieldOne table-header">
-            <p>Date</p>
+            <p><span class="glyphicon glyphicon-time"></span>@*Date*@</p>
         </div>
 
         <div class="fieldTwo table-header">
@@ -22,11 +22,11 @@
         </div>
 
         <div class="fieldThree table-header">
-            <p>Text</p>
+            <p><span class="glyphicon glyphicon-book"></span>@*Text*@</p>
         </div>
 
         <div class="fieldFour table-header">
-            <p>Speaker</p>
+            <p><span class="glyphicon glyphicon-user"></span>@*Speaker*@</p>
         </div>
 
         <div class="fieldFive table-header">
@@ -40,25 +40,25 @@
         @foreach (var service in services)
         {
             <div class="fieldOne">
-                <p>@service.ToDayMonth()<input style="width:132px;" class="" type="date" name="dateTime" value="@service.Date" /></p>
+                <p>@service.ToDayMonth()<input style="width:146px;" class="" type="date" name="dateTime" value="@service.Date" /></p>
             </div>
             <div class="fieldTwo">
-                <textarea name="Story" cols="40" rows="5">@service.Story</textarea>
+                <textarea name="Story" cols="15" rows="4">@service.Story</textarea>
             </div>
             <div class="fieldThree">
-                <textarea name="Text" cols="40" rows="5">@service.Text</textarea>
+                <textarea name="Text" cols="12" rows="4">@service.Text</textarea>
             </div>
             <div class="fieldFour">
-                <textarea name="Speaker" cols="1" rows="5">@service.Speaker</textarea>
+                <textarea name="Speaker" cols="5" rows="4">@service.Speaker</textarea>
             </div>
             <div class="fieldFive">
                 <p>
-                    <a onclick="ConfirmDelete('Delete Service?')" asp-action="DeleteAdultService" asp-route-id="@service.Id"><span class="glyphicon glyphicon-trash"></span></a>
+                    <a onclick="EditService(this)"><span class="glyphicon glyphicon-floppy-disk"></span></a>
                 </p>
             </div>
             <div id="@service.Id" class="fieldSix">
                 <p>
-                    <a onclick="EditService(this)"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a onclick="ConfirmDelete('Delete Service?')" asp-action="DeleteAdultService" asp-route-id="@service.Id"><span class="glyphicon glyphicon-trash"></span></a>
                 </p>
             </div>
         }
