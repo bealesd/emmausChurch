@@ -21,3 +21,15 @@
 
     </div>
 </div>
+
+<script>
+        let message = '@ViewData["Message"]';
+        $(document).ready(function () {
+            printMessasge();
+        });
+            function printMessasge() {
+                if (message !== "") {
+                    alert(message);
+                }
+            }
+</script>

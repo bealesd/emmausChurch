@@ -2,7 +2,8 @@
 
 @{
     var services = (IEnumerable<Service>)ViewData["services"];
-    string newTitle = ServiceListHelper.Title(services, "Kids");
+    string newTitle = ServiceListHelper.Title(services, "Adults");
+    string title = (string)ViewData["Title"];
 }
 
 <div class="mainWrapper">
@@ -11,8 +12,7 @@
     <div class="table">
 
         <div class="title">
-            Kids
-            @*@Html.Raw(@newTitle)*@
+            @title
         </div>
 
         <div class="fieldOne table-header">
@@ -20,11 +20,11 @@
         </div>
 
         <div class="fieldTwo table-header">
-            <p>Story</p>
+            <p><span class="glyphicon glyphicon-book"></span></p>
         </div>
 
         <div class="fieldThree table-header">
-            <p><span class="glyphicon glyphicon-book"></span>@*Text*@</p>
+            <p><span class="glyphicon glyphicon-pencil"></span>@*Text*@</p>
         </div>
 
         <div class="fieldFour table-header">

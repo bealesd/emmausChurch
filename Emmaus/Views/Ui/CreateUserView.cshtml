@@ -13,7 +13,10 @@
 
                 <input class="input password" type="password" name="Password" placeholder="Password" />
 
-                <input class="input text" type="text" name="Role" placeholder="Role" />
+                @foreach (var role in Enum.GetNames(typeof(Roles)).OrderBy(n => n).ToList())
+                {
+                    <br><input type="checkbox" name="Roles" value="@role">@role<br>
+                }
 
                 <button class="submit" type="submit">Create</button>
             </form>

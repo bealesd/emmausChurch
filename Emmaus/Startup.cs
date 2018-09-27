@@ -94,29 +94,45 @@ namespace Emmaus
                     template: "{controller=Ui}/{action=LoadWelcomeView}/{id?}");
             });
 
-            CreateSuperUser(serviceProvider);
+            CreateSuperUser(serviceProvider).Wait();
         }
 
-        public void CreateSuperUser(IServiceProvider serviceProvider)
+        public async Task CreateSuperUser(IServiceProvider serviceProvider)
         {
-            var _userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            var _roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            UserManager<ApplicationUser> _userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            RoleManager<IdentityRole> _roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            Task<bool> roleExists = _roleManager.RoleExistsAsync("powerUser");
-            roleExists.Wait();
-            if (!roleExists.Result)
+            var roleExists = await _roleManager.RoleExistsAsync(Roles.admin.ToString());
+            if (!roleExists)
             {
                 var role = new IdentityRole();
-                role.Name = "powerUser";
-                Task<IdentityResult> roleCreated = _roleManager.CreateAsync(role);
-                roleCreated.Wait();
+                role.Name = Roles.admin.ToString();
+                IdentityResult roleCreated = await _roleManager.CreateAsync(role);
             }
 
-            var user = new ApplicationUser { UserName = "david_beales@ymail.com", Email = "david_beales@ymail.com"};
-            Task<IdentityResult> createUserResult = _userManager.CreateAsync(user, "FucyeegPeavpoj6");
-            createUserResult.Wait();
-            Task<IdentityResult> addToRoleResult = _userManager.AddToRoleAsync(user, "powerUser");
-            addToRoleResult.Wait();
+            var email = "david_beales@ymail.com";
+            ApplicationUser user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                user = new ApplicationUser { UserName = email, Email = email };
+                IdentityResult createUserResult = await _userManager.CreateAsync(user, "FucyeegPeavpoj6");
+            }
+            System.Collections.Generic.IList<string> usersCurrentRoles = await _userManager.GetRolesAsync(user);
+            if (!usersCurrentRoles.Contains(Roles.admin.ToString()))
+            {
+                IdentityResult addToRoleResult = await _userManager.AddToRoleAsync(user, Roles.admin.ToString());
+            }
+
+            //create roles if dont exists
+            foreach (var roleName in Enum.GetNames(typeof(Roles)))
+            {
+                if (!await _roleManager.RoleExistsAsync(roleName))
+                {
+                    var newRole = new IdentityRole();
+                    newRole.Name = roleName;
+                    await _roleManager.CreateAsync(newRole);
+                }
+            }
         }
     }
 

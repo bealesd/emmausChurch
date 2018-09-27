@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Emmaus.Models
 {
@@ -8,6 +9,6 @@ namespace Emmaus.Models
         public string EmailAddress { get; set; }
         [Required, DataType(DataType.Password)]
         public string Password { get; set; }
-        public string Role { get; set; }
+        public List<string> Roles { get; set; }
     }
 }

@@ -79,6 +79,7 @@ namespace Emmaus.Repos
             retrieveEntity.Text = service.Text;
             retrieveEntity.Story = service.Story;
             retrieveEntity.Speaker = service.Speaker;
+            service.Date = service.Date.AddHours(12);
             if (service.Date.Year != 1999 || service.Date.Year > DateTime.Now.Year - 1)
             {
                 retrieveEntity.Date = service.Date;

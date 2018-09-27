@@ -12,7 +12,7 @@ namespace Emmaus.Service
     {
         Task<RotaDictionary> GetRota(Enum enumChild);
         Task AddRota(RotaDto rota);
-        Task<RotaDto> GetRotaForPersonAndDate(string name, Date date, string role);
+        Task<RotaDto> GetRotaForPersonAndDate(string name, Date date, string role, string type);
         Task DeleteFromRota(RotaDto rota);
     }
 
@@ -39,19 +39,9 @@ namespace Emmaus.Service
         {
             var enumType = enumChild.GetType().Name;
             var names = Enum.GetNames(enumChild.GetType());
-            //var names = Enum.GetNames(typeof(YouthClubLeader)).OrderBy(n => n).ToList();
 
             List<RotaDto> rotas = await _rotaRepo.GetRota(enumType);
-            // reutrn a dictionary of dates for a type (youth club) that contain a list of people and jobs for that date.
-            // dates: {
-            //            01/01/2010:
-            //             {
-            //                david: ["food","talks"], john: ["food"]
-            //             }
-            //        } 
-            // to diplay, for date in dates.keys.orderby, then for name in names.ordereby, then for job in jobs do dates[date][name][job]
-            // field names, "date", then name in names.ordereby
-            // to display multiple jobs under a name, 1. concat jobs, 2. use a list
+
             IOrderedEnumerable<Date> rotaDates = rotas.Select(r => r.Date).ToList()
                                      .DistinctBy(r => new { r.Year, r.Month, r.Day }).ToList()
                                      .OrderBy(d => d.Year).ThenBy(d => d.Month).ThenBy(d => d.Day);
@@ -74,9 +64,9 @@ namespace Emmaus.Service
             return rotaJobsDictionary;
         }
 
-        public async Task<RotaDto> GetRotaForPersonAndDate(string name, Date date, string role)
+        public async Task<RotaDto> GetRotaForPersonAndDate(string name, Date date, string role, string type)
         {
-            return await _rotaRepo.GetRotaForPersonAndDateAndRole(name, date, role);
+            return await _rotaRepo.GetRotaForPersonAndDateAndRole(name, date, role, type);
         }
     }
 }

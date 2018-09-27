@@ -1,4 +1,8 @@
-﻿<div class="mainWrapper">
+﻿@{
+    var message = @ViewData["Message"] != null ? ViewData["Message"] : "";
+}
+
+<div class="mainWrapper">
 
     <div class="about">
 
@@ -11,3 +15,15 @@
     </div>
 
 </div>
+
+<script>
+        let message = '@ViewData["Message"]';
+        $(document).ready(function () {
+            printMessasge();
+        });
+            function printMessasge() {
+                if (message !== "") {
+                    alert(message);
+                }
+            }
+</script>

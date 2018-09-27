@@ -3,20 +3,20 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <link rel="stylesheet" type="text/css" href="~/css/style.css" />
     <link rel="stylesheet" type="text/css" href="~/css/bootstrap.min.css" />
+
+    <script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="~/js/bootstrap.min.js"></script>
+
     <meta itemprop="name" content="Emmaus Church Center" />
     <meta itemprop="description" content="Emmaus Church of Severn Beach welcomes everyone from the community to join us." />
     <meta itemprop="image" content="/images/emmausbuilding.jpg" />
-
     <title>@ViewData["Title"]</title>
-
 </head>
 
 <body background="/images/blueSky.jpg">
-    @{
-        var message = @ViewData["Message"] != null ? ViewData["Message"] : "";
-    }
 
     @functions
     {
@@ -44,14 +44,14 @@
             return String.Concat(teamLink, historyLink);
         }
 
-        else if (pageName.Contains("usermanagement") && User.IsInRole("powerUser"))
+        else if (pageName.Contains("usermanagement") && User.IsInRole(Roles.admin.ToString()))
         {
             var createUserLink = "<li><a href='/Ui/LoadCreateUserView'><p>Create&nbsp;User</p></a></li>";
 
             return String.Concat(createUserLink, "");
         }
 
-        else if (pageName.Contains("rolemanagement") && User.IsInRole("powerUser"))
+        else if (pageName.Contains("rolemanagement") && User.IsInRole(Roles.admin.ToString()))
         {
             var createUserLink = "<li><a href='/Ui/LoadCreateRoleView'><p>Create&nbsp;Role</p></a></li>";
 
@@ -100,17 +100,20 @@
 
         var editKidSerivceLink = "<li><a href='/Ui/LoadKidServiceManagementView'><p>Kids</p></a></li>";
         var editAdultServiceLink = "<li><a href='/Ui/LoadAdultServiceManagementView'><p>Adults</p></a></li>";
-
-        if (User.IsInRole("powerUser"))
+        var userManagementLink = string.Empty;
+        var roleManagementLink = string.Empty;
+        if (User.IsInRole(Roles.admin.ToString()))
         {
-            var userManagementLink = "<li><a href='/Ui/LoadUserManagementView'><p>Users</p></a></li>";
-            var roleManagementLink = "<li><a href='/Ui/LoadRoleManagementView'><p>Roles</p></a></li>";
-            var youthRotaLink = "<li><a href='/Ui/LoadYouthRotaView'><p>Youth</p></a></li>";
-            var bandRotaLink = "<li><a href='/Ui/LoadBandRotaView'><p>Band</p></a></li>";
-            var projectionRotaLink = "<li><a href='/Ui/LoadProjectionRotaView'><p>Projector</p></a></li>";
-            return String.Concat(editKidSerivceLink, editAdultServiceLink, userManagementLink, roleManagementLink,
-                youthRotaLink, bandRotaLink, projectionRotaLink);
+            userManagementLink = "<li><a href='/Ui/LoadUserManagementView'><p>Users</p></a></li>";
+            roleManagementLink = "<li><a href='/Ui/LoadRoleManagementView'><p>Roles</p></a></li>";
         }
+
+        var youthRotaLink = "<li><a href='/Ui/LoadYouthRotaView'><p>Youth</p></a></li>";
+        var bandRotaLink = "<li><a href='/Ui/LoadBandRotaView'><p>Band</p></a></li>";
+        var projectionRotaLink = "<li><a href='/Ui/LoadProjectionRotaView'><p>Projector</p></a></li>";
+        return String.Concat(editKidSerivceLink, editAdultServiceLink, userManagementLink, roleManagementLink,
+            youthRotaLink, bandRotaLink, projectionRotaLink);
+
 
         return String.Concat(editKidSerivceLink, editAdultServiceLink);
     }
@@ -136,7 +139,7 @@
         <div class="v1">
             <div class="navbar">
                 <p>Emmaus&nbsp;Church&nbsp;Centre</p>
-                <a class="link-visible"  asp-controller="Ui" asp-action="LoadWelcomeView">Welcome</a>
+                <a class="link-visible" asp-controller="Ui" asp-action="LoadWelcomeView">Welcome</a>
 
                 <div class="dropdown-visible dropdown">
                     <button class="dropbtn"><a asp-controller="Ui" asp-action="LoadWelcomeView">Welcome</a></button>
@@ -202,9 +205,6 @@
             }
         }
 
-
-
-
         @RenderBody()
 
         <div class="footer">
@@ -212,36 +212,6 @@
         </div>
 
     </div>
-
-    <script>
-        let model = @Html.Raw(Json.Serialize(ViewBag.Title));
-        let message = '@ViewData["Message"]';
-
-            window.onload = function() {
-                scrollIfRequired();
-                printMessasge();
-            };
-
-            function scrollIfRequired() {
-                if (model === 'At Home Wider Community') {
-                    scrollToDiv("atHome");
-                }
-                else if (model === 'Overseas Wider Community') {
-                    scrollToDiv("overseas");
-                }
-            }
-
-            function scrollToDiv(divName) {
-                let elmnt = document.getElementById(divName);
-                elmnt.scrollIntoView();
-            }
-
-            function printMessasge() {
-                if (message !== "") {
-                    alert(message);
-                }
-            }
-    </script>
 
 </body>
 

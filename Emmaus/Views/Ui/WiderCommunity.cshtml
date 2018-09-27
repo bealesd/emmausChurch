@@ -32,3 +32,24 @@
 
     </div>
 </div>
+
+<script>
+    let section = '@ViewBag.Title';
+    function scrollIfRequired() {
+        if (section === 'At Home Wider Community') {
+            scrollToDiv("atHome");
+        }
+        else if (section === 'Overseas Wider Community') {
+            scrollToDiv("overseas");
+        }
+    }
+    function scrollToDiv(divName) {
+        let element = document.getElementById(divName);
+        element.scrollIntoView();
+    }
+
+    $(document).ready(function () {
+        scrollIfRequired();
+    });
+
+</script>

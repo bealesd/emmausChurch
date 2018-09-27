@@ -18,7 +18,7 @@
         </div>
 
         <div class="fieldTwo table-header">
-            <p>Role</p>
+            <p>Roles</p>
         </div>
 
         <div class="fieldThree table-header">
@@ -32,7 +32,9 @@
             </div>
             <div class="fieldTwo">
                 <p>
-                    @user.Role
+                    @String.Join(" ", user.Roles)
+                    
+                    
                 </p>
             </div>
             <div class="fieldThree">

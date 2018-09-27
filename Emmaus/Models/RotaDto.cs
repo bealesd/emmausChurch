@@ -40,24 +40,34 @@ namespace Emmaus.Models
     {
         CarolMiller, JohnMiller, MiriamBamfield, DamianSelby, Lucy
     }
+
     public enum YouthClubRole
     {
         help, food, craft, games, talk
     }
+
     public enum BandLeader
     {
          MiriamBamfield, Keith, Hetty, MarkHathaway
     }
+
     public enum BandRole
     {
         guitar, piano, singer
     }
+
     public enum ProjectionLeader
     {
         BillBeales, DamianSelby, CarolMiller, ChrisSmith, DavidHathaway 
     }
+
     public enum ProjectionRole
     {
         laptop
+    }
+
+    public enum Roles
+    {
+        admin, projector, youth, band, services
     }
 }

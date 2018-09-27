@@ -1,0 +1,178 @@
+@using Emmaus.Helper;
+@{
+    var title = $"{ ((string)ViewData["Title"]).Split('S')[0] }s";
+    var services = (IEnumerable<Service>)ViewData["services"];
+}
+
+<div class="mainWrapper">
+
+    <!--#region table  -->
+    <div class="editTable">
+
+        <div class="title">
+            @title
+        </div>
+
+        <div class="fieldOne table-header">
+            <p><span class="glyphicon glyphicon-time"></span></p>
+        </div>
+
+        <div class="fieldTwo table-header">
+            <p><span class="glyphicon glyphicon-book"></span></p>
+        </div>
+
+        <div class="fieldThree table-header">
+            <p><span class="glyphicon glyphicon-pencil"></span></p>
+        </div>
+
+        <div class="fieldFour table-header">
+            <p><span class="glyphicon glyphicon-user"></span></p>
+        </div>
+
+        <div class="fieldFive table-header">
+            <p></p>
+        </div>
+
+        <div class="fieldSix table-header">
+            <p></p>
+        </div>
+
+        @foreach (var service in services)
+        {
+            <div class="fieldOne">
+                <p>
+                    @service.ToDayMonth()
+                    <input style="width:146px;" hidden type="date" name="dateTime" value="@service.Date" />
+                </p>
+            </div>
+            <div class="fieldTwo">
+                <textarea name="Story" readonly cols="15" rows="4">@service.Story</textarea>
+            </div>
+            <div class="fieldThree">
+                <textarea name="Text" readonly cols="12" rows="4">@service.Text</textarea>
+            </div>
+            <div class="fieldFour">
+                <textarea name="Speaker" readonly cols="5" rows="4">@service.Speaker</textarea>
+            </div>
+            <div class="fieldFive">
+                <p>
+                    <a onclick="EditService(this)">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </a>
+                </p>
+            </div>
+            <div id="@service.Id" class="fieldSix">
+                <p>
+                    <a onclick="ConfirmDelete(this)">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </a>
+                </p>
+            </div>
+        }
+
+    </div>
+    <!--#endregion -->
+</div>
+
+<script>
+    var divArray = Array.prototype.slice.call(document.getElementsByClassName('editTable')[0].children);
+
+    function ConfirmDelete(self) {
+        let serviceElements = GetServiceElements(self);
+        var parentPosition = serviceElements[0];
+        if (confirm('Delete Service?')) {
+            if ('@title'.toLowerCase() === 'kids')
+            {
+                console.log('@title'.toLowerCase());
+                var url = '@Html.Raw(@Url.Action("DeleteKidService", "Ui"))';
+            }
+            else
+            {
+                console.log('@title'.toLowerCase());
+                 var url = '@Html.Raw(@Url.Action("DeleteAdultService", "Ui"))';
+            }
+
+            divArray[parentPosition].getElementsByTagName("a")[0].href = url;
+        }
+    }
+
+    function CancelChanges(parentPosition) {
+        if ('@title'.toLowerCase() === 'kids')
+        {
+            var url = '@Html.Raw(@Url.Action("LoadKidServiceManagementView", "Ui"))';
+        }
+        else
+        {
+            var url = '@Html.Raw(@Url.Action("LoadAdultServiceManagementView", "Ui"))';
+        }
+
+        divArray[parentPosition].children[0].getElementsByTagName("a")[0].href = url;
+
+    }
+
+    function EditService(self) {
+        let serviceElements = GetServiceElements(self);
+        serviceElements[1].removeAttribute('readonly');
+        serviceElements[2].removeAttribute('readonly');
+        serviceElements[3].removeAttribute('readonly');
+        serviceElements[5].hidden = false;
+        self.children[0].className = "glyphicon glyphicon-floppy-disk";
+        serviceElements[4].children[0].children[0].children[0].className = "glyphicon glyphicon-remove";
+        serviceElements[4].getElementsByTagName("a")[0].onclick = function ()
+        {
+            CancelChanges(serviceElements[0] +1);
+        };
+        self.onclick = function ()
+        {
+            SaveService(self);
+        };
+    }
+
+    function GetServiceElements(self) {
+        var divParent = self.parentElement.parentElement;
+        var parentPosition = divArray.indexOf(divParent);
+        var speaker = divArray[parentPosition - 1].children[0];
+        var text = divArray[parentPosition - 2].children[0];
+        var story = divArray[parentPosition - 3].children[0];
+        var id = divArray[parentPosition + 1];
+        var date = divArray[parentPosition - 4].children[0].children[0];
+        return [parentPosition, speaker, text, story, id, date];
+    }
+
+    function SaveService(self) {
+
+        let serviceElements = GetServiceElements(self);
+        var parentPosition = serviceElements[0];
+
+        if (!confirm('Save Changes!')) {
+            return;
+        }
+
+        var speaker = serviceElements[1].value;
+        var text = serviceElements[2].value;
+        var story = serviceElements[3].value;
+        var id = serviceElements[4].id;
+        var date = serviceElements[5].value;
+        if (date === '')
+        {
+            date = '1999-01-01';
+        }
+
+        var url = '@Html.Raw(@Url.Action("EditService", "Ui"))' + '?dateTime=' + date + '&story=' + story + '&speaker=' + speaker + '&text=' + text + '&id=' + id;
+        divArray[parentPosition].getElementsByTagName("a")[0].href = url;
+    }
+
+        let message = '@ViewData["Message"]';
+    $(document).ready(function ()
+    {
+            printMessasge();
+        });
+
+    function printMessasge() {
+        if (message !== "")
+        {
+            alert(message);
+        }
+    }
+
+</script>
