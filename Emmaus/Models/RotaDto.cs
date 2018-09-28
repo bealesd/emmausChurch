@@ -4,7 +4,7 @@ using System;
 
 namespace Emmaus.Models
 {
-    public class RotaDto : TableEntity
+    public class RotaItemDto : TableEntity
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
@@ -33,22 +33,21 @@ namespace Emmaus.Models
             }
             Date = new Date(Year, Month, Day);
         }
-
     }
 
     public enum YouthClubLeader
     {
-        CarolMiller, JohnMiller, MiriamBamfield, DamianSelby, Lucy
+        Damian, John, Lucy, Miriam
     }
 
     public enum YouthClubRole
     {
-        help, food, craft, games, talk
+        craft, food, games, help, talk
     }
 
     public enum BandLeader
     {
-         MiriamBamfield, Keith, Hetty, MarkHathaway
+        Hetty, Keith, Mark, Miriam
     }
 
     public enum BandRole
@@ -58,7 +57,7 @@ namespace Emmaus.Models
 
     public enum ProjectionLeader
     {
-        BillBeales, DamianSelby, CarolMiller, ChrisSmith, DavidHathaway 
+        Bill, Carol, Chris, Damian, DavidH
     }
 
     public enum ProjectionRole
@@ -68,6 +67,6 @@ namespace Emmaus.Models
 
     public enum Roles
     {
-        admin, projector, youth, band, services
+        admin, band, projector, services, youth
     }
 }

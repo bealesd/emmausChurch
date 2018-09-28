@@ -619,9 +619,10 @@ body {
             text-decoration: underline;
         }
 
-        .mainWrapper a:visited {
-            color: blue;
-        }
+            .mainWrapper a:link,
+            .mainWrapper a:visited {
+                color: blue;
+            }
 
 .title {
     text-align: left;
@@ -652,8 +653,6 @@ body {
 }
 
     .mainWrapper .about img {
-        /*max-width: 100%;
-        max-height: auto;*/
         width: 100%;
         height: auto;
         padding: 15px 5px 5px 5px;

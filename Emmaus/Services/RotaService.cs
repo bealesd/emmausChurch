@@ -10,10 +10,9 @@ namespace Emmaus.Service
 {
     public interface IRotaService
     {
-        Task<RotaDictionary> GetRota(Enum enumChild);
-        Task AddRota(RotaDto rota);
-        Task<RotaDto> GetRotaForPersonAndDate(string name, Date date, string role, string type);
-        Task DeleteFromRota(RotaDto rota);
+        Task<RotaDictionary> GetRota(Type typeofEnum);
+        Task AddRota(RotaItemDto rota);
+        Task DeleteFromRota(RotaItemDto rota);
     }
 
     public class RotaService : IRotaService
@@ -23,26 +22,28 @@ namespace Emmaus.Service
         public RotaService(IRotaRepo rotaRepo)
         {
             _rotaRepo = rotaRepo;
+            _rotaRepo.DeleteInvalidNamesFromRota(typeof(YouthClubLeader)).Wait();
+            _rotaRepo.DeleteInvalidNamesFromRota(typeof(BandLeader)).Wait();
+            _rotaRepo.DeleteInvalidNamesFromRota(typeof(ProjectionLeader)).Wait();
         }
 
-        public async Task AddRota(RotaDto rota)
+        public async Task AddRota(RotaItemDto rotaItem)
         {
-            await _rotaRepo.AddRota(rota);
+            await _rotaRepo.AddRotaItem(rotaItem);
         }
 
-        public async Task DeleteFromRota(RotaDto rota)
+        public async Task DeleteFromRota(RotaItemDto rotaItem)
         {
-            await _rotaRepo.DeleteFromRota(rota);
+            await _rotaRepo.DeleteRotaItemFromRota(rotaItem);
         }
 
-        public async Task<RotaDictionary> GetRota(Enum enumChild)
+        public async Task<RotaDictionary> GetRota(Type typeofRotaEnum)
         {
-            var enumType = enumChild.GetType().Name;
-            var names = Enum.GetNames(enumChild.GetType());
 
-            List<RotaDto> rotas = await _rotaRepo.GetRota(enumType);
+            var names = Enum.GetNames(typeofRotaEnum);
+            List<RotaItemDto> rota = await _rotaRepo.GetRota(typeofRotaEnum.Name);
 
-            IOrderedEnumerable<Date> rotaDates = rotas.Select(r => r.Date).ToList()
+            IOrderedEnumerable<Date> rotaDates = rota.Select(r => r.Date).ToList()
                                      .DistinctBy(r => new { r.Year, r.Month, r.Day }).ToList()
                                      .OrderBy(d => d.Year).ThenBy(d => d.Month).ThenBy(d => d.Day);
 
@@ -53,20 +54,15 @@ namespace Emmaus.Service
                 foreach (var name in names)
                 {
                     var jobs = new List<string>();
-                    var userRotas = rotas.Where(r => r.Date.Equals(rotaDate) && r.Name == name).ToList();
-                    userRotas.ForEach(r => jobs.Add(r.Role));
-                    if (userRotas.Count == 0) jobs.Add("--");
+                    var userRota = rota.Where(r => r.Date.Equals(rotaDate) && r.Name == name).ToList();
+                    userRota.ForEach(r => jobs.Add(r.Role));
+                    if (userRota.Count == 0) jobs.Add("--");
 
                     nameJobs.KeyValues.Add(name, jobs);
                 }
                 rotaJobsDictionary.DateNameJobListPairs.Add(rotaDate, nameJobs);
             }
             return rotaJobsDictionary;
-        }
-
-        public async Task<RotaDto> GetRotaForPersonAndDate(string name, Date date, string role, string type)
-        {
-            return await _rotaRepo.GetRotaForPersonAndDateAndRole(name, date, role, type);
         }
     }
 }
