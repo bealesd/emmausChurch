@@ -36,30 +36,30 @@
                 @foreach (var date in rota.DateNameJobListPairs.Keys)
                 {
                     <tr>
-                        <td class="field">@date.ToFriendly()</td>
+                        <td class="field">@date.ToLocalTime().ToShortDateString()</td>
                         @foreach (string name in names)
                         {
 
                             <td class="field">
-                                <p hidden>Remove @name.JoinedCapitalizedNameToSpaceSeparatedName() from rota on: @date.ToFriendly()</p>
+                                <p hidden>Remove @name.JoinedCapitalizedNameToSpaceSeparatedName() from rota on: @date.ToLocalTime().ToShortDateString()</p>
                                 @{
                                     foreach (var role in @rota.DateNameJobListPairs[date].KeyValues[name])
                                     {
                                         if (title == "Band Rota")
                                         {
-                                            <a onclick="ConfirmDelete(this)" asp-action="DeleteFromRotaBand" asp-route-year="@date.Year" asp-route-month="@date.Month" asp-route-day="@date.Day" asp-route-name="@name" asp-route-role="@role">
+                                            <a onclick="ConfirmDelete(this)" asp-action="DeleteFromRotaBand" asp-route-dateTime="@date.ToLocalTime()" asp-route-name="@name" asp-route-role="@role">
                                                 @role
                                             </a>
                                         }
                                         else if (title == "Projection Rota")
                                         {
-                                            <a onclick="ConfirmDelete(this)" asp-action="DeleteFromRotaProjection" asp-route-year="@date.Year" asp-route-month="@date.Month" asp-route-day="@date.Day" asp-route-name="@name" asp-route-role="@role">
+                                            <a onclick="ConfirmDelete(this)" asp-action="DeleteFromRotaProjection" asp-route-dateTime="@date.ToLocalTime()" asp-route-name="@name" asp-route-role="@role">
                                                 @role
                                             </a>
                                         }
                                         else if (title == "Youth Rota")
                                         {
-                                            <a onclick="ConfirmDelete(this)" asp-action="DeleteFromRotaYouthClub" asp-route-year="@date.Year" asp-route-month="@date.Month" asp-route-day="@date.Day" asp-route-name="@name" asp-route-role="@role">
+                                            <a onclick="ConfirmDelete(this)" asp-action="DeleteFromRotaYouthClub" asp-route-dateTime="@date.ToLocalTime()" asp-route-name="@name" asp-route-role="@role">
                                                 @role
                                             </a>
                                         }

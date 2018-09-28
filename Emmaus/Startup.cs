@@ -63,7 +63,7 @@ namespace Emmaus
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             //services.AddSingleton<IServiceRepo>(new ServiceCosmosRepo(new DocumentDBRepo<Service>()));
-            services.AddSingleton<IServiceRepo>(new ServiceTableRepo());
+            services.AddSingleton<IServiceRepo>(new ServiceRepo());
             //services.AddSingleton<IRotaRepo>(new RotaRepo());
             services.AddSingleton<IRotaService>(new RotaService(new RotaRepo()));
         }

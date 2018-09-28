@@ -9,30 +9,31 @@ namespace Emmaus.Models
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
         public string Type { get; set; }
-        public Date Date { get; set; }
-        public int Day { get; set; }
-        public int Month { get; set; }
-        public int Year { get; set; }
+        //public Date Date { get; set; }
+        public DateTime DateTime { get; set; }
+        //public int Day { get; set; }
+        //public int Month { get; set; }
+        //public int Year { get; set; }
         public string Name { get; set; }
         public string Role { get; set; }
-        public void UnPackDate()
-        {
-            if (Date == null)
-            {
-                throw new Exception("No date set.");
-            }
-            Day = Date.Day;
-            Month = Date.Month;
-            Year = Date.Year;
-        }
-        public void PackDate()
-        {
-            if (Date != null)
-            {
-                throw new Exception("Date already set.");
-            }
-            Date = new Date(Year, Month, Day);
-        }
+        //public void UnPackDate()
+        //{
+        //    if (Date == null)
+        //    {
+        //        throw new Exception("No date set.");
+        //    }
+        //    Day = Date.Day;
+        //    Month = Date.Month;
+        //    Year = Date.Year;
+        //}
+        //public void PackDate()
+        //{
+        //    if (Date != null)
+        //    {
+        //        throw new Exception("Date already set.");
+        //    }
+        //    Date = new Date(Year, Month, Day);
+        //}
     }
 
     public enum YouthClubLeader

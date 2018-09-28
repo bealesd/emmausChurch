@@ -322,14 +322,14 @@ namespace Emmaus.Controllers
         }
 
         [Authorize(Roles = "admin, youth ")]
-        public async Task<IActionResult> AddYouthClubRota(DateTime dateTime, string name, List<string> roles)
+        public async Task<IActionResult> AddYouthClubRota(string dateTime, string name, List<string> roles)
         {
             foreach (var role in roles)
             {
                 var rota = new RotaItemDto()
                 {
                     Type = typeof(YouthClubLeader).Name,
-                    Date = new Date(dateTime.Year, dateTime.Month, dateTime.Day),
+                    DateTime = DateTime.Parse(dateTime),
                     Name = name,
                     Role = role,
                     Id = Guid.NewGuid().ToString()
@@ -340,14 +340,14 @@ namespace Emmaus.Controllers
         }
 
         [Authorize(Roles = "admin, band")]
-        public async Task<IActionResult> AddBandRota(DateTime dateTime, string name, List<string> roles)
+        public async Task<IActionResult> AddBandRota(string dateTime, string name, List<string> roles)
         {
             foreach (var role in roles)
             {
                 var rota = new RotaItemDto()
                 {
                     Type = typeof(BandLeader).Name,
-                    Date = new Date(dateTime.Year, dateTime.Month, dateTime.Day),
+                    DateTime = DateTime.Parse(dateTime),
                     Name = name,
                     Role = role,
                     Id = Guid.NewGuid().ToString()
@@ -359,14 +359,14 @@ namespace Emmaus.Controllers
         }
 
         [Authorize(Roles = "admin, projector")]
-        public async Task<IActionResult> AddProjectionRota(DateTime dateTime, string name, List<string> roles)
+        public async Task<IActionResult> AddProjectionRota(string dateTime, string name, List<string> roles)
         {
             foreach (var role in roles)
             {
                 var rota = new RotaItemDto()
                 {
                     Type = typeof(ProjectionLeader).Name,
-                    Date = new Date(dateTime.Year, dateTime.Month, dateTime.Day),
+                    DateTime = DateTime.Parse(dateTime),
                     Name = name,
                     Role = role,
                     Id = Guid.NewGuid().ToString()
@@ -378,13 +378,12 @@ namespace Emmaus.Controllers
         }
 
         [Authorize(Roles = "admin, youth")]
-        [Authorize]
-        public async Task<IActionResult> DeleteFromRotaYouthClub(int year, int month, int day, string name, string role)
+        public async Task<IActionResult> DeleteFromRotaYouthClub(string dateTime, string name, string role)
         {
             var rota = new RotaItemDto()
             {
                 Type = typeof(YouthClubLeader).Name,
-                Date = new Date(year, month, day),
+                DateTime = DateTime.Parse(dateTime),
                 Name = name,
                 Role = role
             };
@@ -395,12 +394,12 @@ namespace Emmaus.Controllers
         }
 
         [Authorize(Roles = "admin, projector")]
-        public async Task<IActionResult> DeleteFromRotaProjection(int year, int month, int day, string name, string role)
+        public async Task<IActionResult> DeleteFromRotaProjection(string dateTime, string name, string role)
         {
             var rota = new RotaItemDto()
             {
                 Type = typeof(ProjectionLeader).Name,
-                Date = new Date(year, month, day),
+                DateTime = DateTime.Parse(dateTime),
                 Name = name,
                 Role = role
             };
@@ -411,12 +410,12 @@ namespace Emmaus.Controllers
         }
 
         [Authorize(Roles = "admin, band")]
-        public async Task<IActionResult> DeleteFromRotaBand(int year, int month, int day, string name, string role)
+        public async Task<IActionResult> DeleteFromRotaBand(string dateTime, string name, string role)
         {
             var rota = new RotaItemDto()
             {
                 Type = typeof(BandLeader).Name,
-                Date = new Date(year, month, day),
+                DateTime = DateTime.Parse(dateTime),
                 Name = name,
                 Role = role
             };

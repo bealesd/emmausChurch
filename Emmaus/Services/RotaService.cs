@@ -39,28 +39,25 @@ namespace Emmaus.Service
 
         public async Task<RotaDictionary> GetRota(Type typeofRotaEnum)
         {
-
             var names = Enum.GetNames(typeofRotaEnum);
-            List<RotaItemDto> rota = await _rotaRepo.GetRota(typeofRotaEnum.Name);
-
-            IOrderedEnumerable<Date> rotaDates = rota.Select(r => r.Date).ToList()
-                                     .DistinctBy(r => new { r.Year, r.Month, r.Day }).ToList()
-                                     .OrderBy(d => d.Year).ThenBy(d => d.Month).ThenBy(d => d.Day);
+            List<RotaItemDto> rota = await _rotaRepo.GetRota(typeofRotaEnum);
+            IOrderedEnumerable<DateTime> rotaDates = rota.Select(r => r.DateTime).Distinct()
+                                     .OrderBy(d => d);
 
             var rotaJobsDictionary = new RotaDictionary();
-            foreach (Date rotaDate in rotaDates)
+            foreach (DateTime rotaDate in rotaDates)
             {
-                var nameJobs = new NameRoles();
+                var nameRoles = new NameRoles();
                 foreach (var name in names)
                 {
-                    var jobs = new List<string>();
-                    var userRota = rota.Where(r => r.Date.Equals(rotaDate) && r.Name == name).ToList();
-                    userRota.ForEach(r => jobs.Add(r.Role));
-                    if (userRota.Count == 0) jobs.Add("--");
+                    var roles = new List<string>();
+                    var userRota = rota.Where(r => r.DateTime == rotaDate && r.Name == name).ToList();
+                    userRota.ForEach(r => roles.Add(r.Role));
+                    if (userRota.Count == 0) roles.Add("--");
 
-                    nameJobs.KeyValues.Add(name, jobs);
+                    nameRoles.KeyValues.Add(name, roles);
                 }
-                rotaJobsDictionary.DateNameJobListPairs.Add(rotaDate, nameJobs);
+                rotaJobsDictionary.DateNameJobListPairs.Add(rotaDate, nameRoles);
             }
             return rotaJobsDictionary;
         }

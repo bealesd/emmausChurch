@@ -10,9 +10,9 @@ namespace Emmaus.Repos
 {
     public interface IRotaRepo
     {
-        Task<List<RotaItemDto>> GetRota(string type);
+        Task<List<RotaItemDto>> GetRota(Type typeofRotaEnum);
         Task AddRotaItem(RotaItemDto rota);
-        Task<RotaItemDto> GetRotaItemForPersonAndDateAndRole(string name, Date date, string role, string type);
+        Task<RotaItemDto> GetRotaItemForPersonAndDateAndRole(string name, string role, string type, DateTime dateTime);
         Task DeleteRotaItemFromRota(RotaItemDto rota);
         Task DeleteInvalidNamesFromRota(Type typeofRotaEnum);
     }
@@ -30,17 +30,12 @@ namespace Emmaus.Repos
             createTable.Wait();
         }
 
-        public async Task<List<RotaItemDto>> GetRota(string rotaType)
+        public async Task<List<RotaItemDto>> GetRota(Type typeofRotaEnum)
         {
             try
             {
-                TableQuery<RotaItemDto> query = new TableQuery<RotaItemDto>()
-                    .Where(TableQuery.GenerateFilterCondition("Type", QueryComparisons.Equal, rotaType));
-                TableQuerySegment<RotaItemDto> queryResult = await _table.ExecuteQuerySegmentedAsync(query, null);
-
-                var rota = (List<RotaItemDto>)queryResult.Results;
-                rota.ForEach(r => r.PackDate());
-                var orderedRota = rota.OrderBy(s => s.Year).ThenBy(s => s.Month).ThenBy(s => s.Day).ToList();
+                List<RotaItemDto> rota = await GetUnpackedRota(typeofRotaEnum);
+                var orderedRota = rota.OrderBy(r => r.DateTime).ToList();
                 return orderedRota;
             }
             catch (Exception)
@@ -49,34 +44,22 @@ namespace Emmaus.Repos
             }
         }
 
-        public async Task<RotaItemDto> GetRotaItemForPersonAndDateAndRole(string name, Date date, string role, string rotaType)
+        public async Task<RotaItemDto> GetRotaItemForPersonAndDateAndRole(string name, string role, string rotaType, DateTime dateTime)
         {
             try
             {
                 var nameFilter = TableQuery.GenerateFilterCondition("Name", QueryComparisons.Equal, name);
                 var typeFilter = TableQuery.GenerateFilterCondition("Type", QueryComparisons.Equal, rotaType);
-
-                var yearFilter = TableQuery.GenerateFilterConditionForInt("Year", QueryComparisons.Equal, date.Year);
-                var monthFilter = TableQuery.GenerateFilterConditionForInt("Month", QueryComparisons.Equal, date.Month);
-                var dayFilter = TableQuery.GenerateFilterConditionForInt("Day", QueryComparisons.Equal, date.Day);
-
                 var roleFilter = TableQuery.GenerateFilterCondition("Role", QueryComparisons.Equal, role);
 
                 var filter = TableQuery.CombineFilters(
-                                TableQuery.CombineFilters(
-                                    TableQuery.CombineFilters(yearFilter, TableOperators.And, monthFilter),
+                                    roleFilter,
                                     TableOperators.And,
-                                    TableQuery.CombineFilters(dayFilter, TableOperators.And, roleFilter)
-                                    ),
-                                TableOperators.And,
-                                TableQuery.CombineFilters(nameFilter, TableOperators.And, typeFilter)
-                             );
+                                    TableQuery.CombineFilters(nameFilter, TableOperators.And, typeFilter));
 
                 TableQuery<RotaItemDto> query = new TableQuery<RotaItemDto>().Where(filter);
-
                 TableQuerySegment<RotaItemDto> results = await _table.ExecuteQuerySegmentedAsync(query, null);
-
-                return results.FirstOrDefault();
+                return results.FirstOrDefault(ri => ri.DateTime == dateTime.ToUniversalTime());
             }
             catch (Exception)
             {
@@ -90,7 +73,6 @@ namespace Emmaus.Repos
             {
                 rotaItem.PartitionKey = rotaItem.Id;
                 rotaItem.RowKey = rotaItem.Id;
-                rotaItem.UnPackDate();
                 var insertOperation = TableOperation.InsertOrReplace(rotaItem);
                 await _table.ExecuteAsync(insertOperation);
             }
@@ -104,12 +86,26 @@ namespace Emmaus.Repos
         {
             try
             {
-                var id = (await GetRotaItemForPersonAndDateAndRole(rotaItem.Name, rotaItem.Date, rotaItem.Role, rotaItem.Type)).Id;
+                var id = (await GetRotaItemForPersonAndDateAndRole(rotaItem.Name, rotaItem.Role, rotaItem.Type, rotaItem.DateTime)).Id;
                 await DeleteRow(id);
             }
             catch (Exception)
             {
                 throw new Exception("Rota not removed");
+            }
+        }
+
+        public async Task DeleteInvalidNamesFromRota(Type typeofRotaEnum)
+        {
+            var names = Enum.GetNames(typeofRotaEnum);
+            var rota = await GetUnpackedRota(typeofRotaEnum);
+
+            foreach (var rotaItem in rota)
+            {
+                if (!names.Contains(rotaItem.Name))
+                {
+                    await DeleteRow(rotaItem.Id);
+                }
             }
         }
 
@@ -122,23 +118,14 @@ namespace Emmaus.Repos
             await _table.ExecuteAsync(deleteOperation);
         }
 
-        public async Task DeleteInvalidNamesFromRota(Type typeofRotaEnum)
+        private async Task<List<RotaItemDto>> GetUnpackedRota(Type typeofRotaEnum)
         {
-            var names = Enum.GetNames(typeofRotaEnum);
-            var type = typeofRotaEnum.Name;
-            var typeFilter = TableQuery.GenerateFilterCondition("Type", QueryComparisons.Equal, type);
-
-            TableQuery<RotaItemDto> query = new TableQuery<RotaItemDto>().Where(typeFilter);
+            var rotaType = typeofRotaEnum.Name;
+            TableQuery<RotaItemDto> query = new TableQuery<RotaItemDto>()
+                .Where(TableQuery.GenerateFilterCondition("Type", QueryComparisons.Equal, rotaType));
             TableQuerySegment<RotaItemDto> queryResult = await _table.ExecuteQuerySegmentedAsync(query, null);
-            var rota = (List<RotaItemDto>)queryResult.Results;
-
-            foreach (var rotaItem in rota)
-            {
-                if (!names.Contains(rotaItem.Name))
-                {
-                    await DeleteRow(rotaItem.Id);
-                }
-            }
+            var rota = queryResult.Results;
+            return rota;
         }
     }
 }

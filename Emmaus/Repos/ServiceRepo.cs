@@ -7,11 +7,19 @@ using System.Threading.Tasks;
 
 namespace Emmaus.Repos
 {
-    public class ServiceBlobRepo : IServiceRepo
+    public interface IServiceRepo
+    {
+        Task<IEnumerable<Models.Service>> GetServices(string serviceType);
+        Task DeleteService(string id);
+        Task AddService(Models.Service service);
+        Task UpdateService(Models.Service service);
+    }
+
+    public class ServiceRepo : IServiceRepo
     {
         private CloudStorageAccount _storageAccount;
         private CloudTable _table;
-        public ServiceBlobRepo()
+        public ServiceRepo()
         {
             _storageAccount = CloudStorageAccount.Parse(
                 @"DefaultEndpointsProtocol=https;AccountName=emmaus;AccountKey=vAqsHtaXxMKRjdusbs4hTYdG1NsYBRAUlhLRw2f+BO2/loKiLnxlJoYjdVwbGpC5dJMdZV9z1hqBPM1gSJNV5w==;EndpointSuffix=core.windows.net");
@@ -22,15 +30,18 @@ namespace Emmaus.Repos
 
         }
 
-        public async Task<IEnumerable<Models.Service>> GetServices(string type)
+        public async Task<IEnumerable<Models.Service>> GetServices(string serviceType)
         {
             try
             {
-                TableQuery<Models.Service> query = new TableQuery<Models.Service>()
-                    .Where(TableQuery.GenerateFilterCondition("Type", QueryComparisons.Equal, type));
-                TableQuerySegment<Models.Service> a = await _table.ExecuteQuerySegmentedAsync(query, null);
-                IOrderedEnumerable<Models.Service> b = a.OrderBy(s => s.Date.Year).ThenBy(s => s.Date.Month).ThenBy(s => s.Date.Day);
-                return (b).ToList();
+                TableQuery<Models.Service> serviceQuery = new TableQuery<Models.Service>()
+                    .Where(TableQuery.GenerateFilterCondition("Type", QueryComparisons.Equal, serviceType));
+                TableQuerySegment<Models.Service> servicesQuery = await _table.ExecuteQuerySegmentedAsync(serviceQuery, null);
+                IOrderedEnumerable<Models.Service> services = servicesQuery
+                                                                    .OrderBy(s => s.Date.Year)
+                                                                    .ThenBy(s => s.Date.Month)
+                                                                    .ThenBy(s => s.Date.Day);
+                return services.ToList();
             }
             catch (Exception)
             {
@@ -79,6 +90,7 @@ namespace Emmaus.Repos
             retrieveEntity.Text = service.Text;
             retrieveEntity.Story = service.Story;
             retrieveEntity.Speaker = service.Speaker;
+            service.Date = service.Date.AddHours(12);
             if (service.Date.Year != 1999 || service.Date.Year > DateTime.Now.Year - 1)
             {
                 retrieveEntity.Date = service.Date;
