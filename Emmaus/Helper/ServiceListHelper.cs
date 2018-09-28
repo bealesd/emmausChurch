@@ -1,5 +1,4 @@
-﻿using Emmaus.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -20,7 +19,7 @@ namespace Emmaus.Helper
             var monthStart = servicesList[0].ToMonth();
             var monthEnd = servicesList[servicesList.Count - 1].ToMonth();
 
-            return String.Concat(
+            return string.Concat(
                 pageTitle, Nbsp, 
                 monthStart, Nbsp,
                 "-", Nbsp,
@@ -47,7 +46,7 @@ namespace Emmaus.Helper
 
         public static string ToFriendlyDate(this DateTime dateTime)
         {
-            return String.Concat(dateTime.Day, " ", dateTime.ToString("MMM", CultureInfo.CurrentCulture));
+            return string.Concat(dateTime.Day, " ", dateTime.ToString("MMM", CultureInfo.CurrentCulture));
         }
     }
 }

@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Identity;
 
 @{
-    var roles = (List<IdentityRole>)ViewData["roles"];
+    var roles = (IAsyncEnumerable<string>)ViewData["roles"];
 }
 
 <div class="mainWrapper">
@@ -22,17 +22,16 @@
             <p></p>
         </div>
 
-
-        @foreach (var role in roles)
+        @foreach (var role in roles.ToEnumerable())
         {
             <div class="fieldOne">
-                <p>@role.Name</p>
+                <p>@role</p>
             </div>
 
             <div class="fieldTwo">
                 <p>
                     <a onclick="ConfirmDelete('Delete Role?')"
-                       asp-action="DeleteRole" asp-route-roleName="@role.Name"><span class="glyphicon glyphicon-trash"></span></a>
+                       asp-action="DeleteRole" asp-route-roleName="@role"><span class="glyphicon glyphicon-trash"></span></a>
                 </p>
             </div>
         }

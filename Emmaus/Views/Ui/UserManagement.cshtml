@@ -1,7 +1,7 @@
 @model UserInfo
 
 @{
-    var users = (List<UserInfo>)ViewData["users"];
+    var users = (IEnumerable<UserInfo>)ViewData["users"];
 }
 
 <div class="mainWrapper">

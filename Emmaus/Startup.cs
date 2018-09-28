@@ -51,7 +51,6 @@ namespace Emmaus
 
             services.ConfigureApplicationCookie(options =>
             {
-                // Cookie settings
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
 
@@ -62,9 +61,7 @@ namespace Emmaus
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            //services.AddSingleton<IServiceRepo>(new ServiceCosmosRepo(new DocumentDBRepo<Service>()));
             services.AddSingleton<IServiceRepo>(new ServiceRepo());
-            //services.AddSingleton<IRotaRepo>(new RotaRepo());
             services.AddSingleton<IRotaService>(new RotaService(new RotaRepo()));
         }
 
@@ -94,45 +91,16 @@ namespace Emmaus
                     template: "{controller=Ui}/{action=LoadWelcomeView}/{id?}");
             });
 
-            CreateSuperUser(serviceProvider).Wait();
-        }
+            UserManager<ApplicationUser> userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            SignInManager<ApplicationUser> signInManager = serviceProvider.GetRequiredService<SignInManager<ApplicationUser>>();
+            var identityRepo = new IdentityRepo(userManager, roleManager, signInManager);
 
-        public async Task CreateSuperUser(IServiceProvider serviceProvider)
-        {
-            UserManager<ApplicationUser> _userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            RoleManager<IdentityRole> _roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-            var roleExists = await _roleManager.RoleExistsAsync(Roles.admin.ToString());
-            if (!roleExists)
-            {
-                var role = new IdentityRole();
-                role.Name = Roles.admin.ToString();
-                IdentityResult roleCreated = await _roleManager.CreateAsync(role);
-            }
+            identityRepo.CreateRolesIfRequiredAsync(Enum.GetNames(typeof(Roles))).Wait();
 
             var email = "david_beales@ymail.com";
-            ApplicationUser user = await _userManager.FindByEmailAsync(email);
-            if (user == null)
-            {
-                user = new ApplicationUser { UserName = email, Email = email };
-                IdentityResult createUserResult = await _userManager.CreateAsync(user, "FucyeegPeavpoj6");
-            }
-            System.Collections.Generic.IList<string> usersCurrentRoles = await _userManager.GetRolesAsync(user);
-            if (!usersCurrentRoles.Contains(Roles.admin.ToString()))
-            {
-                IdentityResult addToRoleResult = await _userManager.AddToRoleAsync(user, Roles.admin.ToString());
-            }
-
-            //create roles if dont exists
-            foreach (var roleName in Enum.GetNames(typeof(Roles)))
-            {
-                if (!await _roleManager.RoleExistsAsync(roleName))
-                {
-                    var newRole = new IdentityRole();
-                    newRole.Name = roleName;
-                    await _roleManager.CreateAsync(newRole);
-                }
-            }
+            var password = "FucyeegPeavpoj6";
+            identityRepo.CreateAdminUserIfRequiredAsync(email, password).Wait();
         }
     }
 

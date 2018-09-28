@@ -2,7 +2,7 @@
 @{
     var title = (string)ViewData["Title"];
     var rota = (RotaDictionary)ViewData["rota"];
-    var names = ((List<string>)ViewData["names"]);
+    var names = ((IEnumerable<string>)ViewData["names"]);
 }
 
 <div class="mainWrapper">
@@ -17,7 +17,7 @@
             <tr>
                 <th class="table-header"><span class="glyphicon glyphicon-time"></span></th>
 
-                @if (names.Count > 0)
+                @if (names.Count() > 0)
                 {
                     @foreach (var name in names)
                     {
