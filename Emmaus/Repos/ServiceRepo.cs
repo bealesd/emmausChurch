@@ -43,9 +43,9 @@ namespace Emmaus.Repos
                                                                     .ThenBy(s => s.Date.Day);
                 return services.ToList();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new Exception("Could not get services");
+                throw new Exception("Could not get services", e);
             }
         }
 
@@ -60,9 +60,9 @@ namespace Emmaus.Repos
                 TableOperation deleteOperation = TableOperation.Delete(deleteEntity);
                 await _table.ExecuteAsync(deleteOperation);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new Exception("Service not removed");
+                throw new Exception("Service not removed", e);
             }
         }
 
@@ -75,9 +75,9 @@ namespace Emmaus.Repos
                 TableOperation insertOperation = TableOperation.InsertOrReplace(service);
                 await _table.ExecuteAsync(insertOperation);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new Exception("Service not added");
+                throw new Exception("Service not added", e);
             }
         }
 

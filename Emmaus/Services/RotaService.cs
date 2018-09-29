@@ -1,5 +1,4 @@
-﻿using Emmaus.Helper;
-using Emmaus.Models;
+﻿using Emmaus.Models;
 using Emmaus.Repos;
 using System;
 using System.Collections.Generic;
@@ -40,7 +39,7 @@ namespace Emmaus.Service
         public async Task<RotaDictionary> GetRota(Type typeofRotaEnum)
         {
             var names = Enum.GetNames(typeofRotaEnum);
-            List<RotaItemDto> rota = await _rotaRepo.GetRota(typeofRotaEnum);
+            IEnumerable<RotaItemDto> rota = await _rotaRepo.GetRota(typeofRotaEnum);
             IOrderedEnumerable<DateTime> rotaDates = rota.Select(r => r.DateTime).Distinct()
                                      .OrderBy(d => d);
 

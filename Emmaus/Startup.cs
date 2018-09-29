@@ -1,4 +1,5 @@
 ﻿using Emmaus.Data;
+using Emmaus.Logger;
 using Emmaus.Models;
 using Emmaus.Repos;
 using Emmaus.Service;
@@ -69,8 +70,8 @@ namespace Emmaus
         {
             if (env.IsDevelopment())
             {
-                //app.UseMiddleware(typeof(ErrorHandlingMiddleware));
-                app.UseDeveloperExceptionPage();
+                app.UseMiddleware(typeof(ErrorHandlingMiddleware));
+                //app.UseDeveloperExceptionPage();
             }
             else
             {
@@ -119,15 +120,38 @@ namespace Emmaus
             {
                 await next(context);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                await HandleExceptionAsync(context, ex);
+                var name = string.IsNullOrEmpty(context.User.Identity.Name) ? "Not logged in" : context.User.Identity.Name;
+                //var message = string.IsNullOrEmpty(e.Message) ? "No message" : $"{context.Request.Path}: " + e.Message;
+                var message = $"{context.Request.Path}: " + ExceptionHelper.GetaAllMessages(e);
+                await AzureLogging.CreateLog(message, name, LogLevel.Error);
+
+                await HandleExceptionAsync(context);
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private static Task HandleExceptionAsync(HttpContext context)
         {
             return Task.Run(() => context.Response.Redirect("/Ui/LoadError"));
+        }
+    }
+
+    public static class ExceptionHelper
+    {
+        public static string GetaAllMessages(this Exception exp)
+        {
+            var message = string.Empty;
+            Exception innerException = exp;
+
+            do
+            {
+                message += ". " + (string.IsNullOrEmpty(innerException.Message) ? string.Empty : innerException.Message);
+                innerException = innerException.InnerException;
+            }
+            while (innerException != null);
+
+            return message;
         }
     }
 }

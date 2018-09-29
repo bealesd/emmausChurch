@@ -36,7 +36,7 @@
 
             <form asp-action="@action" method="post">
 
-                <input class="input date" type="date" name="dateTime" />
+                <input class="input date" required type="date" name="dateTime" min="2018-01-01" max="2020-12-31"/>
                 <select class="input" name="Name" asp-items="@leaders"></select>
                 <br>
                 @foreach (var role in roles)
@@ -45,8 +45,18 @@
                 }
                 <br>
 
-                <button class="submit" type="submit">Add</button>
+                <button onclick="validateRoles()" class="submit" type="submit">Add</button>
             </form>
         </div>
     </div>
 </div>
+
+<script>
+    function validateRoles() {
+        if ($("input:checked").length == 0) {
+            alert("Please select at least one role.");
+            event.preventDefault();
+            return;
+        }
+    }
+</script>

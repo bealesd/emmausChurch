@@ -1,4 +1,5 @@
-﻿using Emmaus.Models;
+﻿using Emmaus.Logger;
+using Emmaus.Models;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using System;
@@ -10,7 +11,7 @@ namespace Emmaus.Repos
 {
     public interface IRotaRepo
     {
-        Task<List<RotaItemDto>> GetRota(Type typeofRotaEnum);
+        Task<IEnumerable<RotaItemDto>> GetRota(Type typeofRotaEnum);
         Task AddRotaItem(RotaItemDto rota);
         Task<RotaItemDto> GetRotaItemForPersonAndDateAndRole(string name, string role, string type, DateTime dateTime);
         Task DeleteRotaItemFromRota(RotaItemDto rota);
@@ -30,17 +31,17 @@ namespace Emmaus.Repos
             createTable.Wait();
         }
 
-        public async Task<List<RotaItemDto>> GetRota(Type typeofRotaEnum)
+        public async Task<IEnumerable<RotaItemDto>> GetRota(Type typeofRotaEnum)
         {
             try
             {
-                List<RotaItemDto> rota = await GetUnpackedRota(typeofRotaEnum);
+                IEnumerable<RotaItemDto> rota = await GetUnpackedRota(typeofRotaEnum);
                 var orderedRota = rota.OrderBy(r => r.DateTime).ToList();
                 return orderedRota;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new Exception("Could not get rota");
+                throw new Exception("Could not get rota", e);
             }
         }
 
@@ -61,9 +62,9 @@ namespace Emmaus.Repos
                 TableQuerySegment<RotaItemDto> results = await _table.ExecuteQuerySegmentedAsync(query, null);
                 return results.FirstOrDefault(ri => ri.DateTime == dateTime.ToUniversalTime());
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new Exception("Could not get rota for person and role");
+                throw new Exception("Could not get rota for person and role", e);
             }
         }
 
@@ -76,9 +77,9 @@ namespace Emmaus.Repos
                 var insertOperation = TableOperation.InsertOrReplace(rotaItem);
                 await _table.ExecuteAsync(insertOperation);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new Exception("Rota not added");
+                throw new Exception("Rota not added", e);
             }
         }
 
@@ -89,9 +90,9 @@ namespace Emmaus.Repos
                 var id = (await GetRotaItemForPersonAndDateAndRole(rotaItem.Name, rotaItem.Role, rotaItem.Type, rotaItem.DateTime)).Id;
                 await DeleteRow(id);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new Exception("Rota not removed");
+                throw new Exception("Rota not removed", e);
             }
         }
 
@@ -118,7 +119,7 @@ namespace Emmaus.Repos
             await _table.ExecuteAsync(deleteOperation);
         }
 
-        private async Task<List<RotaItemDto>> GetUnpackedRota(Type typeofRotaEnum)
+        private async Task<IEnumerable<RotaItemDto>> GetUnpackedRota(Type typeofRotaEnum)
         {
             var rotaType = typeofRotaEnum.Name;
             TableQuery<RotaItemDto> query = new TableQuery<RotaItemDto>()
