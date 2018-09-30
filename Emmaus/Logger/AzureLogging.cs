@@ -20,7 +20,7 @@ namespace Emmaus.Logger
             set { factory = value; }
         }
 
-        public static async Task CreateLog(string message, string user, LogLevel logLevel) => await LoggerRepo.CreateAndStoreLog(message, user, logLevel);
+        public static async Task<string> CreateLog(string message, string user, LogLevel logLevel) => await LoggerRepo.CreateAndStoreLog(message, user, logLevel);
     }
 }
 public class LoggerRepo
@@ -37,7 +37,7 @@ public class LoggerRepo
         createTable.Wait();
     }
 
-    public async Task CreateAndStoreLog(string message, string user, LogLevel logLevel)
+    public async Task<string> CreateAndStoreLog(string message, string user, LogLevel logLevel)
     {
         var log = new Log() { Message = message, User = user, LogLevel = logLevel, Id = Guid.NewGuid().ToString() };
 
@@ -45,6 +45,7 @@ public class LoggerRepo
         log.RowKey = log.Id;
         var insertOperation = TableOperation.InsertOrReplace(log);
         await table.ExecuteAsync(insertOperation);
+        return log.Id;
     }
 }
 

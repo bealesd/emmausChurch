@@ -1,4 +1,5 @@
-﻿using Emmaus.Models;
+﻿using Emmaus.Logger;
+using Emmaus.Models;
 using Emmaus.Repos;
 using Emmaus.Service;
 using Microsoft.AspNetCore.Authorization;
@@ -45,8 +46,10 @@ namespace Emmaus.Controllers
                 await _identityRepo.SignInAsync(login.EmailAddress, login.Password);
                 return RedirectToAction("LoadAboutView");
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                var message = $"{HttpContext.Request.Path}: " + ExceptionHelper.GetaAllMessages(e);
+                await AzureLogging.CreateLog(message, login.EmailAddress, LogLevel.Information);
                 ViewData["Message"] = "Username or password incorrect";
                 return await LoadLoginView();
             }
@@ -568,6 +571,7 @@ namespace Emmaus.Controllers
 
         public async Task<IActionResult> LoadContactUsView()
         {
+            throw new Exception("contact us error");
             ViewData["Title"] = "Contacts US";
             return View("ContactUs");
         }
@@ -575,7 +579,8 @@ namespace Emmaus.Controllers
         public IActionResult LoadError(string errorMessage = null)
         {
             ViewData["Title"] = "Error";
-            return View("Error", errorMessage);
+            ViewData["Message"] = errorMessage;
+            return View("Error");
         }
     }
 }

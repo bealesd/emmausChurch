@@ -1,5 +1,6 @@
 ﻿@{
-    var message = @ViewData["Message"] != null ? ViewData["Message"] : "";
+    //var message = @ViewData["Message"] != null ? ViewData["Message"] : "";
+    var message = ViewData["Message"] as string;
 }
 
 <div class="mainWrapper">
@@ -11,6 +12,10 @@
         </div>
 
         <p>Sorry, an error occurred.</p>
+        @if (!string.IsNullOrEmpty(message))
+        {
+            <p>The id for this error is: @message.<br> Please <a href="mailto:david_beales@ymail.com">contact</a> the administrator quoting this id.</p>
+        }
 
     </div>
 
@@ -18,9 +23,9 @@
 
 <script>
         let message = '@ViewData["Message"]';
-        $(document).ready(function () {
-            printMessasge();
-        });
+        //$(document).ready(function () {
+        //    printMessasge();
+        //});
             function printMessasge() {
                 if (message !== "") {
                     alert(message);

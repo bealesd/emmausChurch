@@ -123,17 +123,16 @@ namespace Emmaus
             catch (Exception e)
             {
                 var name = string.IsNullOrEmpty(context.User.Identity.Name) ? "Not logged in" : context.User.Identity.Name;
-                //var message = string.IsNullOrEmpty(e.Message) ? "No message" : $"{context.Request.Path}: " + e.Message;
                 var message = $"{context.Request.Path}: " + ExceptionHelper.GetaAllMessages(e);
-                await AzureLogging.CreateLog(message, name, LogLevel.Error);
+                var id = await AzureLogging.CreateLog(message, name, LogLevel.Error);
 
-                await HandleExceptionAsync(context);
+                await HandleExceptionAsync(context, id);
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context)
+        private static Task HandleExceptionAsync(HttpContext context, string logId)
         {
-            return Task.Run(() => context.Response.Redirect("/Ui/LoadError"));
+            return Task.Run(() => context.Response.Redirect($"/Ui/LoadError?errorMessage={logId}"));
         }
     }
 
