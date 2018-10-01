@@ -44,12 +44,14 @@ namespace Emmaus.Controllers
             {
                 ViewBag.Login = login;
                 await _identityRepo.SignInAsync(login.EmailAddress, login.Password);
+                var message = $"User logged in: {login.EmailAddress}";
+                await AzureLogging.CreateLog(message, login.EmailAddress, LogLevel.Information);
                 return RedirectToAction("LoadAboutView");
             }
             catch (Exception e)
             {
                 var message = $"{HttpContext.Request.Path}: " + ExceptionHelper.GetaAllMessages(e);
-                await AzureLogging.CreateLog(message, login.EmailAddress, LogLevel.Information);
+                await AzureLogging.CreateLog(message, login.EmailAddress, LogLevel.Warning);
                 ViewData["Message"] = "Username or password incorrect";
                 return await LoadLoginView();
             }
@@ -469,8 +471,6 @@ namespace Emmaus.Controllers
         [Authorize(Roles = "admin, band")]
         public async Task<IActionResult> DeleteFromRotaBand(string dateTime, string name, string role)
         {
-            //try
-            //{
                 var rota = new RotaItemDto()
                 {
                     Type = typeof(BandLeader).Name,
@@ -482,11 +482,23 @@ namespace Emmaus.Controllers
                 await _rotaService.DeleteFromRota(rota);
 
                 return await LoadBandRotaView();
-            //}
-            //catch (Exception)
-            //{
-            //    return LoadError("Something went wrong.");
-            //}
+        }
+
+        [Authorize()]
+        public async Task<IActionResult> LoadUserProfileView(string name)
+        {
+            ViewData["Title"] = "User Profile";
+            var rotaItems= await _rotaService.GetRotaItemsForPerson(name);
+            ViewData["Rota"] = rotaItems;
+            ViewData["Name"] = name;
+            return View("UserProfile");
+        }
+
+        [Authorize()]
+        public async Task<IActionResult> LoadUserProfilesView()
+        {
+            ViewData["Title"] = "User Profiles";
+            return View("UserProfiles");
         }
 
         public async Task<IActionResult> LoadWelcomeView()
@@ -571,7 +583,6 @@ namespace Emmaus.Controllers
 
         public async Task<IActionResult> LoadContactUsView()
         {
-            throw new Exception("contact us error");
             ViewData["Title"] = "Contacts US";
             return View("ContactUs");
         }

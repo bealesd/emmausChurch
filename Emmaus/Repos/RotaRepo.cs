@@ -11,8 +11,9 @@ namespace Emmaus.Repos
 {
     public interface IRotaRepo
     {
-        Task<IEnumerable<RotaItemDto>> GetRota(Type typeofRotaEnum);
+        Task<IEnumerable<RotaItemDto>> GetSoughtedRota(Type typeofRotaEnum);
         Task AddRotaItem(RotaItemDto rota);
+        Task<IEnumerable<RotaItemDto>> GetRotaItemsForPerson(string name);
         Task<RotaItemDto> GetRotaItemForPersonAndDateAndRole(string name, string role, string type, DateTime dateTime);
         Task DeleteRotaItemFromRota(RotaItemDto rota);
         Task DeleteInvalidNamesFromRota(Type typeofRotaEnum);
@@ -31,17 +32,33 @@ namespace Emmaus.Repos
             createTable.Wait();
         }
 
-        public async Task<IEnumerable<RotaItemDto>> GetRota(Type typeofRotaEnum)
+        public async Task<IEnumerable<RotaItemDto>> GetSoughtedRota(Type typeofRotaEnum)
         {
             try
             {
-                IEnumerable<RotaItemDto> rota = await GetUnpackedRota(typeofRotaEnum);
+                IEnumerable<RotaItemDto> rota = await GetRota(typeofRotaEnum);
                 var orderedRota = rota.OrderBy(r => r.DateTime).ToList();
                 return orderedRota;
             }
             catch (Exception e)
             {
                 throw new Exception("Could not get rota", e);
+            }
+        }
+
+        public async Task<IEnumerable<RotaItemDto>> GetRotaItemsForPerson(string name)
+        {
+            try
+            {
+                TableQuery<RotaItemDto> query = new TableQuery<RotaItemDto>()
+                                                .Where(TableQuery.GenerateFilterCondition("Name", QueryComparisons.Equal, name));
+
+                TableQuerySegment<RotaItemDto> results = await _table.ExecuteQuerySegmentedAsync(query, null);
+                return results.Results;
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Could not get rota for {name}", e);
             }
         }
 
@@ -99,7 +116,7 @@ namespace Emmaus.Repos
         public async Task DeleteInvalidNamesFromRota(Type typeofRotaEnum)
         {
             var names = Enum.GetNames(typeofRotaEnum);
-            var rota = await GetUnpackedRota(typeofRotaEnum);
+            var rota = await GetRota(typeofRotaEnum);
 
             foreach (var rotaItem in rota)
             {
@@ -119,14 +136,13 @@ namespace Emmaus.Repos
             await _table.ExecuteAsync(deleteOperation);
         }
 
-        private async Task<IEnumerable<RotaItemDto>> GetUnpackedRota(Type typeofRotaEnum)
+        private async Task<IEnumerable<RotaItemDto>> GetRota(Type typeofRotaEnum)
         {
             var rotaType = typeofRotaEnum.Name;
             TableQuery<RotaItemDto> query = new TableQuery<RotaItemDto>()
                 .Where(TableQuery.GenerateFilterCondition("Type", QueryComparisons.Equal, rotaType));
             TableQuerySegment<RotaItemDto> queryResult = await _table.ExecuteQuerySegmentedAsync(query, null);
-            var rota = queryResult.Results;
-            return rota;
+            return queryResult.Results;
         }
     }
 }

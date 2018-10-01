@@ -1,6 +1,8 @@
 ﻿using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Emmaus.Models
 {
@@ -9,11 +11,7 @@ namespace Emmaus.Models
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
         public string Type { get; set; }
-        //public Date Date { get; set; }
         public DateTime DateTime { get; set; }
-        //public int Day { get; set; }
-        //public int Month { get; set; }
-        //public int Year { get; set; }
         public string Name { get; set; }
         public string Role { get; set; }
         //public void UnPackDate()
@@ -34,6 +32,27 @@ namespace Emmaus.Models
         //    }
         //    Date = new Date(Year, Month, Day);
         //}
+    }
+
+    public static class RotaLeaders
+    {
+        private static List<string> leaders = new List<string>();
+        public static IEnumerable<string> Leaders {
+            get
+            {
+                if (leaders.Count() == 0)
+                {
+                    Enum.GetNames(typeof(YouthClubLeader)).ToList().ForEach(n => leaders.Add(n));
+                    Enum.GetNames(typeof(BandLeader)).ToList().ForEach(n => leaders.Add(n));
+                    Enum.GetNames(typeof(ProjectionLeader)).ToList().ForEach(n => leaders.Add(n));
+                    leaders = leaders.Distinct().OrderBy(n => n).ToList();
+                }
+                return leaders;
+            }
+            private set
+            {
+            }
+        }
     }
 
     public enum YouthClubLeader

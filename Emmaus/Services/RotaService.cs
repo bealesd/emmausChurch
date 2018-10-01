@@ -10,6 +10,7 @@ namespace Emmaus.Service
     public interface IRotaService
     {
         Task<RotaDictionary> GetRota(Type typeofEnum);
+        Task<RotaDictionary> GetRotaItemsForPerson(string name);
         Task AddRota(RotaItemDto rota);
         Task DeleteFromRota(RotaItemDto rota);
     }
@@ -36,10 +37,34 @@ namespace Emmaus.Service
             await _rotaRepo.DeleteRotaItemFromRota(rotaItem);
         }
 
+        public async Task<RotaDictionary> GetRotaItemsForPerson(string name)
+        {
+            IEnumerable<RotaItemDto> rota = await _rotaRepo.GetRotaItemsForPerson(name);
+            IOrderedEnumerable<DateTime> rotaDates = rota.Select(r => r.DateTime).Distinct()
+                                     .OrderBy(d => d);
+
+            var rotaJobsDictionary = new RotaDictionary();
+            foreach (DateTime rotaDate in rotaDates)
+            {
+                var nameRoles = new NameRoles();
+
+                var roles = new List<string>();
+                var userRota = rota.Where(r => r.DateTime == rotaDate && r.Name == name).ToList();
+                userRota.ForEach(r => roles.Add(r.Role));
+                if (userRota.Count == 0) roles.Add("--");
+
+                nameRoles.KeyValues.Add(name, roles);
+
+                rotaJobsDictionary.DateNameJobListPairs.Add(rotaDate, nameRoles);
+            }
+            return rotaJobsDictionary;
+        }
+
+
         public async Task<RotaDictionary> GetRota(Type typeofRotaEnum)
         {
             var names = Enum.GetNames(typeofRotaEnum);
-            IEnumerable<RotaItemDto> rota = await _rotaRepo.GetRota(typeofRotaEnum);
+            IEnumerable<RotaItemDto> rota = await _rotaRepo.GetSoughtedRota(typeofRotaEnum);
             IOrderedEnumerable<DateTime> rotaDates = rota.Select(r => r.DateTime).Distinct()
                                      .OrderBy(d => d);
 

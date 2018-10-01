@@ -1,0 +1,29 @@
+@model RoleInfo
+@using Microsoft.AspNetCore.Identity;
+
+@{
+    var leaders = new SelectList(RotaLeaders.Leaders);
+}
+
+<div class="mainWrapper">
+
+    <!--#region table  -->
+    <div class="CreateRole">
+
+        <div class="title">
+            User Profiles
+        </div>
+
+        <div class="Form-style">
+
+            <form asp-action="LoadUserProfileView" method="post">
+                <select class="input" name="name" asp-items="@leaders"></select>
+                <br><br>
+                <button class="submit" type="submit">Load</button>
+            </form>
+        </div>
+
+        <!--#endregion -->
+
+    </div>
+</div>

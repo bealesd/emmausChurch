@@ -12,6 +12,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Ui\UserProfile.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Ui\UserProfiles.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Ui\ServicesInformation.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

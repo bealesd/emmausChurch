@@ -1,0 +1,66 @@
+@model RoleInfo
+@using Microsoft.AspNetCore.Identity;
+
+@{
+    var rota = (RotaDictionary)ViewData["Rota"];
+    var name = (string)ViewData["Name"];
+    var title = (string)ViewData["Title"];
+}
+
+<div class="mainWrapper">
+
+    <div class="rotaManagement">
+        <div class="title">
+            @name Profile
+        </div>
+
+        <table class="tablePosition">
+            <tr>
+                <th class="table-header">Date</th>
+                <th class="table-header">Band</th>
+                <th class="table-header">Youth</th>
+                <th class="table-header">Projector</th>
+            </tr>
+
+            @if (rota.DateNameJobListPairs.Count > 0)
+            {
+                @foreach (var date in rota.DateNameJobListPairs.Keys)
+                {
+                    <tr>
+                        <td class="field">@date.ToLocalTime().ToShortDateString()</td>
+                        @{
+                            var youth = new List<string>() { };
+                            var projection = new List<string>() { };
+                            var band = new List<string>() { };
+                            foreach (var role in @rota.DateNameJobListPairs[date].KeyValues[name])
+                            {
+                                if (Enum.IsDefined(typeof(ProjectionRole), role))
+                                {
+                                    projection.Add(role);
+                                }
+                                else if (Enum.IsDefined(typeof(BandRole), role))
+                                {
+                                    band.Add(role);
+                                }
+                                else
+                                {
+                                    youth.Add(role);
+                                }
+                            }
+                        }
+
+                        <td class="field">
+                            @string.Join(' ', band)
+                        </td>
+                        <td class="field">
+                            @string.Join(' ', youth)
+                        </td>
+                        <td class="field">
+                            @string.Join(' ', projection)
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+</div>
