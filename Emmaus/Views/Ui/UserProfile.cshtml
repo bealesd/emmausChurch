@@ -2,9 +2,12 @@
 @using Microsoft.AspNetCore.Identity;
 
 @{
-    var rota = (RotaDictionary)ViewData["Rota"];
+    var rota = ViewData["Rota"] as Dictionary<DateTime, Dictionary<string, List<string>>>;
     var name = (string)ViewData["Name"];
     var title = (string)ViewData["Title"];
+    var youthJobs = ViewData["youthJobs"] as IEnumerable<string>;
+    var bandJobs = ViewData["bandJobs"] as IEnumerable<string>;
+    var projectionJobs = ViewData["projectionJobs"] as IEnumerable<string>;
 }
 
 <div class="mainWrapper">
@@ -22,9 +25,9 @@
                 <th class="table-header">Projector</th>
             </tr>
 
-            @if (rota.DateNameJobListPairs.Count > 0)
+            @if (rota.Keys.Count > 0)
             {
-                @foreach (var date in rota.DateNameJobListPairs.Keys)
+                @foreach (var date in rota.Keys)
                 {
                     <tr>
                         <td class="field">@date.ToLocalTime().ToShortDateString()</td>
@@ -32,20 +35,21 @@
                             var youth = new List<string>() { };
                             var projection = new List<string>() { };
                             var band = new List<string>() { };
-                            foreach (var role in @rota.DateNameJobListPairs[date].KeyValues[name])
+                            foreach (var role in @rota[date])
                             {
-                                if (Enum.IsDefined(typeof(ProjectionRole), role))
+                                if (RotaType.YouthClub.ToString().ToLower() == role.Key.ToLower())
                                 {
-                                    projection.Add(role);
+                                    youth = role.Value;
                                 }
-                                else if (Enum.IsDefined(typeof(BandRole), role))
+                                else if (RotaType.Band.ToString().ToLower() == role.Key.ToLower())
                                 {
-                                    band.Add(role);
+                                    band = role.Value;
                                 }
-                                else
+                                else if (RotaType.Projection.ToString().ToLower() == role.Key.ToLower())
                                 {
-                                    youth.Add(role);
+                                    projection = role.Value;
                                 }
+
                             }
                         }
 

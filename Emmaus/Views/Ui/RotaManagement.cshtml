@@ -13,65 +13,67 @@
             @title
         </div>
 
-        <table class="tablePosition">
-            <tr>
-                <th class="table-header"><span class="glyphicon glyphicon-time"></span></th>
+        @if (!names.Any() || !rota.DateNameJobListPairs.Any())
+        {
+            <p>Rota is empty</p>
+        }
 
-                @if (names.Count() > 0)
-                {
+        else
+        {
+            <table class="tablePosition">
+                <tr>
+                    <th class="table-header"><span class="glyphicon glyphicon-time"></span></th>
+
                     @foreach (var name in names)
                     {
                         <th class="table-header">@name.JoinedCapitalizedNameToSpaceSeparatedName()</th>
                     }
-                }
-                else
+
+                </tr>
+
+                @if (rota.DateNameJobListPairs.Count > 0)
                 {
-                    <th class="table-header">Name</th>
-                }
+                    @foreach (var date in rota.DateNameJobListPairs.Keys)
+                    {
+                        <tr>
+                            <td class="field">@date.ToLocalTime().ToShortDateString()</td>
+                            @foreach (string name in names)
+                            {
 
-            </tr>
-
-            @if (rota.DateNameJobListPairs.Count > 0)
-            {
-                @foreach (var date in rota.DateNameJobListPairs.Keys)
-                {
-                    <tr>
-                        <td class="field">@date.ToLocalTime().ToShortDateString()</td>
-                        @foreach (string name in names)
-                        {
-
-                            <td class="field">
-                                <p hidden>Remove @name.JoinedCapitalizedNameToSpaceSeparatedName() from rota on: @date.ToLocalTime().ToShortDateString()</p>
-                                @{
-                                    foreach (var role in @rota.DateNameJobListPairs[date].KeyValues[name])
-                                    {
-                                        if (title == "Band Rota")
+                                <td class="field">
+                                    <p hidden>Remove @name.JoinedCapitalizedNameToSpaceSeparatedName() from rota on: @date.ToLocalTime().ToShortDateString()</p>
+                                    @{
+                                        foreach (var role in @rota.DateNameJobListPairs[date].KeyValues[name])
                                         {
-                                            <a onclick="ConfirmDelete(this)" asp-action="DeleteFromRotaBand" asp-route-dateTime="@date.ToLocalTime()" asp-route-name="@name" asp-route-role="@role">
-                                                @role
-                                            </a>
-                                        }
-                                        else if (title == "Projection Rota")
-                                        {
-                                            <a onclick="ConfirmDelete(this)" asp-action="DeleteFromRotaProjection" asp-route-dateTime="@date.ToLocalTime()" asp-route-name="@name" asp-route-role="@role">
-                                                @role
-                                            </a>
-                                        }
-                                        else if (title == "Youth Rota")
-                                        {
-                                            <a onclick="ConfirmDelete(this)" asp-action="DeleteFromRotaYouthClub" asp-route-dateTime="@date.ToLocalTime()" asp-route-name="@name" asp-route-role="@role">
-                                                @role
-                                            </a>
+                                            if (title == "Band Rota")
+                                            {
+                                                <a onclick="ConfirmDelete(this)" asp-action="DeleteFromRotaBand" asp-route-dateTime="@date.ToLocalTime()" asp-route-name="@name" asp-route-role="@role">
+                                                    @role
+                                                </a>
+                                            }
+                                            else if (title == "Projection Rota")
+                                            {
+                                                <a onclick="ConfirmDelete(this)" asp-action="DeleteFromRotaProjection" asp-route-dateTime="@date.ToLocalTime()" asp-route-name="@name" asp-route-role="@role">
+                                                    @role
+                                                </a>
+                                            }
+                                            else if (title == "Youth Rota")
+                                            {
+                                                <a onclick="ConfirmDelete(this)" asp-action="DeleteFromRotaYouthClub" asp-route-dateTime="@date.ToLocalTime()" asp-route-name="@name" asp-route-role="@role">
+                                                    @role
+                                                </a>
+                                            }
                                         }
                                     }
-                                }
-                            </td>
-                        }
-                    </tr>
+                                </td>
+                            }
+                        </tr>
+                    }
                 }
-            }
 
-        </table>
+            </table>
+        }
+
 
     </div>
 </div>

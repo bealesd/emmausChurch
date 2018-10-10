@@ -63,7 +63,7 @@ namespace Emmaus
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSingleton<IServiceRepo>(new ServiceRepo());
-            services.AddSingleton<IRotaService>(new RotaService(new RotaRepo()));
+            services.AddSingleton<IRotaService>(new RotaService(new RotaRepo(), new RotaNamesRepo(), new RotaJobsRepo()));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)

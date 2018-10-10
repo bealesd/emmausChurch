@@ -1,0 +1,51 @@
+﻿@model UserInfo
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    var email = Context.User.Identity.Name.Split('@').First();
+}
+<div class="mainWrapper">
+    <div class="Login">
+        <div class="title">
+            Hello @email
+        </div>
+
+        <h2>Update Password</h2>
+        <div class="FormUserDetails">
+            <form asp-action="UpdatePassword" method="post">
+                <div class="form-group">
+                    <input class="text" asp-for="Password" name="currentPassword" placeholder="CurrentPassword" required /><br />
+                    <input class="password" id="txtNewPassword" asp-for="Password" name="newPassword" placeholder="NewPassword" minlength="8" required /><br />
+                    <input class="password" id="txtConfirmPassword" asp-for="Password" placeholder="ConfirmPassword" minlength="8" required /><br />
+                </div>
+                <button onclick="validate()" class="submit" type="submit">Login</button>
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="All"></div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<script>
+        let message = '@ViewData["Message"]';
+        $(document).ready(function () {
+            printMessasge();
+        });
+       function printMessasge() {
+                if (message !== "") {
+                    alert(message);
+                }
+         }
+
+    function validate() {
+        var password = $("#txtNewPassword").val();
+        var confirmPassword = $("#txtConfirmPassword").val();
+
+        if (password != confirmPassword) {
+            alert("passwords do not match")
+            event.preventDefault();
+            return
+        }
+    }
+
+</script>

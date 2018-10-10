@@ -1,0 +1,92 @@
+﻿@{
+    var jobs = ((IEnumerable<string>)ViewData["names"]).OrderBy(n => n);
+    var title = ViewData["Title"] as string;
+    string action = null;
+
+    if (title == "Add Job To Youth")
+    {
+        action = "AddJobToYouth";
+    }
+    else if (title == "Add Job To Band")
+    {
+        action = "AddJobToBand";
+    }
+    else if (title == "Add Job To Projection")
+    {
+        action = "AddJobToProjection";
+    }
+}
+
+<div class="mainWrapper">
+    <div class="rotaManagement">
+        <div class="title">
+            @ViewData["LeftMenuConfig"] Jobs
+        </div>
+        @if (!jobs.Any())
+        {
+            <p>No names on rota</p>
+        }
+        else
+        {
+            <table class="tablePosition">
+                <tr>
+                    <th class="table-header"></th>
+                    <th class="table-header"></th>
+                </tr>
+
+                @foreach (var job in jobs)
+                {
+                    <tr>
+
+                        <p hidden>@job</p>
+                        @{
+                            if (title == "Add Job To Youth")
+                            {
+                                <td class="field">@job</td>
+                                <td class="field">
+                                    <a onclick="ConfirmDelete(this)" asp-action="DeletePersonFromYouth" asp-route-name="@job">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                </td>
+                            }
+                            else if (title == "Add Job To Band")
+                            {
+                                <td class="field">@job</td>
+                                <td class="field">
+                                    <a onclick="ConfirmDelete(this)" asp-action="DeletePersonFromBand" asp-route-name="@job">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                </td>
+                            }
+                            else if (title == "Add Job To Projection")
+                            {
+                                <td class="field">@job</td>
+                                <td class="field">
+                                    <a onclick="ConfirmDelete(this)" asp-action="DeletePersonFromProjection" asp-route-name="@job">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                </td>
+                            }
+                        }
+                    </tr>
+                }
+            </table>
+        }
+
+        <br>
+        <form asp-action="@action" method="post">
+            <input style="width:150px;" class="input" required type="text" name="name" placeholder="Add New Job" />
+            <button>Add</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function ConfirmDelete(self) {
+        let message = self.parentElement.getElementsByTagName("p")[0].innerHTML;
+        if (confirm(message)) {
+            return;
+        }
+        event.preventDefault();
+    }
+</script>

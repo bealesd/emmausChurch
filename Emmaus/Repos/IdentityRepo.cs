@@ -16,6 +16,7 @@ namespace Emmaus.Repos
         Task CreateRolesIfRequiredAsync(IEnumerable<string> roles);
         Task CreateUserAsync(string email, string password);
         Task CreateUserIfRequiredAsync(string email, string password);
+        Task UpdateUserPassword(string email, string currentPassword, string newPassword);
         Task DeleteRoleAsync(string roleName);
         Task DeleteUserAsync(string email);
         IEnumerable<string> GetRoles();
@@ -143,5 +144,16 @@ namespace Emmaus.Repos
 
         private async Task<ApplicationUser> GetUser(string email) =>
          await userManager.FindByEmailAsync(email);
+
+        public async Task UpdateUserPassword(string email, string currentPassword, string newPassword)
+        {
+            var user = await this.GetUser(email);
+            user.PasswordHash = userManager.PasswordHasher.HashPassword(user, newPassword);
+            var result = await userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                throw new Exception($"Could not update password .{result.Errors}");
+            }
+        }
     }
 }

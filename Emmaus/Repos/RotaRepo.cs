@@ -11,12 +11,12 @@ namespace Emmaus.Repos
 {
     public interface IRotaRepo
     {
-        Task<IEnumerable<RotaItemDto>> GetSoughtedRota(Type typeofRotaEnum);
+        Task<IEnumerable<RotaItemDto>> GetSoughtedRota(string rotaType);
         Task AddRotaItem(RotaItemDto rota);
         Task<IEnumerable<RotaItemDto>> GetRotaItemsForPerson(string name);
         Task<RotaItemDto> GetRotaItemForPersonAndDateAndRole(string name, string role, string type, DateTime dateTime);
         Task DeleteRotaItemFromRota(RotaItemDto rota);
-        Task DeleteInvalidNamesFromRota(Type typeofRotaEnum);
+        Task DeleteInvalidNamesFromRota(string rotaType, IEnumerable<string> names);
     }
     public class RotaRepo : IRotaRepo
     {
@@ -27,16 +27,16 @@ namespace Emmaus.Repos
             _storageAccount = CloudStorageAccount.Parse(
                 @"DefaultEndpointsProtocol=https;AccountName=emmaus;AccountKey=vAqsHtaXxMKRjdusbs4hTYdG1NsYBRAUlhLRw2f+BO2/loKiLnxlJoYjdVwbGpC5dJMdZV9z1hqBPM1gSJNV5w==;EndpointSuffix=core.windows.net");
             CloudTableClient tableClient = _storageAccount.CreateCloudTableClient();
-            _table = tableClient.GetTableReference("rotas");
+            _table = tableClient.GetTableReference("rota");
             var createTable = Task.Run(() => _table.CreateIfNotExistsAsync());
             createTable.Wait();
         }
 
-        public async Task<IEnumerable<RotaItemDto>> GetSoughtedRota(Type typeofRotaEnum)
+        public async Task<IEnumerable<RotaItemDto>> GetSoughtedRota(string rotaType)
         {
             try
             {
-                IEnumerable<RotaItemDto> rota = await GetRota(typeofRotaEnum);
+                IEnumerable<RotaItemDto> rota = await GetRota(rotaType);
                 var orderedRota = rota.OrderBy(r => r.DateTime).ToList();
                 return orderedRota;
             }
@@ -113,10 +113,9 @@ namespace Emmaus.Repos
             }
         }
 
-        public async Task DeleteInvalidNamesFromRota(Type typeofRotaEnum)
+        public async Task DeleteInvalidNamesFromRota(string rotaType, IEnumerable<string> names)
         {
-            var names = Enum.GetNames(typeofRotaEnum);
-            var rota = await GetRota(typeofRotaEnum);
+            var rota = await this.GetRota(rotaType);
 
             foreach (var rotaItem in rota)
             {
@@ -136,9 +135,8 @@ namespace Emmaus.Repos
             await _table.ExecuteAsync(deleteOperation);
         }
 
-        private async Task<IEnumerable<RotaItemDto>> GetRota(Type typeofRotaEnum)
+        private async Task<IEnumerable<RotaItemDto>> GetRota(string rotaType)
         {
-            var rotaType = typeofRotaEnum.Name;
             TableQuery<RotaItemDto> query = new TableQuery<RotaItemDto>()
                 .Where(TableQuery.GenerateFilterCondition("Type", QueryComparisons.Equal, rotaType));
             TableQuerySegment<RotaItemDto> queryResult = await _table.ExecuteQuerySegmentedAsync(query, null);

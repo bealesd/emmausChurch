@@ -68,30 +68,16 @@ namespace Emmaus.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> LoadUserManagementView()
         {
-            //try
-            //{
-                ViewData["Title"] = "UserManagement";
-                ViewData["users"] = (await _identityRepo.GetUsersAsync());
-                return View("UserManagement");
-            //}
-            //catch (Exception)
-            //{
-            //    return LoadError("Could not retrieve users.");
-            //}
+            ViewData["Title"] = "UserManagement";
+            ViewData["users"] = (await _identityRepo.GetUsersAsync());
+            return View("UserManagement");
         }
 
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteUser(string email)
         {
-            //try
-            //{
-                await _identityRepo.DeleteUserAsync(email);
-                return await LoadUserManagementView();
-            //}
-            //catch (Exception)
-            //{
-            //    return LoadError("Could not delete user");
-            //}
+            await _identityRepo.DeleteUserAsync(email);
+            return await LoadUserManagementView();
         }
 
         [Authorize(Roles = "admin")]
@@ -106,16 +92,25 @@ namespace Emmaus.Controllers
         public async Task<IActionResult> CreateUser(UserInfo login)
         {
             ViewData["Title"] = "User Management";
-            //try
-            //{
-                await _identityRepo.CreateUserAsync(login.EmailAddress, login.Password);
-                await _identityRepo.AddRolesToUserAsync(login.EmailAddress, login.Roles);
-                return RedirectToAction(nameof(LoadUserManagementView));
-            //}
-            //catch (Exception)
-            //{
-            //    return LoadError("User not created");
-            //}
+            await _identityRepo.CreateUserAsync(login.EmailAddress, login.Password);
+            await _identityRepo.AddRolesToUserAsync(login.EmailAddress, login.Roles);
+            return RedirectToAction(nameof(LoadUserManagementView));
+        }
+
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> LoadUserDetailsView()
+        {
+            ViewData["Title"] = "User Details";
+            return View("UserDetails");
+        }
+
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> UpdatePassword(string currentPassword, string newPassword)
+        {
+            //TODO ADD CHECK ON EXISITNG PASSWORD
+            ViewData["Title"] = "User Management";
+            await _identityRepo.UpdateUserPassword(HttpContext.User.Identity.Name, currentPassword, newPassword);
+            return RedirectToAction(nameof(LoadUserManagementView));
         }
 
         [Authorize(Roles = "admin")]
@@ -130,15 +125,8 @@ namespace Emmaus.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteRole(string roleName)
         {
-            //try
-            //{
-                await _identityRepo.DeleteRoleAsync(roleName);
-                return await LoadRoleManagementView();
-            //}
-            //catch (Exception)
-            //{
-            //    return LoadError("Role deletion error.");
-            //}
+            await _identityRepo.DeleteRoleAsync(roleName);
+            return await LoadRoleManagementView();
         }
 
         [Authorize(Roles = "admin")]
@@ -152,15 +140,8 @@ namespace Emmaus.Controllers
         public async Task<IActionResult> CreateRole(RoleInfo roleInfo)
         {
             ViewData["Title"] = "Role Management";
-            //try
-            //{
-                await _identityRepo.CreateRoleAsync(roleInfo.Rolename);
-                return RedirectToAction(nameof(LoadRoleManagementView));
-            //}
-            //catch (Exception)
-            //{
-            //    return LoadError("Role not created.");
-            //}
+            await _identityRepo.CreateRoleAsync(roleInfo.Rolename);
+            return RedirectToAction(nameof(LoadRoleManagementView));
         }
 
         [Authorize(Roles = "admin,projector,youth,band,services")]
@@ -183,45 +164,24 @@ namespace Emmaus.Controllers
         [Authorize(Roles = "admin, services")]
         public async Task<IActionResult> DeleteKidService(string id)
         {
-            //try
-            //{
-                await _serviceRepo.DeleteService(id);
-                return await LoadKidServiceManagementView();
-            //}
-            //catch (Exception)
-            //{
-            //    return LoadError("Something went wrong.");
-            //}
+            await _serviceRepo.DeleteService(id);
+            return await LoadKidServiceManagementView();
         }
 
         [Authorize(Roles = "admin, services")]
         public async Task<IActionResult> DeleteAdultService(string id)
         {
-            //try
-            //{
-                await _serviceRepo.DeleteService(id);
-                return await LoadAdultServiceManagementView();
-            //}
-            //catch (Exception)
-            //{
-            //    return LoadError("Something went wrong.");
-            //}
+            await _serviceRepo.DeleteService(id);
+            return await LoadAdultServiceManagementView();
         }
 
         [Authorize(Roles = "admin, services")]
         public async Task<IActionResult> EditService(DateTime dateTime, string story, string text, string speaker, string id)
         {
-            //try
-            //{
-                var service = new Models.Service() { Date = dateTime, Story = story, Text = text, Speaker = speaker, Id = id };
-                await _serviceRepo.UpdateService(service);
-                ViewData["Message"] = $"Service by {speaker} has been updated";
-                return HttpContext.Request.Headers["Referer"].ToString().Split('/').Last() == "LoadKidServiceManagementView" ? await LoadKidServiceManagementView() : await LoadAdultServiceManagementView();
-            //}
-            //catch (Exception)
-            //{
-            //    return LoadError("Something went wrong.");
-            //}
+            var service = new Models.Service() { Date = dateTime, Story = story, Text = text, Speaker = speaker, Id = id };
+            await _serviceRepo.UpdateService(service);
+            ViewData["Message"] = $"Service by {speaker} has been updated";
+            return HttpContext.Request.Headers["Referer"].ToString().Split('/').Last() == "LoadKidServiceManagementView" ? await LoadKidServiceManagementView() : await LoadAdultServiceManagementView();
         }
 
         [Authorize(Roles = "admin, services")]
@@ -241,58 +201,47 @@ namespace Emmaus.Controllers
         [Authorize(Roles = "admin, services")]
         public async Task<IActionResult> AddKidService(DateTime dateTime, string story, string text, string speaker)
         {
-            //try
-            //{
-                var date = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 12, 12, 12);
-                var service = new Models.Service()
-                {
-                    Type = "kid",
-                    Date = date,
-                    Story = story,
-                    Text = text,
-                    Speaker = speaker,
-                    Id = Guid.NewGuid().ToString()
-                };
+            var date = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 12, 12, 12);
+            var service = new Models.Service()
+            {
+                Type = "kid",
+                Date = date,
+                Story = story,
+                Text = text,
+                Speaker = speaker,
+                Id = Guid.NewGuid().ToString()
+            };
 
-                await _serviceRepo.AddService(service);
-                return await LoadKidServiceManagementView();
-            //}
-            //catch (Exception)
-            //{
-            //    return LoadError("Something went wrong.");
-            //}
+            await _serviceRepo.AddService(service);
+            return await LoadKidServiceManagementView();
         }
 
         [Authorize(Roles = "admin, services")]
         public async Task<IActionResult> AddAdultService(DateTime dateTime, string story, string text, string speaker)
         {
-            //try
-            //{
-                var date = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 12, 12, 12);
-                var service = new Models.Service()
-                {
-                    Type = "adult",
-                    Date = date,
-                    Story = story,
-                    Text = text,
-                    Speaker = speaker,
-                    Id = Guid.NewGuid().ToString()
-                };
+            var date = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 12, 12, 12);
+            var service = new Models.Service()
+            {
+                Type = "adult",
+                Date = date,
+                Story = story,
+                Text = text,
+                Speaker = speaker,
+                Id = Guid.NewGuid().ToString()
+            };
 
-                await _serviceRepo.AddService(service);
-                return await LoadAdultServiceManagementView();
-            //}
-            //catch (Exception)
-            //{
-            //    return LoadError("Something went wrong.");
-            //}
+            await _serviceRepo.AddService(service);
+            return await LoadAdultServiceManagementView();
         }
 
         [Authorize(Roles = "admin, youth")]
         public async Task<IActionResult> LoadCreateYouthView()
         {
             ViewData["Title"] = "Create Youth Event";
-            return View("CreateEventView");
+            ViewData["LeftMenuConfig"] = "Youth";
+            ViewData["names"] = await _rotaService.GetNamesOnRota(RotaType.YouthClub.ToString());
+            ViewData["jobs"] = await _rotaService.GetJobsOnRota(RotaType.YouthClub.ToString());
+            return View("CreateRotaJobView");
         }
 
 
@@ -300,22 +249,31 @@ namespace Emmaus.Controllers
         public async Task<IActionResult> LoadCreateBandView()
         {
             ViewData["Title"] = "Create Band Event";
-            return View("CreateEventView");
+            ViewData["LeftMenuConfig"] = "Band";
+            ViewData["names"] = await _rotaService.GetNamesOnRota(RotaType.Band.ToString());
+            ViewData["jobs"] = await _rotaService.GetJobsOnRota(RotaType.Band.ToString());
+
+            return View("CreateRotaJobView");
         }
 
         [Authorize(Roles = "admin, projector")]
         public async Task<IActionResult> LoadCreateProjectionView()
         {
             ViewData["Title"] = "Create Projection Event";
-            return View("CreateEventView");
+            ViewData["LeftMenuConfig"] = "Projection";
+            ViewData["names"] = await _rotaService.GetNamesOnRota(RotaType.Projection.ToString());
+            ViewData["jobs"] = await _rotaService.GetJobsOnRota(RotaType.Projection.ToString());
+
+            return View("CreateRotaJobView");
         }
 
         [Authorize(Roles = "admin, projector, youth, band, services")]
         public async Task<IActionResult> LoadYouthRotaView()
         {
-            RotaDictionary rota = await _rotaService.GetRota(typeof(YouthClubLeader));
+            RotaDictionary rota = await _rotaService.GetRotaJobs(RotaType.YouthClub.ToString());
             ViewData["rota"] = rota;
-            ViewData["names"] = Enum.GetNames(typeof(YouthClubLeader)).OrderBy(n => n).ToAsyncEnumerable().ToEnumerable();
+            ViewData["names"] = (await _rotaService.GetNamesOnRota(RotaType.YouthClub.ToString())).ToList().OrderBy(n => n);
+            ViewData["LeftMenuConfig"] = "Youth";
             ViewData["Title"] = "Youth Rota";
             return View("RotaManagement");
         }
@@ -323,9 +281,10 @@ namespace Emmaus.Controllers
         [Authorize(Roles = "admin, projector, youth, band, services")]
         public async Task<IActionResult> LoadBandRotaView()
         {
-            RotaDictionary rotas = await _rotaService.GetRota(typeof(BandLeader));
+            RotaDictionary rotas = await _rotaService.GetRotaJobs(RotaType.Band.ToString());
             ViewData["rota"] = rotas;
-            ViewData["names"] = Enum.GetNames(typeof(BandLeader)).OrderBy(n => n).ToAsyncEnumerable().ToEnumerable();
+            ViewData["names"] = (await _rotaService.GetNamesOnRota(RotaType.Band.ToString())).ToList().OrderBy(n => n);
+            ViewData["LeftMenuConfig"] = "Band";
             ViewData["Title"] = "Band Rota";
             return View("RotaManagement");
         }
@@ -333,164 +292,271 @@ namespace Emmaus.Controllers
         [Authorize(Roles = "admin, projector, youth, band, services")]
         public async Task<IActionResult> LoadProjectionRotaView()
         {
-            RotaDictionary rotas = await _rotaService.GetRota(typeof(ProjectionLeader));
+            RotaDictionary rotas = await _rotaService.GetRotaJobs(RotaType.Projection.ToString());
+            ViewData["names"] = (await _rotaService.GetNamesOnRota(RotaType.Projection.ToString())).ToList().OrderBy(n => n);
             ViewData["rota"] = rotas;
-            ViewData["names"] = Enum.GetNames(typeof(ProjectionLeader)).OrderBy(n => n).ToAsyncEnumerable().ToEnumerable();
+            ViewData["LeftMenuConfig"] = "Projection";
             ViewData["Title"] = "Projection Rota";
             return View("RotaManagement");
         }
 
+
         [Authorize(Roles = "admin, youth ")]
-        public async Task<IActionResult> AddYouthClubRota(string dateTime, string name, List<string> roles)
+        public async Task<IActionResult> AddYouthRota(string dateTime, string name, List<string> roles)
         {
-            //try
-            //{
-                if (string.IsNullOrEmpty(dateTime) || !roles.Any())
-                {
-                    throw new Exception("No date or roles added to youth clun role.");
-                }
+            if (!roles.Any()) throw new Exception("No roles added to youth club role.");
 
-                foreach (var role in roles)
+            foreach (var role in roles)
+            {
+                var rota = new RotaItemDto()
                 {
-                    var rota = new RotaItemDto()
-                    {
-                        Type = typeof(YouthClubLeader).Name,
-                        DateTime = DateTime.Parse(dateTime),
-                        Name = name,
-                        Role = role,
-                        Id = Guid.NewGuid().ToString()
-                    };
-                    await _rotaService.AddRota(rota);
-                }
-                return await LoadYouthRotaView();
-            //}
-            //catch (Exception)
-            //{
-            //    return LoadError("Something went wrong.");
-            //}
-
+                    Type = RotaType.YouthClub.ToString(),
+                    DateTime = DateTime.Parse(dateTime),
+                    Name = name.TrimEnd(),
+                    Role = role,
+                    Id = Guid.NewGuid().ToString()
+                };
+                await _rotaService.AddRotaJobs(rota);
+            }
+            return await LoadYouthRotaView();
         }
 
         [Authorize(Roles = "admin, band")]
         public async Task<IActionResult> AddBandRota(string dateTime, string name, List<string> roles)
         {
-            //try
-            //{
-                foreach (var role in roles)
-                {
-                    var rota = new RotaItemDto()
-                    {
-                        Type = typeof(BandLeader).Name,
-                        DateTime = DateTime.Parse(dateTime),
-                        Name = name,
-                        Role = role,
-                        Id = Guid.NewGuid().ToString()
-                    };
-                    await _rotaService.AddRota(rota);
-                }
+            if (!roles.Any()) throw new Exception("No roles added to youth club role.");
 
-                return await LoadBandRotaView();
-            //}
-            //catch (Exception)
-            //{
-            //    return LoadError("Something went wrong.");
-            //}
+            foreach (var role in roles)
+            {
+                var rota = new RotaItemDto()
+                {
+                    Type = RotaType.Band.ToString(),
+                    DateTime = DateTime.Parse(dateTime),
+                    Name = name,
+                    Role = role,
+                    Id = Guid.NewGuid().ToString()
+                };
+                await _rotaService.AddRotaJobs(rota);
+            }
+
+            return await LoadCreateBandView();
         }
 
         [Authorize(Roles = "admin, projector")]
         public async Task<IActionResult> AddProjectionRota(string dateTime, string name, List<string> roles)
         {
-            //try
-            //{
-                foreach (var role in roles)
-                {
-                    var rota = new RotaItemDto()
-                    {
-                        Type = typeof(ProjectionLeader).Name,
-                        DateTime = DateTime.Parse(dateTime),
-                        Name = name,
-                        Role = role,
-                        Id = Guid.NewGuid().ToString()
-                    };
-                    await _rotaService.AddRota(rota);
-                }
+            if (!roles.Any()) throw new Exception("No roles added to youth club role.");
 
-                return await LoadProjectionRotaView();
-            //}
-            //catch (Exception)
-            //{
-            //    return LoadError("Something went wrong.");
-            //}
+            foreach (var role in roles)
+            {
+                var rota = new RotaItemDto()
+                {
+                    Type = RotaType.Projection.ToString(),
+                    DateTime = DateTime.Parse(dateTime),
+                    Name = name,
+                    Role = role,
+                    Id = Guid.NewGuid().ToString()
+                };
+                await _rotaService.AddRotaJobs(rota);
+            }
+
+            return await LoadCreateProjectionView();
         }
 
         [Authorize(Roles = "admin, youth")]
         public async Task<IActionResult> DeleteFromRotaYouthClub(string dateTime, string name, string role)
         {
-            //try
-            //{
-                var rota = new RotaItemDto()
-                {
-                    Type = typeof(YouthClubLeader).Name,
-                    DateTime = DateTime.Parse(dateTime),
-                    Name = name,
-                    Role = role
-                };
+            var rota = new RotaItemDto()
+            {
+                Type = RotaType.YouthClub.ToString(),
+                DateTime = DateTime.Parse(dateTime),
+                Name = name,
+                Role = role
+            };
 
-                await _rotaService.DeleteFromRota(rota);
-                return await LoadYouthRotaView();
-            //}
-            //catch (Exception)
-            //{
-            //    return LoadError("Something went wrong.");
-            //}
+            await _rotaService.DeleteJobsFromRota(rota);
+            return await LoadYouthRotaView();
         }
 
         [Authorize(Roles = "admin, projector")]
         public async Task<IActionResult> DeleteFromRotaProjection(string dateTime, string name, string role)
         {
-            //try
-            //{
-                var rota = new RotaItemDto()
-                {
-                    Type = typeof(ProjectionLeader).Name,
-                    DateTime = DateTime.Parse(dateTime),
-                    Name = name,
-                    Role = role
-                };
+            var rota = new RotaItemDto()
+            {
+                Type = RotaType.Projection.ToString(),
+                DateTime = DateTime.Parse(dateTime),
+                Name = name,
+                Role = role
+            };
 
-                await _rotaService.DeleteFromRota(rota);
+            await _rotaService.DeleteJobsFromRota(rota);
 
-                return await LoadProjectionRotaView();
-            //}
-            //catch (Exception)
-            //{
-            //    return LoadError("Something went wrong.");
-            //}
+            return await LoadProjectionRotaView();
         }
 
         [Authorize(Roles = "admin, band")]
         public async Task<IActionResult> DeleteFromRotaBand(string dateTime, string name, string role)
         {
-                var rota = new RotaItemDto()
-                {
-                    Type = typeof(BandLeader).Name,
-                    DateTime = DateTime.Parse(dateTime),
-                    Name = name,
-                    Role = role
-                };
+            var rota = new RotaItemDto()
+            {
+                Type = RotaType.Band.ToString(),
+                DateTime = DateTime.Parse(dateTime),
+                Name = name,
+                Role = role
+            };
 
-                await _rotaService.DeleteFromRota(rota);
+            await _rotaService.DeleteJobsFromRota(rota);
 
-                return await LoadBandRotaView();
+            return await LoadBandRotaView();
+        }
+
+        [Authorize(Roles = "admin, youth")]
+        public async Task<IActionResult> LoadAddPersonToYouthView()
+        {
+            ViewData["Title"] = "Add Person To Youth";
+            ViewData["LeftMenuConfig"] = "Youth";
+            ViewData["names"] = await _rotaService.GetNamesOnRota(RotaType.YouthClub.ToString());
+            return View("AddPersonView");
+        }
+
+        [Authorize(Roles = "admin, band")]
+        public async Task<IActionResult> LoadAddPersonToBandView()
+        {
+            ViewData["Title"] = "Add Person To Band";
+            ViewData["LeftMenuConfig"] = "Band";
+            ViewData["names"] = await _rotaService.GetNamesOnRota(RotaType.Band.ToString());
+            return View("AddPersonView");
+        }
+
+        [Authorize(Roles = "admin, projector")]
+        public async Task<IActionResult> LoadAddPersonToProjectionView()
+        {
+            ViewData["Title"] = "Add Person To Projection";
+            ViewData["LeftMenuConfig"] = "Projection";
+            ViewData["names"] = await _rotaService.GetNamesOnRota(RotaType.Projection.ToString());
+            return View("AddPersonView");
+        }
+
+        [Authorize(Roles = "admin, youth")]
+        public async Task<IActionResult> AddPersonToYouth(string name)
+        {
+            await _rotaService.AddNameToRota(name, RotaType.YouthClub.ToString());
+            return await LoadAddPersonToYouthView();
+        }
+
+        [Authorize(Roles = "admin, band")]
+        public async Task<IActionResult> AddPersonToBand(string name)
+        {
+            await _rotaService.AddNameToRota(name, RotaType.Band.ToString());
+            return await LoadAddPersonToBandView();
+        }
+
+        [Authorize(Roles = "admin, projector")]
+        public async Task<IActionResult> AddPersonToProjection(string name)
+        {
+            await _rotaService.AddNameToRota(name, RotaType.Projection.ToString());
+            return await LoadAddPersonToProjectionView();
+        }
+
+        [Authorize(Roles = "admin, youth")]
+        public async Task<IActionResult> DeletePersonFromYouth(string name)
+        {
+            await _rotaService.DeleteNameFromRota(name, RotaType.YouthClub.ToString());
+            return await LoadAddPersonToYouthView();
+        }
+
+        [Authorize(Roles = "admin, band")]
+        public async Task<IActionResult> DeletePersonFromBand(string name)
+        {
+            await _rotaService.DeleteNameFromRota(name, RotaType.Band.ToString());
+            return await LoadAddPersonToBandView();
+        }
+
+        [Authorize(Roles = "admin, projector")]
+        public async Task<IActionResult> DeletePersonFromProjection(string name)
+        {
+            await _rotaService.DeleteNameFromRota(name, RotaType.Projection.ToString());
+            return await LoadAddPersonToProjectionView();
+        }
+
+        public async Task<IActionResult> LoadAddJobToYouthView()
+        {
+            ViewData["Title"] = "Add Job To Youth";
+            ViewData["LeftMenuConfig"] = "Youth";
+            ViewData["names"] = await _rotaService.GetJobsOnRota(RotaType.YouthClub.ToString());
+            return View("AddJobView");
+        }
+
+        [Authorize(Roles = "admin, band")]
+        public async Task<IActionResult> LoadAddJobToBandView()
+        {
+            ViewData["Title"] = "Add Job To Band";
+            ViewData["LeftMenuConfig"] = "Band";
+            ViewData["names"] = await _rotaService.GetJobsOnRota(RotaType.Band.ToString());
+            return View("AddJobView");
+        }
+
+        [Authorize(Roles = "admin, projector")]
+        public async Task<IActionResult> LoadAddJobToProjectionView()
+        {
+            ViewData["Title"] = "Add Job To Projection";
+            ViewData["LeftMenuConfig"] = "Projection";
+            ViewData["names"] = await _rotaService.GetJobsOnRota(RotaType.Projection.ToString());
+            return View("AddJobView");
+        }
+
+        [Authorize(Roles = "admin, youth")]
+        public async Task<IActionResult> AddJobToYouth(string name)
+        {
+            await _rotaService.AddJobToRota(name, RotaType.YouthClub.ToString());
+            return await LoadAddJobToYouthView();
+        }
+
+        [Authorize(Roles = "admin, band")]
+        public async Task<IActionResult> AddJobToBand(string name)
+        {
+            await _rotaService.AddJobToRota(name, RotaType.Band.ToString());
+            return await LoadAddJobToBandView();
+        }
+
+        [Authorize(Roles = "admin, projector")]
+        public async Task<IActionResult> AddJobToProjection(string name)
+        {
+            await _rotaService.AddJobToRota(name, RotaType.Projection.ToString());
+            return await LoadAddJobToProjectionView();
+        }
+
+        [Authorize(Roles = "admin, youth")]
+        public async Task<IActionResult> DeleteJobFromYouth(string name)
+        {
+            await _rotaService.DeleteJobFromRota(name, RotaType.YouthClub.ToString());
+            return await LoadAddJobToYouthView();
+        }
+
+        [Authorize(Roles = "admin, band")]
+        public async Task<IActionResult> DeleteJobFromBand(string name)
+        {
+            await _rotaService.DeleteJobFromRota(name, RotaType.Band.ToString());
+            return await LoadAddJobToBandView();
+        }
+
+        [Authorize(Roles = "admin, projector")]
+        public async Task<IActionResult> DeleteJobFromProjection(string name)
+        {
+            await _rotaService.DeleteJobFromRota(name, RotaType.Projection.ToString());
+            return await LoadAddJobToProjectionView();
         }
 
         [Authorize()]
         public async Task<IActionResult> LoadUserProfileView(string name)
         {
             ViewData["Title"] = "User Profile";
-            var rotaItems= await _rotaService.GetRotaItemsForPerson(name);
+            var rotaItems = await _rotaService.GetRotaJobsForPerson(name);
             ViewData["Rota"] = rotaItems;
             ViewData["Name"] = name;
+            ViewData["youthJobs"] = await _rotaService.GetJobsOnRota(RotaType.YouthClub.ToString());
+            ViewData["bandJobs"] = await _rotaService.GetJobsOnRota(RotaType.Band.ToString());
+            ViewData["projectionJobs"] = await _rotaService.GetJobsOnRota(RotaType.Projection.ToString());
             return View("UserProfile");
         }
 
@@ -498,6 +564,7 @@ namespace Emmaus.Controllers
         public async Task<IActionResult> LoadUserProfilesView()
         {
             ViewData["Title"] = "User Profiles";
+            ViewData["Names"] = await _rotaService.GetNames();
             return View("UserProfiles");
         }
 

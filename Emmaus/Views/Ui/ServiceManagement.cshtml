@@ -61,9 +61,9 @@
                     </a>
                 </p>
             </div>
-            <div id="@service.Id" class="fieldSix">
+            <div class="fieldSix">
                 <p>
-                    <a onclick="ConfirmDelete(this)">
+                    <a id="@service.Id" onclick="ConfirmDelete(this)">
                         <span class="glyphicon glyphicon-trash"></span>
                     </a>
                 </p>
@@ -79,17 +79,18 @@
 
     function ConfirmDelete(self) {
         let serviceElements = GetServiceElements(self);
-        var parentPosition = serviceElements[0];
+        let parentPosition = serviceElements[0];
+        let id = self.id;
         if (confirm('Delete Service?')) {
             if ('@title'.toLowerCase() === 'kids')
             {
                 console.log('@title'.toLowerCase());
-                var url = '@Html.Raw(@Url.Action("DeleteKidService", "Ui"))';
+                var url = '@Html.Raw(@Url.Action("DeleteKidService", "Ui"))' + `?id=${id}`;
             }
             else
             {
                 console.log('@title'.toLowerCase());
-                 var url = '@Html.Raw(@Url.Action("DeleteAdultService", "Ui"))';
+                var url = '@Html.Raw(@Url.Action("DeleteAdultService", "Ui"))' + `?id=${id}`;
             }
 
             divArray[parentPosition].getElementsByTagName("a")[0].href = url;

@@ -2,12 +2,11 @@
 @using Microsoft.AspNetCore.Identity;
 
 @{
-    var leaders = new SelectList(RotaLeaders.Leaders);
+    var leaders = new SelectList(ViewData["Names"] as IEnumerable<string>);
 }
 
 <div class="mainWrapper">
 
-    <!--#region table  -->
     <div class="CreateRole">
 
         <div class="title">
@@ -22,8 +21,6 @@
                 <button class="submit" type="submit">Load</button>
             </form>
         </div>
-
-        <!--#endregion -->
 
     </div>
 </div>

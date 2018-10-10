@@ -23,73 +23,65 @@
         public string DisplaySubMenuLeft()
         {
             string pageName = ViewBag.Title.ToLower();
+            string leftMenuConfig = ViewData["leftMenuConfig"] as string;
 
             if (pageName.Contains("wider community"))
             {
-                var homeLink = "<li><a href='/Ui/LoadAtHomeView'><p>At Home</p></a></li>";
-                var overseasLink = "<li><a href='/Ui/LoadOverseasView'><p>Overseas</p></a></li>";
-                return String.Concat(homeLink, overseasLink);
+                var LeftLinkOne = "<li><a href='/Ui/LoadAtHomeView'><p>At Home</p></a></li>";
+                var LeftLinkTwo = "<li><a href='/Ui/LoadOverseasView'><p>Overseas</p></a></li>";
+                return String.Concat(LeftLinkOne, LeftLinkTwo);
             }
             else if (pageName.Contains("services"))
             {
-                var adultLink = "<li><a href='/Ui/LoadAdultServicesView'><p>Adult</p></a></li>";
-                var childLink = "<li><a href='/Ui/LoadChildServicesView'><p>Children</p></a></li>";
-                return String.Concat(adultLink, childLink);
+                var LeftLinkOne = "<li><a href='/Ui/LoadAdultServicesView'><p>Adult</p></a></li>";
+                var LeftLinkTwo = "<li><a href='/Ui/LoadChildServicesView'><p>Children</p></a></li>";
+                return String.Concat(LeftLinkOne, LeftLinkTwo);
             }
 
             else if (pageName.Contains("about") || pageName.Contains("history") || pageName.Contains("meet the team"))
             {
-                var historyLink = "<li><a href='/Ui/LoadHistoryView'><p>Our&nbsp;History</p></a></li>";
-                var teamLink = "<li><a href='/Ui/LoadMeetTheTeamView'><p>Our&nbsp;Team</p></a></li>";
-                return String.Concat(teamLink, historyLink);
+                var LeftLinkOne = "<li><a href='/Ui/LoadMeetTheTeamView'><p>Our&nbsp;Team</p></a></li>";
+                var LeftLinkTwo = "<li><a href='/Ui/LoadHistoryView'><p>Our&nbsp;History</p></a></li>";
+                return String.Concat(LeftLinkOne, LeftLinkTwo);
             }
 
             else if (pageName.Contains("usermanagement") && User.IsInRole(Roles.admin.ToString()))
             {
-                var createUserLink = "<li><a href='/Ui/LoadCreateUserView'><p>Create&nbsp;User</p></a></li>";
+                var LeftLinkOne = "<li><a href='/Ui/LoadCreateUserView'><p>Create&nbsp;User</p></a></li>";
 
-                return String.Concat(createUserLink, "");
+                return String.Concat(LeftLinkOne, "");
             }
 
             else if (pageName.Contains("rolemanagement") && User.IsInRole(Roles.admin.ToString()))
             {
-                var createUserLink = "<li><a href='/Ui/LoadCreateRoleView'><p>Create&nbsp;Role</p></a></li>";
+                var LeftLinkOne = "<li><a href='/Ui/LoadCreateRoleView'><p>Create&nbsp;Role</p></a></li>";
 
-                return String.Concat(createUserLink, "");
+                return String.Concat(LeftLinkOne, "");
             }
 
             else if (pageName.Contains("adultservicemanagement") && User.Identity.IsAuthenticated)
             {
-                var createUserLink = "<li><a href='/Ui/LoadCreateAdultServiceView'><p>Create&nbsp;Service</p></a></li>";
+                var LeftLinkOne = "<li><a href='/Ui/LoadCreateAdultServiceView'><p>Create&nbsp;Service</p></a></li>";
 
-                return String.Concat(createUserLink, "");
+                return String.Concat(LeftLinkOne, "");
             }
 
             else if (pageName.Contains("kidservicemanagement") && User.Identity.IsAuthenticated)
             {
-                var createUserLink = "<li><a href='/Ui/LoadCreateKidServiceView'><p>Create&nbsp;Service</p></a></li>";
+                var LeftLinkOne = "<li><a href='/Ui/LoadCreateKidServiceView'><p>Create&nbsp;Service</p></a></li>";
 
-                return String.Concat(createUserLink, "");
+                return String.Concat(LeftLinkOne, "");
             }
 
-            else if (pageName.Contains("youth rota") && User.Identity.IsAuthenticated)
+            else if (!string.IsNullOrEmpty(leftMenuConfig) && User.Identity.IsAuthenticated)
             {
-                var createUserLink = "<li><a href='/Ui/LoadCreateYouthView'><p>Add&nbsp;to&nbsp;rota</p></a></li>";
+                var LeftLinkOne = $"<li><a href='/Ui/LoadCreate{leftMenuConfig}View'><p>Add&nbsp;to&nbsp;rota</p></a></li>";
+                var LeftLinkTwo = $"<li><a href='/Ui/LoadAddPersonTo{leftMenuConfig}View'><p>Rota&nbsp;members</p></a></li>";
+                var LeftLinkThree = $"<li><a href='/Ui/LoadAddJobTo{leftMenuConfig}View'><p>Rota&nbsp;jobs</p></a></li>";
 
-                return String.Concat(createUserLink, "");
+                return String.Concat(LeftLinkOne, LeftLinkTwo, LeftLinkThree);
             }
-            else if (pageName.Contains("projection rota") && User.Identity.IsAuthenticated)
-            {
-                var createUserLink = "<li><a href='/Ui/LoadCreateProjectionView'><p>Add&nbsp;to&nbsp;rota</p></a></li>";
 
-                return String.Concat(createUserLink, "");
-            }
-            else if (pageName.Contains("band rota") && User.Identity.IsAuthenticated)
-            {
-                var createUserLink = "<li><a href='/Ui/LoadCreateBandView'><p>Add&nbsp;to&nbsp;rota</p></a></li>";
-
-                return String.Concat(createUserLink, "");
-            }
 
             return "";
         }
@@ -98,6 +90,7 @@
         {
             if (!User.Identity.IsAuthenticated) return "";
 
+            var userDetails = "<li><a href='/Ui/LoadUserDetailsView'><p>Details</p></a></li>";
             var userProfilesLink = "<li><a href='/Ui/LoadUserProfilesView'><p>Profiles</p></a></li>";
             var editKidSerivceLink = "<li><a href='/Ui/LoadKidServiceManagementView'><p>Kids</p></a></li>";
             var editAdultServiceLink = "<li><a href='/Ui/LoadAdultServiceManagementView'><p>Adults</p></a></li>";
@@ -112,7 +105,7 @@
             var youthRotaLink = "<li><a href='/Ui/LoadYouthRotaView'><p>Youth</p></a></li>";
             var bandRotaLink = "<li><a href='/Ui/LoadBandRotaView'><p>Band</p></a></li>";
             var projectionRotaLink = "<li><a href='/Ui/LoadProjectionRotaView'><p>Projector</p></a></li>";
-            return String.Concat(userProfilesLink, editKidSerivceLink, editAdultServiceLink, userManagementLink, roleManagementLink,
+            return String.Concat(userDetails, userProfilesLink, editKidSerivceLink, editAdultServiceLink, userManagementLink, roleManagementLink,
                 youthRotaLink, bandRotaLink, projectionRotaLink);
 
 

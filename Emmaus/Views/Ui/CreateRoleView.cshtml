@@ -1,20 +1,16 @@
 ﻿<div class="mainWrapper">
-    <div class="CreateRole">
-        <div class="title">
-            Create&nbsp;Role
-        </div>
+    <div class="title">
+        Create&nbsp;Role
+    </div>
 
+    <div class="Form-style">
 
+        <form asp-action="CreateRole" method="post">
 
-        <div class="Form-style">
+            <input class="input text" type="text" name="Rolename" placeholder="Role" />
 
-            <form asp-action="CreateRole" method="post">
+            <button class="submit" type="submit">Create</button>
+        </form>
 
-                <input class="input text" type="text" name="Rolename" placeholder="Role" />
-
-                <button class="submit" type="submit">Create</button>
-            </form>
-
-        </div>
     </div>
 </div>

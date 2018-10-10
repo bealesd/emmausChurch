@@ -1,0 +1,92 @@
+﻿@{
+    var names = ((IEnumerable<string>)ViewData["names"]).OrderBy(n => n);
+    var title = ViewData["Title"] as string;
+    string action = null;
+
+    if (title == "Add Person To Youth")
+    {
+        action = "AddPersonToYouth";
+    }
+    else if (title == "Add Person To Band")
+    {
+        action = "AddPersonToBand";
+    }
+    else if (title == "Add Person To Projection")
+    {
+        action = "AddPersonToProjection";
+    }
+}
+
+<div class="mainWrapper">
+    <div class="rotaManagement">
+        <div class="title">
+            @ViewData["LeftMenuConfig"] Members
+        </div>
+        @if (!names.Any())
+        {
+            <p>No names on rota</p>
+        }
+        else
+        {
+            <table class="tablePosition">
+                <tr>
+                    <th class="table-header"></th>
+                    <th class="table-header"></th>
+                </tr>
+
+                @foreach (var name in names)
+                {
+                    <tr>
+
+                        <p hidden>@name</p>
+                        @{
+                            if (title == "Add Person To Youth")
+                            {
+                                <td class="field">@name</td>
+                                <td class="field">
+                                    <a onclick="ConfirmDelete(this)" asp-action="DeletePersonFromYouth" asp-route-name="@name">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                </td>
+                            }
+                            else if (title == "Add Person To Band")
+                            {
+                                <td class="field">@name</td>
+                                <td class="field">
+                                    <a onclick="ConfirmDelete(this)" asp-action="DeletePersonFromBand" asp-route-name="@name">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                </td>
+                            }
+                            else if (title == "Add Person To Projection")
+                            {
+                                <td class="field">@name</td>
+                                <td class="field">
+                                    <a onclick="ConfirmDelete(this)" asp-action="DeletePersonFromProjection" asp-route-name="@name">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                </td>
+                            }
+                        }
+                    </tr>
+                }
+            </table>
+        }
+
+        <br>
+        <form asp-action="@action" method="post">
+            <input style="width:150px;" class="input" required type="text" name="name" placeholder="Add New Member" />
+            <button>Add</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function ConfirmDelete(self) {
+        let message = self.parentElement.getElementsByTagName("p")[0].innerHTML;
+        if (confirm(message)) {
+            return;
+        }
+        event.preventDefault();
+    }
+</script>

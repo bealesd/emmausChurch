@@ -12,6 +12,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Ui\AddJobView.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Ui\AddPersonView.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Ui\UserDetails.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Ui\UserProfile.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
@@ -21,7 +30,7 @@
     <Content Update="Views\Ui\ServicesInformation.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Ui\CreateEventView.cshtml">
+    <Content Update="Views\Ui\CreateRotaJobView.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Ui\Events.cshtml">
