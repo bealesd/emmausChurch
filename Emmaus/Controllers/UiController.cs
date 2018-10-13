@@ -3,6 +3,7 @@ using Emmaus.Models;
 using Emmaus.Repos;
 using Emmaus.Service;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,26 @@ namespace Emmaus.Controllers
             _identityRepo = new IdentityRepo(userManager, roleManager, signInManager);
             _serviceRepo = serviceRepo;
             _rotaService = rotaService;
+        }
+
+        [Route("error/404")]
+        public async Task<IActionResult> Error404()
+        {
+            if (Request.Headers["Referer"].Count > 0)
+            {
+                ViewData["Reffer"] = Request.Headers["Referer"].ToString();
+
+                var feature = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
+                var queryDictionary = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(feature?.OriginalQueryString);
+                var requestedUrl = queryDictionary["ReturnUrl"][0].Split('/').Last();
+                if (requestedUrl.Contains('?'))
+                {
+                    requestedUrl = requestedUrl.Split('?').First();
+                }
+                TempData["ErrorMessage"] = $"You do not have permission to view: {requestedUrl}";
+                return Redirect(ViewData["Reffer"] as string);
+            }
+            return await LoadWelcomeView();
         }
 
         public async Task<IActionResult> LoadLoginView()
@@ -97,7 +118,7 @@ namespace Emmaus.Controllers
             return RedirectToAction(nameof(LoadUserManagementView));
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin,projector,youth,band,services")]
         public async Task<IActionResult> LoadUserDetailsView()
         {
             ViewData["Title"] = "User Details";

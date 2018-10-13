@@ -17,6 +17,7 @@ namespace Emmaus.Repos
         Task<RotaItemDto> GetRotaItemForPersonAndDateAndRole(string name, string role, string type, DateTime dateTime);
         Task DeleteRotaItemFromRota(RotaItemDto rota);
         Task DeleteInvalidNamesFromRota(string rotaType, IEnumerable<string> names);
+        Task DeleteInvalidJobsFromRota(string rotaType, IEnumerable<string> jobs);
     }
     public class RotaRepo : IRotaRepo
     {
@@ -120,6 +121,19 @@ namespace Emmaus.Repos
             foreach (var rotaItem in rota)
             {
                 if (!names.Contains(rotaItem.Name))
+                {
+                    await DeleteRow(rotaItem.Id);
+                }
+            }
+        }
+
+        public async Task DeleteInvalidJobsFromRota(string rotaType, IEnumerable<string> jobs)
+        {
+            var rota = await this.GetRota(rotaType);
+
+            foreach (var rotaItem in rota)
+            {
+                if (!jobs.Contains(rotaItem.Role))
                 {
                     await DeleteRow(rotaItem.Id);
                 }

@@ -24,7 +24,7 @@ namespace Emmaus
         }
 
         public IConfiguration Configuration { get; }
-
+         
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -56,10 +56,9 @@ namespace Emmaus
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
 
                 options.LoginPath = "/Ui/LoadLoginView";
-                options.AccessDeniedPath = "/Ui/LoadLoginView";
+                //options.AccessDeniedPath = "/Ui/LoadLoginView";
                 options.SlidingExpiration = false;
             });
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSingleton<IServiceRepo>(new ServiceRepo());
@@ -68,18 +67,10 @@ namespace Emmaus
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseMiddleware(typeof(ErrorHandlingMiddleware));
-                //app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseMiddleware(typeof(ErrorHandlingMiddleware));
-            }
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
 
             app.UseHsts();
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

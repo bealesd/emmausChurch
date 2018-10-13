@@ -6,7 +6,7 @@
 
 
 
-        <div class="Form-style">
+        <div class="Form-style" style="height:420px;">
 
             <form asp-action="CreateUser" method="post">
                 <input class="input text" type="text" name="EmailAddress" placeholder="Email" />
@@ -17,7 +17,7 @@
                 {
                     <br><input type="checkbox" name="Roles" value="@role">@role<br>
                 }
-
+                <br>
                 <button class="submit" type="submit">Create</button>
             </form>
 

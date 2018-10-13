@@ -42,14 +42,23 @@ namespace Emmaus.Service
         private async Task DeleteInvalidNamesFromRotaJobs()
         {
             await DeleteInvalidNamesFromRota(RotaType.YouthClub.ToString());
-            await DeleteInvalidNamesFromRota(RotaType.YouthClub.ToString());
-            await DeleteInvalidNamesFromRota(RotaType.YouthClub.ToString());
+            await DeleteInvalidNamesFromRota(RotaType.Band.ToString());
+            await DeleteInvalidNamesFromRota(RotaType.Projection.ToString());
+            await DeleteInvalidJobsFromRota(RotaType.YouthClub.ToString());
+            await DeleteInvalidJobsFromRota(RotaType.Band.ToString());
+            await DeleteInvalidJobsFromRota(RotaType.Projection.ToString());
         }
 
         private async Task DeleteInvalidNamesFromRota(string rotaType)
         {
             IEnumerable<string> names = await _rotaNamesRepo.GetNames(rotaType);
             await _rotaRepo.DeleteInvalidNamesFromRota(rotaType, names);
+        }
+
+        private async Task DeleteInvalidJobsFromRota(string rotaType)
+        {
+            IEnumerable<string> jobs = await _rotaJobRepo.GetJobs(rotaType);
+            await _rotaRepo.DeleteInvalidJobsFromRota(rotaType, jobs);
         }
 
         public async Task AddRotaJobs(RotaItemDto rotaItem)
@@ -146,7 +155,7 @@ namespace Emmaus.Service
         {
             name = name.Trim();
             await _rotaJobRepo.DeleteJob(name, rotaType);
-            await DeleteInvalidNamesFromRota(rotaType);
+            await DeleteInvalidJobsFromRota(rotaType);
         }
     }
 }

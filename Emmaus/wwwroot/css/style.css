@@ -4,7 +4,7 @@
     --nav-bar-padding: calc((var(--nav-bar-height) - var(--bar-font-size))/2) calc((var(--nav-bar-height) - var(--bar-font-size))/2);
     --nav-bar-items-width: 800px;
     --nav-bar-letter-spacing: 4px;
-    --nav-bar-font-size: 10px;
+    --nav-bar-font-size: 18px;
     --nav-bar-font-family: Calibri, sans-serif;
     --side-bar-color: rgba(245, 245, 245, 0.5);
     --side-bar-border: 1px solid #555;
@@ -19,7 +19,7 @@
     --side-bar-hover-color: #ddd;
     --hover-color: #555;
     --bar-font-family: Calibri, sans-serif;
-    --bar-font-size: 10px;
+    --bar-font-size: 12px;
     --bar-font-weight: 400;
     --bar-font-color: black;
     --main-wrapper-background-color: rgba(245, 245, 245, 1);
