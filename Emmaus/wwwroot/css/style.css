@@ -61,7 +61,7 @@ body {
 @media screen and (min-width: 804px) {
 
     .wrapper {
-        min-height: 100vh;
+        height: 100vh;
         display: grid;
         grid-template-columns: 30vw auto 30vw /*var(--side-bar-width-large) var(--main-wrapper-desktop-width) var(--side-bar-width-large)*/;
         grid-template-rows: var(--nav-bar-height) auto var(--nav-bar-height);
@@ -575,7 +575,7 @@ body {
 .mainWrapper {
     grid-row: 2;
     grid-column: 2 / span 1;
-    min-height: 500px;
+    min-height: 200px;
     min-width: 200px;
     overflow: auto;
     display: grid;
@@ -687,7 +687,7 @@ body {
 
  .Form-style {
         font-family: 'Open Sans Condensed', arial, sans;
-        width: 30vw;
+        width: 300px;
         padding: 30px;
         background: #FFFFFF;
         margin: 50px auto;
@@ -699,14 +699,14 @@ body {
 
 .FormUserDetails {
         font-family: 'Open Sans Condensed', arial, sans;
-        width: 30vw;
-        padding: 30px;
+        width: 300px;
+        padding: 20px;
         background: #FFFFFF;
-        margin: 50px auto;
+        margin: 30px auto;
         box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
         -moz-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
         -webkit-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
-        height: 350px;
+        height: 240px;
     }
 option :hover {
     border-bottom-color: red;

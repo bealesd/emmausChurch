@@ -9,15 +9,27 @@
             Hello @email
         </div>
 
-        <h2>Update Password</h2>
         <div class="FormUserDetails">
             <form asp-action="UpdatePassword" method="post">
                 <div class="form-group">
-                    <input class="text" asp-for="Password" name="currentPassword" placeholder="CurrentPassword" required /><br />
-                    <input class="password" id="txtNewPassword" asp-for="Password" name="newPassword" placeholder="NewPassword" minlength="8" required /><br />
-                    <input class="password" id="txtConfirmPassword" asp-for="Password" placeholder="ConfirmPassword" minlength="8" required /><br />
+                    <input class="password" asp-for="Password" name="currentPassword" placeholder="Current Password" required />
+                    <input class="password" id="txtNewPassword" asp-for="Password" name="newPassword" placeholder="New Password" minlength="8" required />
+                    <input class="password" id="txtConfirmPassword" asp-for="Password" placeholder="Confirm Password" minlength="8" required />
                 </div>
-                <button onclick="validate()" class="submit" type="submit">Login</button>
+                <button onclick="validatePassword()" class="submit" type="submit">Update Password</button>
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="All"></div>
+            </form>
+        </div>
+
+        <div class="FormUserDetails">
+            <form asp-action="UpdateEmail" method="post">
+                <div class="form-group">
+                    <input class="text"  name="currentEmail" placeholder="Current Email" required />
+                    <input class="text" id="txtNewEmail" name="newEmail" placeholder="New Email" minlength="8" required />
+                    <input class="text" id="txtConfirmEmail" placeholder="Confirm Email" minlength="8" required />
+                </div>
+                <button onclick="validateEmail()" class="submit" type="submit">Update Email</button>
                 @Html.AntiForgeryToken()
                 <div asp-validation-summary="All"></div>
             </form>
@@ -37,12 +49,23 @@
                 }
          }
 
-    function validate() {
+    function validatePassword() {
         var password = $("#txtNewPassword").val();
         var confirmPassword = $("#txtConfirmPassword").val();
 
         if (password != confirmPassword) {
             alert("passwords do not match")
+            event.preventDefault();
+            return
+        }
+    }
+
+    function validateEmail() {
+        var password = $("#txtNewEmail").val();
+        var confirmPassword = $("#txtConfirmEmail").val();
+
+        if (password != confirmPassword) {
+            alert("emails do not match")
             event.preventDefault();
             return
         }

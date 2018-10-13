@@ -46,7 +46,7 @@ namespace Emmaus.Controllers
                 await _identityRepo.SignInAsync(login.EmailAddress, login.Password);
                 var message = $"User logged in: {login.EmailAddress}";
                 await AzureLogging.CreateLog(message, login.EmailAddress, LogLevel.Information);
-                return RedirectToAction("LoadAboutView");
+                return RedirectToAction("LoadUserDetailsView");
             }
             catch (Exception e)
             {
@@ -104,13 +104,20 @@ namespace Emmaus.Controllers
             return View("UserDetails");
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin,projector,youth,band,services")]
         public async Task<IActionResult> UpdatePassword(string currentPassword, string newPassword)
         {
-            //TODO ADD CHECK ON EXISITNG PASSWORD
             ViewData["Title"] = "User Management";
             await _identityRepo.UpdateUserPassword(HttpContext.User.Identity.Name, currentPassword, newPassword);
-            return RedirectToAction(nameof(LoadUserManagementView));
+            return RedirectToAction(nameof(LoadUserDetailsView));
+        }
+
+        [Authorize(Roles = "admin,projector,youth,band,services")]
+        public async Task<IActionResult> UpdateEmail(string currentEmail, string newEmail)
+        {
+            ViewData["Title"] = "User Management";
+            await _identityRepo.UpdateUserEmail(currentEmail, newEmail);
+            return RedirectToAction(nameof(LoadUserDetailsView));
         }
 
         [Authorize(Roles = "admin")]
