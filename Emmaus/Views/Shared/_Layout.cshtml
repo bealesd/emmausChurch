@@ -207,23 +207,7 @@
 
     </div>
 
-    <script>
-        var authenticated = "@User.Identity.IsAuthenticated";
-        if (authenticated === 'True') {
-            document.getElementsByClassName("mainWrapper")[0].style.minHeight = "500px";
-        }
-
-        $(document).ready(function () {
-            printMessasge();
-        });
-        function printMessasge() {
-            let message = '@TempData["ErrorMessage"]';
-            if (message !== "") {
-                    alert(message);
-            }
-         }
-
-    </script>
-
 </body>
+
 </html>
+

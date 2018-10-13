@@ -130,6 +130,7 @@ namespace Emmaus.Controllers
         {
             ViewData["Title"] = "User Management";
             await _identityRepo.UpdateUserPassword(HttpContext.User.Identity.Name, currentPassword, newPassword);
+            TempData["ErrorMessage"] = $"Password Updates";
             return RedirectToAction(nameof(LoadUserDetailsView));
         }
 
@@ -138,6 +139,7 @@ namespace Emmaus.Controllers
         {
             ViewData["Title"] = "User Management";
             await _identityRepo.UpdateUserEmail(currentEmail, newEmail);
+            TempData["ErrorMessage"] = $"Email Updated";
             return RedirectToAction(nameof(LoadUserDetailsView));
         }
 

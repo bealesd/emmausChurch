@@ -90,8 +90,9 @@ namespace Emmaus
 
             identityRepo.CreateRolesIfRequiredAsync(Enum.GetNames(typeof(Roles))).Wait();
 
-            var email = "david_beales@ymail.com";
-            var password = "FucyeegPeavpoj6";
+            var email = Configuration.GetSection("AdminSettings")["email"];
+            var password = Configuration.GetSection("AdminSettings")["password"];
+
             identityRepo.CreateAdminUserIfRequiredAsync(email, password).Wait();
         }
     }

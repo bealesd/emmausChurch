@@ -41,7 +41,7 @@
             <form asp-action="@action" method="post">
 
                 <input class="input date" required type="date" name="dateTime" min="2018-01-01" max="2020-12-31" />
-                <select style="min-width:100px;" class="input" name="Name" asp-items="@leaders"></select>
+                <select style="min-width:100px;" class="input dropdown" name="Name" asp-items="@leaders"></select>
 
                 <br>
                 @foreach (var role in roles)
@@ -74,7 +74,7 @@
     }
     a();
     function a() {
-        var height = (("@roles.Count" * 40) + 150) + "px";
+        var height = (("@roles.Count" * 40) + 180) + "px";
         document.getElementsByClassName("Form-style")[0].style.height = height;
     }
 </script>

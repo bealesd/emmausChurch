@@ -17,54 +17,62 @@
             @name Profile
         </div>
 
-        <table class="tablePosition">
-            <tr>
-                <th class="table-header">Date</th>
-                <th class="table-header">Band</th>
-                <th class="table-header">Youth</th>
-                <th class="table-header">Projector</th>
-            </tr>
+        @if (rota.Keys.Count == 0)
+        {
+            <p>No rota jobs</p>
+        }
 
-            @if (rota.Keys.Count > 0)
-            {
-                @foreach (var date in rota.Keys)
+        else
+        {
+            <table class="tablePosition">
+                <tr>
+                    <th class="table-header">Date</th>
+                    <th class="table-header">Band</th>
+                    <th class="table-header">Youth</th>
+                    <th class="table-header">Projector</th>
+                </tr>
+
+                @if (rota.Keys.Count > 0)
                 {
-                    <tr>
-                        <td class="field">@date.ToLocalTime().ToShortDateString()</td>
-                        @{
-                            var youth = new List<string>() { };
-                            var projection = new List<string>() { };
-                            var band = new List<string>() { };
-                            foreach (var role in @rota[date])
-                            {
-                                if (RotaType.YouthClub.ToString().ToLower() == role.Key.ToLower())
+                    @foreach (var date in rota.Keys)
+                    {
+                        <tr>
+                            <td class="field">@date.ToLocalTime().ToShortDateString()</td>
+                            @{
+                                var youth = new List<string>() { };
+                                var projection = new List<string>() { };
+                                var band = new List<string>() { };
+                                foreach (var role in @rota[date])
                                 {
-                                    youth = role.Value;
-                                }
-                                else if (RotaType.Band.ToString().ToLower() == role.Key.ToLower())
-                                {
-                                    band = role.Value;
-                                }
-                                else if (RotaType.Projection.ToString().ToLower() == role.Key.ToLower())
-                                {
-                                    projection = role.Value;
-                                }
+                                    if (RotaType.YouthClub.ToString().ToLower() == role.Key.ToLower())
+                                    {
+                                        youth = role.Value;
+                                    }
+                                    else if (RotaType.Band.ToString().ToLower() == role.Key.ToLower())
+                                    {
+                                        band = role.Value;
+                                    }
+                                    else if (RotaType.Projection.ToString().ToLower() == role.Key.ToLower())
+                                    {
+                                        projection = role.Value;
+                                    }
 
+                                }
                             }
-                        }
 
-                        <td class="field">
-                            @string.Join(' ', band)
-                        </td>
-                        <td class="field">
-                            @string.Join(' ', youth)
-                        </td>
-                        <td class="field">
-                            @string.Join(' ', projection)
-                        </td>
-                    </tr>
+                            <td class="field">
+                                @string.Join(' ', band)
+                            </td>
+                            <td class="field">
+                                @string.Join(' ', youth)
+                            </td>
+                            <td class="field">
+                                @string.Join(' ', projection)
+                            </td>
+                        </tr>
+                    }
                 }
-            }
-        </table>
+            </table>
+        }
     </div>
 </div>
