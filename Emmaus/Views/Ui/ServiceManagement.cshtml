@@ -2,6 +2,7 @@
 @{
     var title = $"{ ((string)ViewData["Title"]).Split('S')[0] }s";
     var services = (IEnumerable<Service>)ViewData["services"];
+    TempData["Title"] = (string)ViewData["Title"];
 }
 
 <div class="mainWrapper">
@@ -56,7 +57,7 @@
             </div>
             <div class="fieldFive">
                 <p>
-                    <a onclick="EditService(this)">
+                    <a id="@service.Id"  onclick="EditService(this)">
                         <span class="glyphicon glyphicon-edit"></span>
                     </a>
                 </p>
@@ -152,7 +153,7 @@
         var speaker = serviceElements[1].value;
         var text = serviceElements[2].value;
         var story = serviceElements[3].value;
-        var id = serviceElements[4].id;
+        var id = self.id;/*serviceElements[4].id;*/
         var date = serviceElements[5].value;
         if (date === '')
         {

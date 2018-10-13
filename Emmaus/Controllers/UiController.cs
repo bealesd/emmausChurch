@@ -211,7 +211,8 @@ namespace Emmaus.Controllers
             var service = new Models.Service() { Date = dateTime, Story = story, Text = text, Speaker = speaker, Id = id };
             await _serviceRepo.UpdateService(service);
             ViewData["Message"] = $"Service by {speaker} has been updated";
-            return HttpContext.Request.Headers["Referer"].ToString().Split('/').Last() == "LoadKidServiceManagementView" ? await LoadKidServiceManagementView() : await LoadAdultServiceManagementView();
+
+            return /*HttpContext.Request.Headers["Referer"].ToString().Split('/').Last()*/TempData["Title"] as string == "KidServiceManagement"/*"LoadKidServiceManagementView"*/ ? await LoadKidServiceManagementView() : await LoadAdultServiceManagementView();
         }
 
         [Authorize(Roles = "admin, services")]
