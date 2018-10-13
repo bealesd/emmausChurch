@@ -44,6 +44,7 @@
                                 var band = new List<string>() { };
                                 foreach (var role in @rota[date])
                                 {
+
                                     if (RotaType.YouthClub.ToString().ToLower() == role.Key.ToLower())
                                     {
                                         youth = role.Value;
@@ -61,13 +62,13 @@
                             }
 
                             <td class="field">
-                                @string.Join(' ', band)
+                                @string.Join(", ", band)
                             </td>
                             <td class="field">
-                                @string.Join(' ', youth)
+                                @string.Join(", ", youth)
                             </td>
                             <td class="field">
-                                @string.Join(' ', projection)
+                                @string.Join(", ", projection)
                             </td>
                         </tr>
                     }

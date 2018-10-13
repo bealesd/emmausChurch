@@ -1,5 +1,6 @@
 ﻿@{
     var jobs = ((IEnumerable<string>)ViewData["names"]).OrderBy(n => n);
+    var ns = @Html.Raw(Json.Serialize(jobs.ToList()));
     var title = ViewData["Title"] as string;
     string action = null;
 
@@ -76,7 +77,7 @@
         <br>
         <form asp-action="@action" method="post">
             <input style="width:150px;" class="input" required type="text" name="name" placeholder="Add New Job" />
-            <button>Add</button>
+            <button onclick="CheckPerson(this)">Add</button>
         </form>
     </div>
 </div>
@@ -88,5 +89,17 @@
             return;
         }
         event.preventDefault();
+    }
+
+        function CheckPerson(self) {
+        var name = self.parentElement.getElementsByTagName("input")[0].value;
+        var names = @ns;
+        if (names.includes(name)) {
+            alert("Duplicate job!");
+            event.preventDefault();
+        }
+        else {
+            return;
+        }
     }
 </script>
