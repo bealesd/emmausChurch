@@ -23,10 +23,9 @@ namespace Emmaus.Repos
     {
         private CloudStorageAccount _storageAccount;
         private CloudTable _table;
-        public RotaRepo()
+        public RotaRepo(string tableKey)
         {
-            _storageAccount = CloudStorageAccount.Parse(
-                @"DefaultEndpointsProtocol=https;AccountName=emmaus;AccountKey=vAqsHtaXxMKRjdusbs4hTYdG1NsYBRAUlhLRw2f+BO2/loKiLnxlJoYjdVwbGpC5dJMdZV9z1hqBPM1gSJNV5w==;EndpointSuffix=core.windows.net");
+            _storageAccount = CloudStorageAccount.Parse(@tableKey);
             CloudTableClient tableClient = _storageAccount.CreateCloudTableClient();
             _table = tableClient.GetTableReference("rota");
             var createTable = Task.Run(() => _table.CreateIfNotExistsAsync());

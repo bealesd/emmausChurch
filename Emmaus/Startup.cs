@@ -56,13 +56,14 @@ namespace Emmaus
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
 
                 options.LoginPath = "/Ui/LoadLoginView";
-                //options.AccessDeniedPath = "/Ui/LoadLoginView";
                 options.SlidingExpiration = false;
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            var tableKey = Configuration.GetSection("TableConfig")["Key"];
+
             services.AddSingleton<IServiceRepo>(new ServiceRepo());
-            services.AddSingleton<IRotaService>(new RotaService(new RotaRepo(), new RotaNamesRepo(), new RotaJobsRepo()));
+            services.AddSingleton<IRotaService>(new RotaService(new RotaRepo(tableKey), new RotaNamesRepo(tableKey), new RotaJobsRepo(tableKey)));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
