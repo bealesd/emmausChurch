@@ -10,6 +10,8 @@
     <script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="~/js/bootstrap.min.js"></script>
 
+    <script src="~/js/SweetAlert.js"></script>
+
     <meta itemprop="name" content="Emmaus Church Center" />
     <meta itemprop="description" content="Emmaus Church of Severn Beach welcomes everyone from the community to join us." />
     <meta itemprop="image" content="/images/emmausbuilding.jpg" />
@@ -207,7 +209,6 @@
 
     </div>
 
-
     <script>
         var authenticated = "@User.Identity.IsAuthenticated";
         if (authenticated === 'True') {
@@ -220,9 +221,13 @@
         function printMessasge() {
             let message = '@TempData["Message"]';
             if (message !== "") {
-                    alert(message);
+                sweetAlert(message);
             }
-         }
+        }
+
+        $(function () {
+            $(document).tooltip();
+        });
 
     </script>
 

@@ -63,6 +63,11 @@ namespace Emmaus.Service
 
         public async Task AddRotaJobs(RotaItemDto rotaItem)
         {
+            if (await _rotaRepo.IsPersonAndDateAndRoleInTable(rotaItem))
+            {
+                throw new Exception("Already Added");
+            }
+
             if (string.IsNullOrEmpty(rotaItem.Name) || string.IsNullOrEmpty(rotaItem.Role))
                 throw new Exception("Could not add rota item as name or role is null or empty.");
 

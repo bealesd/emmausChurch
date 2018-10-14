@@ -39,8 +39,8 @@ namespace Emmaus.Controllers
             {
                 ViewData["Reffer"] = Request.Headers["Referer"].ToString();
 
-                var feature = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
-                var queryDictionary = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(feature?.OriginalQueryString);
+                IStatusCodeReExecuteFeature feature = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
+                Dictionary<string, Microsoft.Extensions.Primitives.StringValues> queryDictionary = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(feature?.OriginalQueryString);
                 var requestedUrl = queryDictionary["ReturnUrl"][0].Split('/').Last();
                 if (requestedUrl.Contains('?'))
                 {
@@ -335,109 +335,159 @@ namespace Emmaus.Controllers
         [Authorize(Roles = "admin, youth ")]
         public async Task<IActionResult> AddYouthRota(string dateTime, string name, List<string> roles)
         {
-            if (!roles.Any()) throw new Exception("No roles added to youth club role.");
-
+            if (!roles.Any()) throw new Exception("No roles added to youth role.");
+            var date = DateTime.Parse(dateTime);
             foreach (var role in roles)
             {
-                var rota = new RotaItemDto()
+                try
                 {
-                    Type = RotaType.YouthClub.ToString(),
-                    DateTime = DateTime.Parse(dateTime),
-                    Name = name.TrimEnd(),
-                    Role = role,
-                    Id = Guid.NewGuid().ToString()
-                };
-                await _rotaService.AddRotaJobs(rota);
+                    var rota = new RotaItemDto()
+                    {
+                        Type = RotaType.YouthClub.ToString(),
+                        DateTime = date,
+                        Name = name.TrimEnd(),
+                        Role = role,
+                        Id = Guid.NewGuid().ToString()
+                    };
+                    await _rotaService.AddRotaJobs(rota);
+                }
+                catch (Exception e)
+                {
+                    if (e.Message == "Already Added")
+                    {
+                        TempData["Message"] = $"{name} already on rota for {role} on {date.ToShortDateString()}";
+                        return await LoadYouthRotaView();
+                    }
+                    else
+                    {
+                        throw new Exception("In AddYouthRota", e);
+                    }
+                }
             }
+            TempData["Message"] = $"{name} added to rota on {dateTime}";
             return await LoadYouthRotaView();
         }
 
         [Authorize(Roles = "admin, band")]
         public async Task<IActionResult> AddBandRota(string dateTime, string name, List<string> roles)
         {
-            if (!roles.Any()) throw new Exception("No roles added to youth club role.");
-
+            if (!roles.Any()) throw new Exception("No roles added to band role.");
+            var date = DateTime.Parse(dateTime);
             foreach (var role in roles)
             {
-                var rota = new RotaItemDto()
+                try
                 {
-                    Type = RotaType.Band.ToString(),
-                    DateTime = DateTime.Parse(dateTime),
-                    Name = name,
-                    Role = role,
-                    Id = Guid.NewGuid().ToString()
-                };
-                await _rotaService.AddRotaJobs(rota);
+                    var rota = new RotaItemDto()
+                    {
+                        Type = RotaType.Band.ToString(),
+                        DateTime = date,
+                        Name = name.TrimEnd(),
+                        Role = role,
+                        Id = Guid.NewGuid().ToString()
+                    };
+                    await _rotaService.AddRotaJobs(rota);
+                }
+                catch (Exception e)
+                {
+                    if (e.Message == "Already Added")
+                    {
+                        TempData["Message"] = $"{name} already on rota for {role} on {date.ToShortDateString()}";
+                        return await LoadBandRotaView();
+                    }
+                    else
+                    {
+                        throw new Exception("In AddBandRota", e);
+                    }
+                }
             }
-
-            return await LoadCreateBandView();
+            TempData["Message"] = $"{name} added to rota on {dateTime}";
+            return await LoadBandRotaView();
         }
 
         [Authorize(Roles = "admin, projector")]
         public async Task<IActionResult> AddProjectionRota(string dateTime, string name, List<string> roles)
         {
-            if (!roles.Any()) throw new Exception("No roles added to youth club role.");
-
+            if (!roles.Any()) throw new Exception("No roles added to projection role.");
+            var date = DateTime.Parse(dateTime);
             foreach (var role in roles)
             {
-                var rota = new RotaItemDto()
+                try
                 {
-                    Type = RotaType.Projection.ToString(),
-                    DateTime = DateTime.Parse(dateTime),
-                    Name = name,
-                    Role = role,
-                    Id = Guid.NewGuid().ToString()
-                };
-                await _rotaService.AddRotaJobs(rota);
+                    var rota = new RotaItemDto()
+                    {
+                        Type = RotaType.Projection.ToString(),
+                        DateTime = date,
+                        Name = name.TrimEnd(),
+                        Role = role,
+                        Id = Guid.NewGuid().ToString()
+                    };
+                    await _rotaService.AddRotaJobs(rota);
+                }
+                catch (Exception e)
+                {
+                    if (e.Message == "Already Added")
+                    {
+                        TempData["Message"] = $"{name} already on rota for {role} on {date.ToShortDateString()}";
+                        return await LoadProjectionRotaView();
+                    }
+                    else
+                    {
+                        throw new Exception("In AddProjectionRota", e);
+                    }
+                }
             }
-
-            return await LoadCreateProjectionView();
+            TempData["Message"] = $"{name} added to rota on {dateTime}";
+            return await LoadProjectionRotaView();
         }
 
         [Authorize(Roles = "admin, youth")]
         public async Task<IActionResult> DeleteFromRotaYouthClub(string dateTime, string name, string role)
         {
+            var date = DateTime.Parse(dateTime);
             var rota = new RotaItemDto()
             {
                 Type = RotaType.YouthClub.ToString(),
-                DateTime = DateTime.Parse(dateTime),
+                DateTime = date,
                 Name = name,
                 Role = role
             };
 
             await _rotaService.DeleteJobsFromRota(rota);
+            TempData["Message"] = $"Removed {name} from job: {role}, on {date.Date}";
             return await LoadYouthRotaView();
         }
 
         [Authorize(Roles = "admin, projector")]
         public async Task<IActionResult> DeleteFromRotaProjection(string dateTime, string name, string role)
         {
+            var date = DateTime.Parse(dateTime);
             var rota = new RotaItemDto()
             {
                 Type = RotaType.Projection.ToString(),
-                DateTime = DateTime.Parse(dateTime),
+                DateTime = date,
                 Name = name,
                 Role = role
             };
 
             await _rotaService.DeleteJobsFromRota(rota);
-
+            TempData["Message"] = $"Removed {name} from job: {role}, on {date.Date}";
             return await LoadProjectionRotaView();
         }
 
         [Authorize(Roles = "admin, band")]
         public async Task<IActionResult> DeleteFromRotaBand(string dateTime, string name, string role)
         {
+            var date = DateTime.Parse(dateTime);
             var rota = new RotaItemDto()
             {
                 Type = RotaType.Band.ToString(),
-                DateTime = DateTime.Parse(dateTime),
+                DateTime = date,
                 Name = name,
                 Role = role
             };
 
             await _rotaService.DeleteJobsFromRota(rota);
-
+            TempData["Message"] = $"Removed {name} from job: {role}, on {date.Date}";
             return await LoadBandRotaView();
         }
 
@@ -472,6 +522,7 @@ namespace Emmaus.Controllers
         public async Task<IActionResult> AddPersonToYouth(string name)
         {
             await _rotaService.AddNameToRota(name, RotaType.YouthClub.ToString());
+            TempData["Message"] = $"{name} added to youth rota";
             return await LoadAddPersonToYouthView();
         }
 
@@ -479,6 +530,7 @@ namespace Emmaus.Controllers
         public async Task<IActionResult> AddPersonToBand(string name)
         {
             await _rotaService.AddNameToRota(name, RotaType.Band.ToString());
+            TempData["Message"] = $"{name} added to band rota";
             return await LoadAddPersonToBandView();
         }
 
@@ -486,6 +538,7 @@ namespace Emmaus.Controllers
         public async Task<IActionResult> AddPersonToProjection(string name)
         {
             await _rotaService.AddNameToRota(name, RotaType.Projection.ToString());
+            TempData["Message"] = $"{name} added to projection rota";
             return await LoadAddPersonToProjectionView();
         }
 
@@ -493,6 +546,7 @@ namespace Emmaus.Controllers
         public async Task<IActionResult> DeletePersonFromYouth(string name)
         {
             await _rotaService.DeleteNameFromRota(name, RotaType.YouthClub.ToString());
+            TempData["Message"] = $"{name} deleted from youth rota";
             return await LoadAddPersonToYouthView();
         }
 
@@ -500,6 +554,7 @@ namespace Emmaus.Controllers
         public async Task<IActionResult> DeletePersonFromBand(string name)
         {
             await _rotaService.DeleteNameFromRota(name, RotaType.Band.ToString());
+            TempData["Message"] = $"{name} deleted from band rota";
             return await LoadAddPersonToBandView();
         }
 
@@ -507,6 +562,7 @@ namespace Emmaus.Controllers
         public async Task<IActionResult> DeletePersonFromProjection(string name)
         {
             await _rotaService.DeleteNameFromRota(name, RotaType.Projection.ToString());
+            TempData["Message"] = $"{name} deleted from projection rota";
             return await LoadAddPersonToProjectionView();
         }
 
@@ -540,6 +596,7 @@ namespace Emmaus.Controllers
         public async Task<IActionResult> AddJobToYouth(string name)
         {
             await _rotaService.AddJobToRota(name, RotaType.YouthClub.ToString());
+            TempData["Message"] = $"{name} added to youth jobs";
             return await LoadAddJobToYouthView();
         }
 
@@ -547,6 +604,7 @@ namespace Emmaus.Controllers
         public async Task<IActionResult> AddJobToBand(string name)
         {
             await _rotaService.AddJobToRota(name, RotaType.Band.ToString());
+            TempData["Message"] = $"{name} added to band jobs";
             return await LoadAddJobToBandView();
         }
 
@@ -554,6 +612,7 @@ namespace Emmaus.Controllers
         public async Task<IActionResult> AddJobToProjection(string name)
         {
             await _rotaService.AddJobToRota(name, RotaType.Projection.ToString());
+            TempData["Message"] = $"{name} added to projection jobs";
             return await LoadAddJobToProjectionView();
         }
 
@@ -561,6 +620,7 @@ namespace Emmaus.Controllers
         public async Task<IActionResult> DeleteJobFromYouth(string name)
         {
             await _rotaService.DeleteJobFromRota(name, RotaType.YouthClub.ToString());
+            TempData["Message"] = $"{name} added to youth jobs";
             return await LoadAddJobToYouthView();
         }
 
@@ -568,6 +628,7 @@ namespace Emmaus.Controllers
         public async Task<IActionResult> DeleteJobFromBand(string name)
         {
             await _rotaService.DeleteJobFromRota(name, RotaType.Band.ToString());
+            TempData["Message"] = $"{name} removed to band jobs";
             return await LoadAddJobToBandView();
         }
 
@@ -575,6 +636,7 @@ namespace Emmaus.Controllers
         public async Task<IActionResult> DeleteJobFromProjection(string name)
         {
             await _rotaService.DeleteJobFromRota(name, RotaType.Projection.ToString());
+            TempData["Message"] = $"{name} added to projection jobs";
             return await LoadAddJobToProjectionView();
         }
 
@@ -582,7 +644,7 @@ namespace Emmaus.Controllers
         public async Task<IActionResult> LoadUserProfileView(string name)
         {
             ViewData["Title"] = "User Profile";
-            var rotaItems = await _rotaService.GetRotaJobsForPerson(name);
+            Dictionary<DateTime, Dictionary<string, List<string>>> rotaItems = await _rotaService.GetRotaJobsForPerson(name);
             ViewData["Rota"] = rotaItems;
             ViewData["Name"] = name;
             ViewData["youthJobs"] = await _rotaService.GetJobsOnRota(RotaType.YouthClub.ToString());

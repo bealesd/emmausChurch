@@ -1,5 +1,4 @@
-﻿using Emmaus.Logger;
-using Emmaus.Models;
+﻿using Emmaus.Models;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using System;
@@ -18,6 +17,7 @@ namespace Emmaus.Repos
         Task DeleteRotaItemFromRota(RotaItemDto rota);
         Task DeleteInvalidNamesFromRota(string rotaType, IEnumerable<string> names);
         Task DeleteInvalidJobsFromRota(string rotaType, IEnumerable<string> jobs);
+        Task<bool> IsPersonAndDateAndRoleInTable(RotaItemDto rotaItem);
     }
     public class RotaRepo : IRotaRepo
     {
@@ -85,6 +85,9 @@ namespace Emmaus.Repos
             }
         }
 
+        public async Task<bool> IsPersonAndDateAndRoleInTable(RotaItemDto rotaItem) =>
+            await GetRotaItemForPersonAndDateAndRole(rotaItem.Name, rotaItem.Role, rotaItem.Type, rotaItem.DateTime) == null ? false : true;
+
         public async Task AddRotaItem(RotaItemDto rotaItem)
         {
             try
@@ -115,9 +118,9 @@ namespace Emmaus.Repos
 
         public async Task DeleteInvalidNamesFromRota(string rotaType, IEnumerable<string> names)
         {
-            var rota = await this.GetRota(rotaType);
+            IEnumerable<RotaItemDto> rota = await GetRota(rotaType);
 
-            foreach (var rotaItem in rota)
+            foreach (RotaItemDto rotaItem in rota)
             {
                 if (!names.Contains(rotaItem.Name))
                 {
@@ -128,9 +131,9 @@ namespace Emmaus.Repos
 
         public async Task DeleteInvalidJobsFromRota(string rotaType, IEnumerable<string> jobs)
         {
-            var rota = await this.GetRota(rotaType);
+            IEnumerable<RotaItemDto> rota = await GetRota(rotaType);
 
-            foreach (var rotaItem in rota)
+            foreach (RotaItemDto rotaItem in rota)
             {
                 if (!jobs.Contains(rotaItem.Role))
                 {

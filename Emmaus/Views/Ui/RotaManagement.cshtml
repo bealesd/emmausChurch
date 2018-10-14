@@ -55,7 +55,7 @@
                                                 }
                                                 else
                                                 {
-                                                    <a onclick="ConfirmDelete(this)" asp-action="DeleteFromRotaBand" asp-route-dateTime="@date.ToLocalTime()" asp-route-name="@name" asp-route-role="@role">
+                                                    <a title="Delete" onclick="ConfirmDelete(this)" asp-action="DeleteFromRotaBand" asp-route-dateTime="@date.ToLocalTime()" asp-route-name="@name" asp-route-role="@role">
                                                         @if (count > 0)
                                                         {
                                                             @string.Concat(", ", role)
@@ -77,7 +77,7 @@
                                                 }
                                                 else
                                                 {
-                                                    <a onclick="ConfirmDelete(this)" asp-action="DeleteFromRotaBand" asp-route-dateTime="@date.ToLocalTime()" asp-route-name="@name" asp-route-role="@role">
+                                                    <a title="Delete" onclick="ConfirmDelete(this)" asp-action="DeleteFromRotaProjection" asp-route-dateTime="@date.ToLocalTime()" asp-route-name="@name" asp-route-role="@role">
                                                         @if (count > 0)
                                                         {
                                                             @string.Concat(", ", role)
@@ -99,7 +99,7 @@
                                                 }
                                                 else
                                                 {
-                                                    <a onclick="ConfirmDelete(this)" asp-action="DeleteFromRotaBand" asp-route-dateTime="@date.ToLocalTime()" asp-route-name="@name" asp-route-role="@role">
+                                                    <a title="Delete" onclick="ConfirmDelete(this)" asp-action="DeleteFromRotaYouthClub" asp-route-dateTime="@date.ToLocalTime()" asp-route-name="@name" asp-route-role="@role">
                                                         @if (count > 0)
                                                         {
                                                             @string.Concat(", ", role)

@@ -23,8 +23,8 @@
     --bar-font-weight: 400;
     --bar-font-color: black;
     --main-wrapper-background-color: rgba(245, 245, 245, 1);
-    --main-wrapper-desktop-width: calc(100vw-30vw*2) /*calc(100vw - var(--side-bar-width-large)*2)*/;
-    --main-wrapper-mobile-width: calc(100vw - 20vw*2) /*calc(100vw - var(--side-bar-width-small)*2)*/;
+    --main-wrapper-desktop-width: calc(100vw-30vw*2);
+    --main-wrapper-mobile-width: calc(100vw - 20vw*2);
 }
 
 html {
@@ -38,36 +38,33 @@ body {
 }
 
 /*small size wrapper*/
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 500px) {
     .wrapper {
         min-height: 100vh;
         display: grid;
-        grid-template-columns: auto auto auto;
+        grid-template-columns: 0px auto 0px;
         grid-template-rows: var(--nav-bar-height) repeat(auto, 20) var(--nav-bar-height);
     }
 }
-
 /*medium size wrapper*/
-@media screen and (min-width: 400px) and (max-width: 804px) {
+@media screen and (min-width: 500px) and (max-width: 804px) {
     .wrapper {
         min-height: 100vh;
         display: grid;
-        grid-template-columns: var(--side-bar-width-small) auto var(--side-bar-width-small) /*var(--side-bar-width-small) var(--main-wrapper-mobile-width) var(--side-bar-width-small)*/;
+        grid-template-columns: var(--side-bar-width-small) auto var(--side-bar-width-small);
         grid-template-rows: var(--nav-bar-height) auto var(--nav-bar-height);
     }
 }
-
 /*large size wrapper*/
 @media screen and (min-width: 804px) {
 
     .wrapper {
         height: 100vh;
         display: grid;
-        grid-template-columns: 30vw auto 30vw /*var(--side-bar-width-large) var(--main-wrapper-desktop-width) var(--side-bar-width-large)*/;
+        grid-template-columns: 30vw auto 30vw;
         grid-template-rows: var(--nav-bar-height) auto var(--nav-bar-height);
     }
 }
-
 /*large size navbar*/
 @media screen and (min-width: 980px) {
     .link-visible {
@@ -182,7 +179,6 @@ body {
         display: block;
     }
 }
-
 /*small size navbar*/
 @media screen and (max-width: 980px) {
     .v1 {
@@ -292,7 +288,6 @@ body {
         display: block;
     }
 }
-
 /*large side bars*/
 @media screen and (min-width: 800px) {
 
@@ -375,7 +370,6 @@ body {
             border-bottom: none;
         }
 }
-
 /*small side bars*/
 @media screen and (max-width: 800px) and (min-width: 500px) {
 
@@ -459,7 +453,6 @@ body {
             border-bottom: none;
         }
 }
-
 /*bottom side bars*/
 @media screen and (max-width: 500px) {
 
@@ -577,9 +570,10 @@ body {
         grid-row: 2;
         grid-column: 2 / span 1;
         min-height: 400px;
-        min-width: 200px;
+        min-width: 100px;
+        display: inline-block;
         overflow: auto;
-        display: grid;
+        /*display: grid;*/
         grid-template-rows: 200px;
         grid-template-columns: auto;
         background-color: var(--main-wrapper-background-color);
@@ -596,7 +590,8 @@ body {
         min-height: 200px;
         min-width: 200px;
         overflow: auto;
-        display: grid;
+        display: inline-block;
+        /*display: grid;*/
         grid-template-rows: 200px;
         grid-template-columns: auto;
         background-color: var(--main-wrapper-background-color);
