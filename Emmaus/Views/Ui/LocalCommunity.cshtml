@@ -28,6 +28,19 @@
 
         <h4>Primary School</h4>
         <p> Once a term we go into our local primary school to take assemblies and we sponsor a street dance teacher to run a weekly after school club.</p>
-        @*</div>*@
     </div>
 </div>
+
+<script>    
+    function resizeIframe() {
+        var width = document.getElementsByClassName('LocalCommunity')[0].offsetWidth;
+        var heightToWidthRation = 454 / 500;
+        var height = heightToWidthRation * width;
+        var iframe = document.getElementsByTagName("iframe")[0];
+        iframe.height = height;
+        iframe.width = width;
+    }
+
+    window.addEventListener("load", resizeIframe);
+    window.addEventListener("resize", resizeIframe);
+</script>

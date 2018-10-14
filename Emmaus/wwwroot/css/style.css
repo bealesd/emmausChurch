@@ -32,6 +32,7 @@ html {
 }
 
 body {
+    width:100%;
     background-size: cover;
     margin: 0 auto;
     background-attachment: fixed;
@@ -40,6 +41,7 @@ body {
 /*small size wrapper*/
 @media screen and (max-width: 500px) {
     .wrapper {
+        min-width: 250px;
         min-height: 100vh;
         display: grid;
         grid-template-columns: 0px auto 0px;
@@ -522,7 +524,8 @@ body {
     grid-column: 1 / 4;
     min-width: 100px;
     overflow: auto;
-    padding-bottom: 10px;
+    padding-bottom: 20px;
+    margin-bottom: 40px;
     padding-left: 20vw;
     padding-right: 20vw;
     background-color: none;
@@ -573,7 +576,6 @@ body {
         min-width: 100px;
         display: inline-block;
         overflow: auto;
-        /*display: grid;*/
         grid-template-rows: 200px;
         grid-template-columns: auto;
         background-color: var(--main-wrapper-background-color);

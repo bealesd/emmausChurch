@@ -364,7 +364,7 @@ namespace Emmaus.Controllers
                     }
                 }
             }
-            TempData["Message"] = $"{name} added to rota on {dateTime}";
+            TempData["Message"] = $"{name} added to rota on {date.ToShortDateString()}";
             return await LoadYouthRotaView();
         }
 
@@ -400,7 +400,7 @@ namespace Emmaus.Controllers
                     }
                 }
             }
-            TempData["Message"] = $"{name} added to rota on {dateTime}";
+            TempData["Message"] = $"{name} added to rota on {date.ToShortDateString()}";
             return await LoadBandRotaView();
         }
 
@@ -436,7 +436,7 @@ namespace Emmaus.Controllers
                     }
                 }
             }
-            TempData["Message"] = $"{name} added to rota on {dateTime}";
+            TempData["Message"] = $"{name} added to rota on {date.ToShortDateString()}";
             return await LoadProjectionRotaView();
         }
 
@@ -453,7 +453,7 @@ namespace Emmaus.Controllers
             };
 
             await _rotaService.DeleteJobsFromRota(rota);
-            TempData["Message"] = $"Removed {name} from job: {role}, on {date.Date}";
+            TempData["Message"] = $"Removed {name} from job: {role}, on {date.ToShortDateString()}";
             return await LoadYouthRotaView();
         }
 
@@ -470,7 +470,7 @@ namespace Emmaus.Controllers
             };
 
             await _rotaService.DeleteJobsFromRota(rota);
-            TempData["Message"] = $"Removed {name} from job: {role}, on {date.Date}";
+            TempData["Message"] = $"Removed {name} from job: {role}, on {date.ToShortDateString()}";
             return await LoadProjectionRotaView();
         }
 
@@ -487,7 +487,7 @@ namespace Emmaus.Controllers
             };
 
             await _rotaService.DeleteJobsFromRota(rota);
-            TempData["Message"] = $"Removed {name} from job: {role}, on {date.Date}";
+            TempData["Message"] = $"Removed {name} from job: {role}, on {date.ToShortDateString()}";
             return await LoadBandRotaView();
         }
 
