@@ -46,7 +46,7 @@ namespace Emmaus.Controllers
                 {
                     requestedUrl = requestedUrl.Split('?').First();
                 }
-                TempData["ErrorMessage"] = $"You do not have permission to view: {requestedUrl}";
+                TempData["Message"] = $"You do not have permission to view: {requestedUrl}";
                 return Redirect(ViewData["Reffer"] as string);
             }
             return await LoadWelcomeView();
@@ -73,7 +73,7 @@ namespace Emmaus.Controllers
             {
                 var message = $"{HttpContext.Request.Path}: " + ExceptionHelper.GetaAllMessages(e);
                 await AzureLogging.CreateLog(message, login.EmailAddress, LogLevel.Warning);
-                ViewData["Message"] = "Username or password incorrect";
+                TempData["Message"] = "Username or password incorrect";
                 return await LoadLoginView();
             }
         }
@@ -130,7 +130,7 @@ namespace Emmaus.Controllers
         {
             ViewData["Title"] = "User Management";
             await _identityRepo.UpdateUserPassword(HttpContext.User.Identity.Name, currentPassword, newPassword);
-            TempData["ErrorMessage"] = $"Password Updates";
+            TempData["Message"] = $"Password Updates";
             return RedirectToAction(nameof(LoadUserDetailsView));
         }
 
@@ -139,7 +139,7 @@ namespace Emmaus.Controllers
         {
             ViewData["Title"] = "User Management";
             await _identityRepo.UpdateUserEmail(currentEmail, newEmail);
-            TempData["ErrorMessage"] = $"Email Updated";
+            TempData["Message"] = $"Email Updated";
             return RedirectToAction(nameof(LoadUserDetailsView));
         }
 
@@ -210,7 +210,7 @@ namespace Emmaus.Controllers
         {
             var service = new Models.Service() { Date = dateTime, Story = story, Text = text, Speaker = speaker, Id = id };
             await _serviceRepo.UpdateService(service);
-            ViewData["Message"] = $"Service by {speaker} has been updated";
+            TempData["Message"] = $"Service by {speaker} has been updated";
 
             return /*HttpContext.Request.Headers["Referer"].ToString().Split('/').Last()*/TempData["Title"] as string == "KidServiceManagement"/*"LoadKidServiceManagementView"*/ ? await LoadKidServiceManagementView() : await LoadAdultServiceManagementView();
         }
@@ -688,7 +688,7 @@ namespace Emmaus.Controllers
         public IActionResult LoadError(string errorMessage = null)
         {
             ViewData["Title"] = "Error";
-            ViewData["Message"] = errorMessage;
+            TempData["Message"] = errorMessage;
             return View("Error");
         }
     }

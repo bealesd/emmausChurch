@@ -1,6 +1,6 @@
 ﻿@{
     //var message = @ViewData["Message"] != null ? ViewData["Message"] : "";
-    var message = ViewData["Message"] as string;
+    var message = TempData["Message"] as string;
 }
 
 <div class="mainWrapper">
@@ -22,7 +22,7 @@
 </div>
 
 <script>
-        let message = '@ViewData["Message"]';
+        let message = '@TempData["Message"]';
         //$(document).ready(function () {
         //    printMessasge();
         //});
